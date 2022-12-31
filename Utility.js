@@ -7,8 +7,8 @@ var FundType;
 (function (FundType) {
     FundType[FundType["Section1291"] = 0] = "Section1291";
 })(FundType || (FundType = {}));
-var Transaction = /** @class */ (function () {
-    function Transaction(referenceIDNumber, fundName, transactionType, date, numberOfUnits, amount) {
+class Transaction {
+    constructor(referenceIDNumber, fundName, transactionType, date, numberOfUnits, amount) {
         this.ReferenceIDNumber = referenceIDNumber;
         this.FundName = fundName;
         this.TransactionType = transactionType;
@@ -16,69 +16,138 @@ var Transaction = /** @class */ (function () {
         this.NumberOfUnits = numberOfUnits;
         this.Amount = amount;
     }
-    return Transaction;
-}());
-var Input8621 = /** @class */ (function () {
-    function Input8621() {
+    ReferenceIDNumber;
+    FundName;
+    TransactionType;
+    Date;
+    NumberOfUnits;
+    Amount;
+}
+class Input8621 {
+    TaxYear;
+    USPersonSince;
+    FundType;
+    Transactions;
+    constructor() {
+        this.Transactions = [];
     }
-    return Input8621;
-}());
-var UnitBlockYearDetail = /** @class */ (function () {
-    function UnitBlockYearDetail() {
+}
+class UnitBlockYearDetail {
+    Year;
+    NumberOfDays;
+    Line16c;
+    IsResident;
+    constructor(year) {
+        this.Year = year;
     }
-    return UnitBlockYearDetail;
-}());
-var RefernceIDYearDetail = /** @class */ (function () {
-    function RefernceIDYearDetail() {
+}
+class RefernceIDYearDetail {
+    Year;
+    Line16cTotal;
+    constructor(year, line16cTotal) {
+        this.Year = year;
+        this.Line16cTotal = line16cTotal;
     }
-    return RefernceIDYearDetail;
-}());
-var UnitBlock = /** @class */ (function () {
-    function UnitBlock() {
+}
+class UnitBlock {
+    NumberOfUnits;
+    PurchaseDate;
+    PurchaseAmount;
+    DisposeDate;
+    DisposeAmount;
+    UnitBlockYearDetails;
+    Line16B;
+    constructor(purchaseDate, purchaseAmount, disposeDate, disposeAmount) {
+        this.UnitBlockYearDetails = [];
+        let purchaseYear = purchaseDate.getFullYear();
+        let disposeYear = disposeDate.getFullYear();
+        let totalNumberOfDays = 0;
+        for (let year = purchaseYear; year <= disposeYear; year++) {
+            let unitBlockYearDetail = new UnitBlockYearDetail(year);
+            let holdingStartDateInYear;
+            let holdingEndDateInYear;
+            if (year == purchaseYear) {
+                holdingStartDateInYear = purchaseDate;
+            }
+            else {
+                holdingStartDateInYear = new Date(year, 0, 1);
+            }
+            if (year == disposeYear) {
+                holdingEndDateInYear = disposeDate;
+            }
+            else {
+                holdingEndDateInYear = new Date(year, 11, 31);
+            }
+            let numberOfDays = 0;
+            let day = holdingStartDateInYear;
+            while (day < holdingEndDateInYear) {
+                numberOfDays++;
+                day.setDate(day.getDate() + 1);
+            }
+            unitBlockYearDetail.NumberOfDays = numberOfDays;
+            totalNumberOfDays += numberOfDays;
+            this.UnitBlockYearDetails.push(unitBlockYearDetail);
+        }
+        let profit = disposeAmount - purchaseAmount;
+        this.UnitBlockYearDetails.forEach(unitBlockYearDetail => {
+            unitBlockYearDetail.Line16c = profit * unitBlockYearDetail.NumberOfDays / totalNumberOfDays;
+        });
     }
-    return UnitBlock;
-}());
-var ExcessDistributionSummary = /** @class */ (function () {
-    function ExcessDistributionSummary() {
+}
+class ExcessDistributionSummary {
+    Life15f;
+    Line16b;
+    Line16c;
+    Line16d;
+    Line16e;
+    Line16f;
+}
+class RefernceIDDetail {
+    ReferenceIDNumber;
+    FundName;
+    UnitBlocks;
+    PurchaseTotal;
+    DisposeTotal;
+    Line16bTotal;
+    RefernceIDYearDetail;
+    ExcessDistributionSummary;
+    constructor(referenceIDNumber, fundName) {
+        this.ReferenceIDNumber = referenceIDNumber;
+        this.FundName = fundName;
+        this.RefernceIDYearDetail = [];
     }
-    return ExcessDistributionSummary;
-}());
-var RefernceIDDetail = /** @class */ (function () {
-    function RefernceIDDetail() {
+}
+class Output8621 {
+    TaxYear;
+    RefernceIDDetails;
+    constructor() {
+        this.RefernceIDDetails = [];
     }
-    return RefernceIDDetail;
-}());
-var Output8621 = /** @class */ (function () {
-    function Output8621() {
-    }
-    return Output8621;
-}());
-var Form8621Calculator = /** @class */ (function () {
-    function Form8621Calculator() {
-    }
-    Form8621Calculator.prototype.GetBlocks = function (transactions) {
-        var arrayUnitBlocks = [];
-        var PurchaseTransactions;
-        transactions.sort().forEach(function (transaction) {
+}
+class Form8621Calculator {
+    GetBlocks(transactions) {
+        let arrayUnitBlocks = [];
+        let PurchaseTransactions = [];
+        transactions.sort().forEach(transaction => {
             if (transaction.TransactionType == TransactionType.Purchase) {
                 PurchaseTransactions.push([transaction, transaction.NumberOfUnits]);
             }
             else {
-                var UnitsToDispose_1 = transaction.NumberOfUnits;
-                PurchaseTransactions.forEach(function (purchaseTransactionUnitTuple) {
-                    if (UnitsToDispose_1 > 0) {
-                        var purchaseTransaction = purchaseTransactionUnitTuple[0];
-                        var remainingPurchaseUnitsInPurchaseTransaction = purchaseTransactionUnitTuple[1];
+                let UnitsToDispose = transaction.NumberOfUnits;
+                PurchaseTransactions.forEach(purchaseTransactionUnitTuple => {
+                    if (UnitsToDispose > 0) {
+                        let purchaseTransaction = purchaseTransactionUnitTuple[0];
+                        let remainingPurchaseUnitsInPurchaseTransaction = purchaseTransactionUnitTuple[1];
                         if (remainingPurchaseUnitsInPurchaseTransaction > 0) {
-                            var unitBlock = new UnitBlock();
-                            if (remainingPurchaseUnitsInPurchaseTransaction >= UnitsToDispose_1) {
+                            let unitBlock = new UnitBlock(purchaseTransaction.Date, purchaseTransaction.Amount, transaction.Date, transaction.Amount);
+                            if (remainingPurchaseUnitsInPurchaseTransaction >= UnitsToDispose) {
                                 unitBlock.NumberOfUnits = transaction.NumberOfUnits;
                                 purchaseTransactionUnitTuple[1] -= transaction.NumberOfUnits;
-                                UnitsToDispose_1 = 0;
+                                UnitsToDispose = 0;
                             }
                             else {
                                 unitBlock.NumberOfUnits = remainingPurchaseUnitsInPurchaseTransaction;
-                                UnitsToDispose_1 -= remainingPurchaseUnitsInPurchaseTransaction;
+                                UnitsToDispose -= remainingPurchaseUnitsInPurchaseTransaction;
                                 purchaseTransactionUnitTuple[1] = 0;
                             }
                             unitBlock.PurchaseDate = purchaseTransaction.Date;
@@ -92,38 +161,45 @@ var Form8621Calculator = /** @class */ (function () {
             }
         });
         return arrayUnitBlocks;
-    };
-    Form8621Calculator.prototype.Compile = function (input) {
-        var _this = this;
-        var result = new Output8621();
+    }
+    Compile(input) {
+        let result = new Output8621();
         result.TaxYear = input.TaxYear;
-        var lstReferenceIDNumbers = [];
-        input.Transactions.forEach(function (transaction) {
-            lstReferenceIDNumbers.push(transaction.ReferenceIDNumber);
+        let lstReferenceIDNumbers = [];
+        input.Transactions.forEach(transaction => {
+            if (!lstReferenceIDNumbers.includes(transaction.ReferenceIDNumber)) {
+                lstReferenceIDNumbers.push(transaction.ReferenceIDNumber);
+            }
         });
-        lstReferenceIDNumbers.forEach(function (referenceIDNumber) {
-            var lstTransactions = input.Transactions.filter(function (t) { return t.ReferenceIDNumber == referenceIDNumber; });
-            var refernceIDDetail = new RefernceIDDetail();
-            refernceIDDetail.ReferenceIDNumber = referenceIDNumber;
-            refernceIDDetail.UnitBlocks = _this.GetBlocks(lstTransactions);
-            result.RefernceIDDetails.push(refernceIDDetail);
+        lstReferenceIDNumbers.forEach(referenceIDNumber => {
+            let lstTransactions = input.Transactions.filter((t) => t.ReferenceIDNumber == referenceIDNumber);
+            let referenceIDDetail = new RefernceIDDetail(referenceIDNumber, lstTransactions[0].FundName);
+            referenceIDDetail.UnitBlocks = this.GetBlocks(lstTransactions);
+            referenceIDDetail.PurchaseTotal = referenceIDDetail.UnitBlocks.reduce((sum, block) => sum + block.PurchaseAmount, 0);
+            referenceIDDetail.DisposeTotal = referenceIDDetail.UnitBlocks.reduce((sum, block) => sum + block.DisposeAmount, 0);
+            referenceIDDetail.UnitBlocks[0].UnitBlockYearDetails.forEach(unitBlockYearDetail => {
+                let year = unitBlockYearDetail.Year;
+                let line16cSum = referenceIDDetail.UnitBlocks.reduce((sum, unitBlock) => sum + unitBlock.UnitBlockYearDetails.find(x => x.Year == year).Line16c, 0);
+                let refernceIDYearDetail = new RefernceIDYearDetail(year, line16cSum);
+                referenceIDDetail.RefernceIDYearDetail.push(refernceIDYearDetail);
+            });
+            referenceIDDetail.RefernceIDYearDetail;
+            result.RefernceIDDetails.push(referenceIDDetail);
         });
         return result;
-    };
-    return Form8621Calculator;
-}());
-var message = 'Hello World';
-console.log(message);
-//function Test()
-{
-    var input = new Input8621();
-    var calculator = new Form8621Calculator();
+    }
+}
+function Test() {
+    let input = new Input8621();
+    let calculator = new Form8621Calculator();
     input.TaxYear = 2022;
     input.USPersonSince = -1;
     input.FundType = FundType.Section1291;
-    input.Transactions.push(new Transaction("abc", "aaa", TransactionType.Purchase, new Date('12/12/2021'), 100.51, 50.33));
-    input.Transactions.push(new Transaction("abc", "aaa", TransactionType.Dispose, new Date('12/12/2021'), 100.51, 50.33));
-    var result = calculator.Compile(input);
-    console.log(result);
+    input.Transactions.push(new Transaction("abc", "aaa", TransactionType.Purchase, new Date('12/12/2021'), 100, 50));
+    input.Transactions.push(new Transaction("abc", "aaa", TransactionType.Dispose, new Date('12/12/2022'), 30, 150.33));
+    input.Transactions.push(new Transaction("abc", "aaa", TransactionType.Dispose, new Date('12/15/2022'), 60, 80));
+    let result = calculator.Compile(input);
+    console.info(result.RefernceIDDetails[0].UnitBlocks[0]);
 }
+Test();
 //# sourceMappingURL=Utility.js.map
