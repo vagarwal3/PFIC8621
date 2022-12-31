@@ -1,8 +1,10 @@
 {
-    "files": ["Utility.ts"],
+    "files": ["Utility.ts","InterestRate.json"],
     "compilerOptions": {
         "target": "ES2022",
         "module": "commonjs",
-        "sourceMap": true
+        "sourceMap": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true
     }
 }

@@ -1,0 +1,94 @@
+[
+    {
+        "Year": 2022,
+        "QuaterlyInterestRate":[3,	4,	5,	6]
+    },
+    {
+        "Year": 2021,
+        "QuaterlyInterestRate":[3,	3,	3,	3]
+    },
+    {
+        "Year": 2020,
+        "QuaterlyInterestRate":[	5,	5,	3,	3]
+    },
+    {
+        "Year": 2019,	
+        "QuaterlyInterestRate":[6,	6,	5,	5]
+    },
+    {
+        "Year": 2018,
+        "QuaterlyInterestRate":[	4,	5,	5,	5]
+    },
+    {
+        "Year": 2017,
+        "QuaterlyInterestRate":[	4,	4,	4,	4]
+    },
+    {
+        "Year": 2016,	
+        "QuaterlyInterestRate":[3,	4,	4,	4]
+    },
+    {
+        "Year": 2015,
+        "QuaterlyInterestRate":[	3,	3,	3,	3]
+    },
+    {
+        "Year": 2014,
+        "QuaterlyInterestRate":[	3,	3,	3,	3]
+    },
+    {
+        "Year": 2013,	
+        "QuaterlyInterestRate":[3,	3,	3,	3]
+    },
+    {
+        "Year": 2012,
+        "QuaterlyInterestRate":[	3,	3,	3,	3]
+    },
+    {
+        "Year": 2011,	
+        "QuaterlyInterestRate":[3,	4,	4,	3]
+    },
+    {
+        "Year": 2010,	
+        "QuaterlyInterestRate":[4,	4,	4,	4]
+    },
+    {
+        "Year": 2009,
+        "QuaterlyInterestRate":[	5,	4,	4,	4]
+    },
+    {
+        "Year": 2008,
+        "QuaterlyInterestRate":[	7,	6,	5,	6]
+    },
+    {
+        "Year": 2007,
+        "QuaterlyInterestRate":[	8,	8,	8,	8]
+    },
+    {
+        "Year": 2006,
+        "QuaterlyInterestRate":[	7,	7,	8,	8]
+    },
+    {
+        "Year": 2005,
+        "QuaterlyInterestRate":[	5,	6,	6,	7]
+    },
+    {
+        "Year": 2004,	
+        "QuaterlyInterestRate":[4,	5,	4,	5]
+    },
+    {
+        "Year": 2003,	
+        "QuaterlyInterestRate":[5,	5,	5,	4]
+    },
+    {
+        "Year": 2002,
+        "QuaterlyInterestRate":[	6,	6,	6,	6]
+    },
+    {
+        "Year": 2001,
+        "QuaterlyInterestRate":[	9,	8,	7,	7]
+    },
+    {
+        "Year": 2000,	
+        "QuaterlyInterestRate":[8,	9,	9,	9]
+    }
+]
