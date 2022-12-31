@@ -1,0 +1,8 @@
+{
+    "files": ["Utility.ts"],
+    "compilerOptions": {
+        "target": "ES5",
+        "module": "commonjs",
+        "sourceMap": true
+    }
+}

@@ -9,12 +9,21 @@ enum FundType
 }
 class Transaction
 {
+    constructor(referenceIDNumber:string, fundName:string, transactionType:TransactionType, date:Date, numberOfUnits:number, amount:number)
+    {
+        this.ReferenceIDNumber=referenceIDNumber;
+        this.FundName=fundName;
+        this.TransactionType=transactionType;
+        this.Date=date;
+        this.NumberOfUnits=numberOfUnits;
+        this.Amount=amount;
+    }
     ReferenceIDNumber:string;
     FundName:string;
     TransactionType:TransactionType ;
     Date:Date;
-    NumberOfUnits:Decimal;
-    Amount:Decimal;
+    NumberOfUnits:number;
+    Amount:number;
 }
 class Input8621
 {
@@ -36,12 +45,7 @@ class RefernceIDYearDetail
     Year:number;
     Line16cTotal:number;
 }
-class UnitBlockYearDetail
-{
-    NumberOfDays:number;
-    Line16c:number;
-    IsResident:boolean;
-}
+
 class UnitBlock
 {
     NumberOfUnits:number;
@@ -82,7 +86,7 @@ class Form8621Calculator
 {
     GetBlocks(transactions:Transaction[])
     {
-        let arrayUnitBlocks:UnitBlock[];
+        let arrayUnitBlocks:UnitBlock[] = [];
         let PurchaseTransactions:[Transaction, number][];
         transactions.sort().forEach(transaction => {
             if(transaction.TransactionType==TransactionType.Purchase)
@@ -96,14 +100,14 @@ class Form8621Calculator
                     if(UnitsToDispose>0)
                     {
                     let purchaseTransaction:Transaction = purchaseTransactionUnitTuple[0];
-                    let remainingPurchaseUnitsInPurchaseTransaction:Number = purchaseTransactionUnitTuple[1];
+                    let remainingPurchaseUnitsInPurchaseTransaction:number = purchaseTransactionUnitTuple[1];
                     if(remainingPurchaseUnitsInPurchaseTransaction>0)
                     {
                         let unitBlock = new UnitBlock();
                         if(remainingPurchaseUnitsInPurchaseTransaction>=UnitsToDispose)
                         {
-                            unitBlock.NumberOfUnits=disposeTransaction.NumberOfUnits;
-                            purchaseTransactionUnitTuple[1]-=disposeTransaction.NumberOfUnits;
+                            unitBlock.NumberOfUnits=transaction.NumberOfUnits;
+                            purchaseTransactionUnitTuple[1]-=transaction.NumberOfUnits;
                             UnitsToDispose=0;
                         }
                         else
@@ -114,8 +118,8 @@ class Form8621Calculator
                         }
                         unitBlock.PurchaseDate=purchaseTransaction.Date;
                         unitBlock.PurchaseAmount=unitBlock.NumberOfUnits*purchaseTransaction.Amount/purchaseTransaction.NumberOfUnits;
-                        unitBlock.DisposeDate=disposeTransaction.Date;
-                        unitBlock.DisposeAmount=unitBlock.NumberOfUnits*disposeTransaction.Amount/disposeTransaction.NumberOfUnits;
+                        unitBlock.DisposeDate=transaction.Date;
+                        unitBlock.DisposeAmount=unitBlock.NumberOfUnits*transaction.Amount/transaction.NumberOfUnits;
                         arrayUnitBlocks.push(unitBlock);
                     }
                 }
@@ -128,13 +132,16 @@ class Form8621Calculator
     {
         let result = new Output8621();
         result.TaxYear=input.TaxYear;
-        let lstReferenceIDNumbers = input.Transactions.select(ReferenceIDNumber);
-        lstReferenceIDNumbers.foreach(ReferenceIDNumber=>
+        let lstReferenceIDNumbers:string[]=[];
+        input.Transactions.forEach(transaction=>{
+                lstReferenceIDNumbers.push(transaction.ReferenceIDNumber);
+        });
+        lstReferenceIDNumbers.forEach(referenceIDNumber=>
             {
-                let lstTransactions = input.Transactions.find(ReferenceIDNumber);
+                let lstTransactions:Transaction[] = input.Transactions.filter((t)=>t.ReferenceIDNumber==referenceIDNumber);
                 let refernceIDDetail:RefernceIDDetail=new RefernceIDDetail();
-                refernceIDDetail.ReferenceIDNumber=purchaseTransaction.ReferenceIDNumber;
-                refernceIDDetail.UnitBlocks=GetBlocks(lstTransactions);
+                refernceIDDetail.ReferenceIDNumber=referenceIDNumber;
+                refernceIDDetail.UnitBlocks=this.GetBlocks(lstTransactions);
                 result.RefernceIDDetails.push(refernceIDDetail);
 
             });
@@ -142,14 +149,17 @@ class Form8621Calculator
         return result;
     }
 }
-function Test()
+let message: string = 'Hello World';
+console.log(message);
+//function Test()
 {
     let input = new Input8621();
+    let calculator = new Form8621Calculator();
     input.TaxYear=2022;
     input.USPersonSince=-1;
     input.FundType=FundType.Section1291;
-    input.Transactions.push(new Transaction({ ReferenceIDNumber: "abc", FundName: "aaa", TransactionType: TransactionType.Purchase, Date: '12/12/2021', UnitBlocks: 100.51, Amount: 50.33 }));
-    input.Transactions.push(new Transaction({ ReferenceIDNumber: "abc", FundName: "aaa",  TransactionType: TransactionType.Dispose, Date: '12/12/2021', UnitBlocks: 100.51, Amount: 50.33 }));
-    let result = Form8621Calculator.Compile(input);
+    input.Transactions.push(new Transaction("abc", "aaa", TransactionType.Purchase, new Date('12/12/2021'), 100.51, 50.33 ));
+    input.Transactions.push(new Transaction("abc", "aaa",  TransactionType.Dispose, new Date('12/12/2021'), 100.51, 50.33 ));
+    let result = calculator.Compile(input);
     console.log(result);
 }
