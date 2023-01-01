@@ -1,44 +1,11 @@
-import AnnualInterestRates from './InterestRate.json'
+import {InterestCalculator} from "./InterestCalculator"
+import {TaxRate} from "./TaxRate"
 enum TransactionType
 {
     Purchase,
     Dispose
 }
-class InterestCalculator
-{
-    daysInMonth(month:number, year:number) {
-        return new Date(year, month, 0).getDate();
-      }
-      
-       daysInYear(year:number) {
-        var days = 0;
-        
-        for(var month = 1; month <= 12; month++) {
-          days += this.daysInMonth(month, year);
-        }
-        
-        return days;
-      }
-    GetInterestRateOnADate(date:Date)
-    {
 
-        let year:number = date.getFullYear();
-        let monthIndex = date.getMonth();
-        let quarter = monthIndex/4;
-        return AnnualInterestRates.find(x=>x.Year==year).QuaterlyInterestRate[quarter];
-    }
-    CalculateInterest(startDate:Date,endDate:Date,amount:number)
-    {
-        let interestBasis:number=amount;
-        let date = startDate;
-        while(date<=endDate)
-        {
-            interestBasis+=this.GetInterestRateOnADate(date)*interestBasis/this.daysInYear(date.getFullYear());
-            date.setDate(date.getDate()+1);
-        }
-        return interestBasis-amount;
-    }
-}
 enum FundType
 {
     Section1291
@@ -254,57 +221,6 @@ class Form8621Calculator
         });
         return arrayUnitBlocks;
     }
-    GetTaxRateByYear(year)
-    {
-        switch(year)
-        {
-            case 1987:
-                return 38.5;
-            case 1988:
-            case 1989:
-            case 1990:
-                return 28;
-            case 1991:
-        case 1992:
-            return 31;
-        case 1993:
-        case 1994:
-        case 1995:
-        case 1996:
-        case 1997:
-        case 1998:
-        case 1999:
-        case 2000:
-            return 39.6;
-        case 2001:
-            return 39.1;
-        case 2002:
-            return 38.6;
-        case 2003:
-        case 2004:
-        case 2005:
-        case 2006:
-        case 2007:
-        case 2008:
-        case 2009:
-        case 2010:
-        case 2011:
-        case 2012:
-            return 35;
-        case 2013:
-        case 2014:
-        case 2015:
-        case 2016:
-        case 2017:
-            return 39.6;
-        case 2018:
-        case 2019:
-        case 2020:
-        case 2021:
-        case 2022:
-                return 37;
-        }
-    }
     Compile(input:Input8621)
     {
         let result = new Output8621();
@@ -326,13 +242,14 @@ class Form8621Calculator
                 referenceIDDetail.DisposeTotal = referenceIDDetail.UnitBlocks.reduce((sum,block)=>sum+block.DisposeAmount,0);
                 let totalInterest:number=0;
                 console.log(referenceIDDetail.UnitBlocks);
+                let taxRateCalculator:TaxRate = new TaxRate();
                 referenceIDDetail.UnitBlocks[0].UnitBlockYearDetails.forEach(unitBlockYearDetail => {
                    
                     let year:number = unitBlockYearDetail.Year;
                     let line16cSum:number= referenceIDDetail.UnitBlocks.reduce((sum,unitBlock)=>sum+unitBlock.UnitBlockYearDetails.find(x=>x.Year==year).Line16c,0);
                     let referenceIDYearDetail:ReferenceIDYearDetail = new ReferenceIDYearDetail(year,line16cSum,input.TaxYear);
                     totalInterest += referenceIDYearDetail.Interest;
-                    referenceIDDetail.ExcessDistributionSummary.Line16c+=line16cSum * this.GetTaxRateByYear(year);
+                    referenceIDDetail.ExcessDistributionSummary.Line16c+=line16cSum * taxRateCalculator.GetTaxRateByYear(year);
 
                     referenceIDDetail.ReferenceIDYearDetail.push(referenceIDYearDetail);
                 });

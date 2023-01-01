@@ -1,41 +1,12 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const InterestRate_json_1 = __importDefault(require("./InterestRate.json"));
+const InterestCalculator_1 = require("./InterestCalculator");
+const TaxRate_1 = require("./TaxRate");
 var TransactionType;
 (function (TransactionType) {
     TransactionType[TransactionType["Purchase"] = 0] = "Purchase";
     TransactionType[TransactionType["Dispose"] = 1] = "Dispose";
 })(TransactionType || (TransactionType = {}));
-class InterestCalculator {
-    daysInMonth(month, year) {
-        return new Date(year, month, 0).getDate();
-    }
-    daysInYear(year) {
-        var days = 0;
-        for (var month = 1; month <= 12; month++) {
-            days += this.daysInMonth(month, year);
-        }
-        return days;
-    }
-    GetInterestRateOnADate(date) {
-        let year = date.getFullYear();
-        let monthIndex = date.getMonth();
-        let quarter = monthIndex / 4;
-        return InterestRate_json_1.default.find(x => x.Year == year).QuaterlyInterestRate[quarter];
-    }
-    CalculateInterest(startDate, endDate, amount) {
-        let interestBasis = amount;
-        let date = startDate;
-        while (date <= endDate) {
-            interestBasis += this.GetInterestRateOnADate(date) * interestBasis / this.daysInYear(date.getFullYear());
-            date.setDate(date.getDate() + 1);
-        }
-        return interestBasis - amount;
-    }
-}
 var FundType;
 (function (FundType) {
     FundType[FundType["Section1291"] = 0] = "Section1291";
@@ -81,7 +52,7 @@ class ReferenceIDYearDetail {
     constructor(year, line16cTotal, taxYear) {
         this.Year = year;
         this.Line16cTotal = line16cTotal;
-        let interestCalculator = new InterestCalculator();
+        let interestCalculator = new InterestCalculator_1.InterestCalculator();
         this.Interest = interestCalculator.CalculateInterest(new Date(year, 3, 15), new Date(taxYear, 3, 15), line16cTotal);
     }
 }
@@ -216,55 +187,6 @@ class Form8621Calculator {
         });
         return arrayUnitBlocks;
     }
-    GetTaxRateByYear(year) {
-        switch (year) {
-            case 1987:
-                return 38.5;
-            case 1988:
-            case 1989:
-            case 1990:
-                return 28;
-            case 1991:
-            case 1992:
-                return 31;
-            case 1993:
-            case 1994:
-            case 1995:
-            case 1996:
-            case 1997:
-            case 1998:
-            case 1999:
-            case 2000:
-                return 39.6;
-            case 2001:
-                return 39.1;
-            case 2002:
-                return 38.6;
-            case 2003:
-            case 2004:
-            case 2005:
-            case 2006:
-            case 2007:
-            case 2008:
-            case 2009:
-            case 2010:
-            case 2011:
-            case 2012:
-                return 35;
-            case 2013:
-            case 2014:
-            case 2015:
-            case 2016:
-            case 2017:
-                return 39.6;
-            case 2018:
-            case 2019:
-            case 2020:
-            case 2021:
-            case 2022:
-                return 37;
-        }
-    }
     Compile(input) {
         let result = new Output8621();
         result.TaxYear = input.TaxYear;
@@ -282,12 +204,13 @@ class Form8621Calculator {
             referenceIDDetail.DisposeTotal = referenceIDDetail.UnitBlocks.reduce((sum, block) => sum + block.DisposeAmount, 0);
             let totalInterest = 0;
             console.log(referenceIDDetail.UnitBlocks);
+            let taxRateCalculator = new TaxRate_1.TaxRate();
             referenceIDDetail.UnitBlocks[0].UnitBlockYearDetails.forEach(unitBlockYearDetail => {
                 let year = unitBlockYearDetail.Year;
                 let line16cSum = referenceIDDetail.UnitBlocks.reduce((sum, unitBlock) => sum + unitBlock.UnitBlockYearDetails.find(x => x.Year == year).Line16c, 0);
                 let referenceIDYearDetail = new ReferenceIDYearDetail(year, line16cSum, input.TaxYear);
                 totalInterest += referenceIDYearDetail.Interest;
-                referenceIDDetail.ExcessDistributionSummary.Line16c += line16cSum * this.GetTaxRateByYear(year);
+                referenceIDDetail.ExcessDistributionSummary.Line16c += line16cSum * taxRateCalculator.GetTaxRateByYear(year);
                 referenceIDDetail.ReferenceIDYearDetail.push(referenceIDYearDetail);
             });
             referenceIDDetail.ExcessDistributionSummary.Line16c = referenceIDDetail.DisposeTotal - referenceIDDetail.PurchaseTotal;
