@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InterestCalculator = void 0;
 const InterestRate_json_1 = __importDefault(require("./InterestRate.json"));
+const Utility_1 = require("./Utility");
 class InterestCalculator {
     daysInMonth(month, year) {
         return new Date(year, month, 0).getDate();
@@ -22,9 +23,6 @@ class InterestCalculator {
         let quarter = Math.floor(monthIndex / 3);
         return InterestRate_json_1.default.find(x => x.Year == year).QuaterlyInterestRate[quarter];
     }
-    ConvertNumberTo2DecimalPlace(amount) {
-        return parseFloat(amount.toFixed(2));
-    }
     CalculateInterest(startDate, endDate, amount) {
         let interestfactor = 1;
         let date = startDate;
@@ -34,7 +32,7 @@ class InterestCalculator {
             interestfactor = interestfactor + interest;
             date.setDate(date.getDate() + 1);
         }
-        return this.ConvertNumberTo2DecimalPlace((interestfactor - 1) * amount);
+        return Utility_1.Utility.ConvertNumberTo2DecimalPlace((interestfactor - 1) * amount);
     }
 }
 exports.InterestCalculator = InterestCalculator;

@@ -1,5 +1,6 @@
 import { assert } from "chai";
 import {InterestCalculator} from "../InterestCalculator"
+import { Utility } from "../Utility";
 
 describe('InterestCalculator', () => {
     it('daysInMonth is returning incorrect value', () => {
@@ -36,16 +37,14 @@ describe('InterestCalculator', () => {
     })
  }); 
  describe('ConvertNumberTo2DecimalPlace', () => {
-     it('ConvertNumberTo2DecimalPlace is returning incorrect value', () => {
-         let cal:InterestCalculator =  new InterestCalculator();
-        
-         assert.equal(cal.ConvertNumberTo2DecimalPlace(100.3449999),100.34);
-         assert.equal(cal.ConvertNumberTo2DecimalPlace(100.34534533),100.35);
-         assert.equal(cal.ConvertNumberTo2DecimalPlace(100.3),100.30);
-         assert.equal(cal.ConvertNumberTo2DecimalPlace(100),100);
-         assert.equal(cal.ConvertNumberTo2DecimalPlace(100.34934533),100.35);
-         assert.equal(cal.ConvertNumberTo2DecimalPlace(100.35034533),100.35);
-         assert.equal(cal.ConvertNumberTo2DecimalPlace(100.35134533),100.35);
+     it('ConvertNumberTo2DecimalPlace is returning incorrect value', () => {        
+         assert.equal(Utility.ConvertNumberTo2DecimalPlace(100.3449999),100.34);
+         assert.equal(Utility.ConvertNumberTo2DecimalPlace(100.34534533),100.35);
+         assert.equal(Utility.ConvertNumberTo2DecimalPlace(100.3),100.30);
+         assert.equal(Utility.ConvertNumberTo2DecimalPlace(100),100);
+         assert.equal(Utility.ConvertNumberTo2DecimalPlace(100.34934533),100.35);
+         assert.equal(Utility.ConvertNumberTo2DecimalPlace(100.35034533),100.35);
+         assert.equal(Utility.ConvertNumberTo2DecimalPlace(100.35134533),100.35);
      })
  }); 
 

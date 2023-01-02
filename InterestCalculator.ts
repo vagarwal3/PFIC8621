@@ -1,5 +1,6 @@
 import { Console } from 'console';
 import AnnualInterestRates from './InterestRate.json'
+import { Utility } from './Utility';
 
 export class InterestCalculator 
 {
@@ -27,10 +28,6 @@ export class InterestCalculator
 
     return AnnualInterestRates.find(x => x.Year == year).QuaterlyInterestRate[quarter];
   }
-  ConvertNumberTo2DecimalPlace(amount: number) 
-  {
-    return parseFloat(amount.toFixed(2));
-  }
   CalculateInterest(startDate: Date, endDate: Date, amount: number) 
   {
     let interestfactor: number = 1;
@@ -43,6 +40,6 @@ export class InterestCalculator
       interestfactor = interestfactor + interest;
       date.setDate(date.getDate() + 1);
     }
-    return this.ConvertNumberTo2DecimalPlace((interestfactor - 1) * amount);
+    return Utility.ConvertNumberTo2DecimalPlace((interestfactor - 1) * amount);
   }
 }

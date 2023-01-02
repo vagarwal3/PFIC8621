@@ -97,7 +97,7 @@ describe('ShareBlock', () => {
 
         assert.equal(shareBlock.ShareBlockYearDetails[0].Year, 2021);
         assert.equal(shareBlock.ShareBlockYearDetails[0].NumberOfDays, 293);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[0].ProfitAlocation, 602.88);
 
         assert.equal(shareBlock.ShareBlockYearDetails[1].Year, 2022);
@@ -110,8 +110,8 @@ describe('ShareBlock', () => {
 });
 
 describe('ShareBlock', () => {
-    it('ShareBlock initialization is correct', () => {
-        let shareBlock: ShareBlock = new ShareBlock(2022, true, null, 1, new Date(2020, 4, 10), 1014.1, new Date(2022, 6, 26), 2056.90);
+    it('ShareBlock initialization is correct1', () => {
+        let shareBlock: ShareBlock = new ShareBlock(2022, true, null, 1, new Date(2020, 4, 10), 1014.10, new Date(2022, 6, 26), 2056.90);
         assert.equal(shareBlock.NumberOfUnits, 1);
         assert.equal(shareBlock.Profit, 1042.80);
         assert.equal(shareBlock.ShareBlockYearDetails.length, 3);
@@ -119,12 +119,12 @@ describe('ShareBlock', () => {
 
         assert.equal(shareBlock.ShareBlockYearDetails[0].Year, 2020);
         assert.equal(shareBlock.ShareBlockYearDetails[0].NumberOfDays, 236);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[0].ProfitAlocation, 304.58);
 
         assert.equal(shareBlock.ShareBlockYearDetails[1].Year, 2021);
         assert.equal(shareBlock.ShareBlockYearDetails[1].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[1].ProfitAlocation, 471.07);
 
         assert.equal(shareBlock.ShareBlockYearDetails[2].Year, 2022);
@@ -146,23 +146,23 @@ describe('ShareBlock', () => {
 
         assert.equal(shareBlock.ShareBlockYearDetails[0].Year, 2019);
         assert.equal(shareBlock.ShareBlockYearDetails[0].NumberOfDays, 22);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[0].ProfitAlocation, 20.90);
 
-        assert.equal(shareBlock.ShareBlockYearDetails[0].Year, 2020);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].NumberOfDays, 366);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, true);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].ProfitAlocation, 347.71);
+        assert.equal(shareBlock.ShareBlockYearDetails[1].Year, 2020);
+        assert.equal(shareBlock.ShareBlockYearDetails[1].NumberOfDays, 366);
+        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, false);
+        assert.equal(shareBlock.ShareBlockYearDetails[1].ProfitAlocation, 347.71);
 
-        assert.equal(shareBlock.ShareBlockYearDetails[0].Year, 2021);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, true);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].ProfitAlocation, 346.76);
+        assert.equal(shareBlock.ShareBlockYearDetails[2].Year, 2021);
+        assert.equal(shareBlock.ShareBlockYearDetails[2].NumberOfDays, 365);
+        assert.equal(shareBlock.ShareBlockYearDetails[2].IsCurrentTaxYear, false);
+        assert.equal(shareBlock.ShareBlockYearDetails[2].ProfitAlocation, 346.76);
 
-        assert.equal(shareBlock.ShareBlockYearDetails[0].Year, 2022);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].NumberOfDays, 334);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, true);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].ProfitAlocation, 317.31);
+        assert.equal(shareBlock.ShareBlockYearDetails[3].Year, 2022);
+        assert.equal(shareBlock.ShareBlockYearDetails[3].NumberOfDays, 334);
+        assert.equal(shareBlock.ShareBlockYearDetails[3].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[3].ProfitAlocation, 317.31);
 
     })
 });
@@ -177,22 +177,22 @@ describe('ShareBlock', () => {
 
         assert.equal(shareBlock.ShareBlockYearDetails[0].Year, 2018);
         assert.equal(shareBlock.ShareBlockYearDetails[0].NumberOfDays, 140);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[0].ProfitAlocation, 180.26);
 
         assert.equal(shareBlock.ShareBlockYearDetails[1].Year, 2019);
         assert.equal(shareBlock.ShareBlockYearDetails[1].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[1].ProfitAlocation, 469.97);
 
         assert.equal(shareBlock.ShareBlockYearDetails[2].Year, 2020);
         assert.equal(shareBlock.ShareBlockYearDetails[2].NumberOfDays, 366);
-        assert.equal(shareBlock.ShareBlockYearDetails[2].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[2].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[2].ProfitAlocation, 471.26);
 
         assert.equal(shareBlock.ShareBlockYearDetails[3].Year, 2021);
         assert.equal(shareBlock.ShareBlockYearDetails[3].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[3].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[3].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[3].ProfitAlocation, 469.97);
 
         assert.equal(shareBlock.ShareBlockYearDetails[4].Year, 2022);
@@ -213,33 +213,33 @@ describe('ShareBlock', () => {
 
         assert.equal(shareBlock.ShareBlockYearDetails[0].Year, 2017);
         assert.equal(shareBlock.ShareBlockYearDetails[0].NumberOfDays, 204);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[0].ProfitAlocation, 312.43);
 
         assert.equal(shareBlock.ShareBlockYearDetails[1].Year, 2018);
         assert.equal(shareBlock.ShareBlockYearDetails[1].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[1].ProfitAlocation, 559.00);
 
         assert.equal(shareBlock.ShareBlockYearDetails[2].Year, 2019);
         assert.equal(shareBlock.ShareBlockYearDetails[2].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[2].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[2].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[2].ProfitAlocation, 559.00);
 
         assert.equal(shareBlock.ShareBlockYearDetails[3].Year, 2020);
         assert.equal(shareBlock.ShareBlockYearDetails[3].NumberOfDays, 366);
-        assert.equal(shareBlock.ShareBlockYearDetails[3].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[3].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[3].ProfitAlocation, 560.53);
 
         assert.equal(shareBlock.ShareBlockYearDetails[4].Year, 2021);
         assert.equal(shareBlock.ShareBlockYearDetails[4].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[4].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[4].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[4].ProfitAlocation, 559.00);
 
         assert.equal(shareBlock.ShareBlockYearDetails[5].Year, 2022);
         assert.equal(shareBlock.ShareBlockYearDetails[5].NumberOfDays, 132);
         assert.equal(shareBlock.ShareBlockYearDetails[5].IsCurrentTaxYear, true);
-        assert.equal(shareBlock.ShareBlockYearDetails[5].ProfitAlocation, 202.15);
+        assert.equal(shareBlock.ShareBlockYearDetails[5].ProfitAlocation, 202.16);
 
 
     })
@@ -255,32 +255,32 @@ describe('ShareBlock', () => {
 
         assert.equal(shareBlock.ShareBlockYearDetails[0].Year, 2016);
         assert.equal(shareBlock.ShareBlockYearDetails[0].NumberOfDays, 236);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[0].ProfitAlocation, 117.88);
 
         assert.equal(shareBlock.ShareBlockYearDetails[1].Year, 2017);
         assert.equal(shareBlock.ShareBlockYearDetails[1].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[1].ProfitAlocation, 182.31);
 
         assert.equal(shareBlock.ShareBlockYearDetails[2].Year, 2018);
         assert.equal(shareBlock.ShareBlockYearDetails[2].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[2].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[2].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[2].ProfitAlocation, 182.31);
 
         assert.equal(shareBlock.ShareBlockYearDetails[3].Year, 2019);
         assert.equal(shareBlock.ShareBlockYearDetails[3].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[3].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[3].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[3].ProfitAlocation, 182.31);
 
         assert.equal(shareBlock.ShareBlockYearDetails[4].Year, 2020);
         assert.equal(shareBlock.ShareBlockYearDetails[4].NumberOfDays, 366);
-        assert.equal(shareBlock.ShareBlockYearDetails[4].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[4].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[4].ProfitAlocation, 182.81);
 
         assert.equal(shareBlock.ShareBlockYearDetails[5].Year, 2021);
         assert.equal(shareBlock.ShareBlockYearDetails[5].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[5].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[5].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[5].ProfitAlocation, 182.31);
 
         assert.equal(shareBlock.ShareBlockYearDetails[6].Year, 2022);
@@ -301,37 +301,37 @@ describe('ShareBlock', () => {
 
         assert.equal(shareBlock.ShareBlockYearDetails[0].Year, 2015);
         assert.equal(shareBlock.ShareBlockYearDetails[0].NumberOfDays, 236);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[0].ProfitAlocation, 719.50);
 
         assert.equal(shareBlock.ShareBlockYearDetails[1].Year, 2016);
         assert.equal(shareBlock.ShareBlockYearDetails[1].NumberOfDays, 366);
-        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[1].ProfitAlocation, 1115.83);
 
         assert.equal(shareBlock.ShareBlockYearDetails[2].Year, 2017);
         assert.equal(shareBlock.ShareBlockYearDetails[2].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[2].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[2].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[2].ProfitAlocation, 1112.78);
 
         assert.equal(shareBlock.ShareBlockYearDetails[3].Year, 2018);
         assert.equal(shareBlock.ShareBlockYearDetails[3].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[3].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[3].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[3].ProfitAlocation, 1112.78);
 
         assert.equal(shareBlock.ShareBlockYearDetails[4].Year, 2019);
         assert.equal(shareBlock.ShareBlockYearDetails[4].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[4].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[4].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[4].ProfitAlocation, 1112.78);
 
         assert.equal(shareBlock.ShareBlockYearDetails[5].Year, 2020);
         assert.equal(shareBlock.ShareBlockYearDetails[5].NumberOfDays, 366);
-        assert.equal(shareBlock.ShareBlockYearDetails[5].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[5].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[5].ProfitAlocation, 1115.83);
 
         assert.equal(shareBlock.ShareBlockYearDetails[6].Year, 2021);
         assert.equal(shareBlock.ShareBlockYearDetails[6].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[6].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[6].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[6].ProfitAlocation, 1112.78);
 
         assert.equal(shareBlock.ShareBlockYearDetails[7].Year, 2022);
@@ -353,12 +353,12 @@ describe('ShareBlock', () => {
 
         assert.equal(shareBlock.ShareBlockYearDetails[0].Year, 2020);
         assert.equal(shareBlock.ShareBlockYearDetails[0].NumberOfDays, 236);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[0].ProfitAlocation, 304.58);
 
         assert.equal(shareBlock.ShareBlockYearDetails[1].Year, 2021);
         assert.equal(shareBlock.ShareBlockYearDetails[1].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[1].ProfitAlocation, 471.07);
 
         assert.equal(shareBlock.ShareBlockYearDetails[2].Year, 2022);
@@ -379,12 +379,12 @@ describe('ShareBlock', () => {
 
         assert.equal(shareBlock.ShareBlockYearDetails[0].Year, 2020);
         assert.equal(shareBlock.ShareBlockYearDetails[0].NumberOfDays, 236);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[0].ProfitAlocation, 304.58);
 
         assert.equal(shareBlock.ShareBlockYearDetails[1].Year, 2021);
         assert.equal(shareBlock.ShareBlockYearDetails[1].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[1].ProfitAlocation, 471.07);
 
         assert.equal(shareBlock.ShareBlockYearDetails[2].Year, 2022);
@@ -406,12 +406,12 @@ describe('ShareBlock', () => {
 
         assert.equal(shareBlock.ShareBlockYearDetails[0].Year, 2020);
         assert.equal(shareBlock.ShareBlockYearDetails[0].NumberOfDays, 236);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[0].ProfitAlocation, 304.58);
 
         assert.equal(shareBlock.ShareBlockYearDetails[1].Year, 2021);
         assert.equal(shareBlock.ShareBlockYearDetails[1].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[1].ProfitAlocation, 471.07);
 
         assert.equal(shareBlock.ShareBlockYearDetails[2].Year, 2022);
@@ -432,12 +432,12 @@ describe('ShareBlock', () => {
 
         assert.equal(shareBlock.ShareBlockYearDetails[0].Year, 2020);
         assert.equal(shareBlock.ShareBlockYearDetails[0].NumberOfDays, 236);
-        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[0].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[0].ProfitAlocation, 304.58);
 
         assert.equal(shareBlock.ShareBlockYearDetails[1].Year, 2021);
         assert.equal(shareBlock.ShareBlockYearDetails[1].NumberOfDays, 365);
-        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, true);
+        assert.equal(shareBlock.ShareBlockYearDetails[1].IsCurrentTaxYear, false);
         assert.equal(shareBlock.ShareBlockYearDetails[1].ProfitAlocation, 471.07);
 
         assert.equal(shareBlock.ShareBlockYearDetails[2].Year, 2022);

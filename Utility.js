@@ -1,8 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Utility = void 0;
 const InterestCalculator_1 = require("./InterestCalculator");
 const TaxRate_1 = require("./TaxRate");
 const ShareBlock_1 = require("./ShareBlock");
+class Utility {
+    static ConvertNumberTo2DecimalPlace(amount) {
+        return parseFloat(amount.toFixed(2));
+    }
+}
+exports.Utility = Utility;
 var TransactionType;
 (function (TransactionType) {
     TransactionType[TransactionType["Purchase"] = 0] = "Purchase";
@@ -30,7 +37,8 @@ class Transaction {
 }
 class Input8621 {
     TaxYear;
-    USPersonSince;
+    USPersonSinceBirth;
+    USPersonSinceYear;
     FundType;
     Transactions;
     constructor() {
@@ -117,7 +125,7 @@ class Form8621Calculator {
                                 }
                                 let blockPurchaseAmount = numberOfUnitsInBlock * purchaseTransaction.Amount / purchaseTransaction.NumberOfUnits;
                                 let blockDisposeAmount = numberOfUnitsInBlock * transaction.Amount / transaction.NumberOfUnits;
-                                let shareBlock = new ShareBlock_1.ShareBlock(taxYear, numberOfUnitsInBlock, purchaseTransaction.Date, blockPurchaseAmount, transaction.Date, blockDisposeAmount);
+                                let shareBlock = new ShareBlock_1.ShareBlock(taxYear, true, null, numberOfUnitsInBlock, purchaseTransaction.Date, blockPurchaseAmount, transaction.Date, blockDisposeAmount);
                                 arrayShareBlocks.push(shareBlock);
                             }
                         }
@@ -151,7 +159,7 @@ class Form8621Calculator {
             let taxRateCalculator = new TaxRate_1.TaxRate();
             referenceIDDetail.ShareBlocks[0].ShareBlockYearDetails.forEach(shareBlockYearDetail => {
                 let year = shareBlockYearDetail.Year;
-                let line16cSum = referenceIDDetail.ShareBlocks.reduce((sum, shareBlock) => sum + shareBlock.ShareBlockYearDetails.find(x => x.Year == year).Line16c, 0);
+                let line16cSum = referenceIDDetail.ShareBlocks.reduce((sum, shareBlock) => sum + shareBlock.ShareBlockYearDetails.find(x => x.Year == year).GetLine16c(), 0);
                 let referenceIDYearDetail = new ReferenceIDYearDetail(year, line16cSum, input.TaxYear);
                 totalInterest += referenceIDYearDetail.Interest;
                 referenceIDDetail.ExcessDistributionSummary.Line16c += line16cSum * taxRateCalculator.GetTaxRateByYear(year);

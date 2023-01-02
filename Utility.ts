@@ -1,6 +1,14 @@
 import { InterestCalculator } from "./InterestCalculator"
 import { TaxRate } from "./TaxRate"
 import { ShareBlock } from "./ShareBlock"
+
+export class Utility
+{
+  static ConvertNumberTo2DecimalPlace(amount: number) 
+  {
+    return parseFloat(amount.toFixed(2));
+  }
+}
 enum TransactionType {
     Purchase,
     Dispose
@@ -120,7 +128,7 @@ class Form8621Calculator {
                                 let blockPurchaseAmount:number = numberOfUnitsInBlock * purchaseTransaction.Amount / purchaseTransaction.NumberOfUnits;
                                 let blockDisposeAmount:number = numberOfUnitsInBlock * transaction.Amount / transaction.NumberOfUnits;
 
-                                let shareBlock = new ShareBlock(taxYear, numberOfUnitsInBlock, purchaseTransaction.Date, blockPurchaseAmount, transaction.Date, blockDisposeAmount);
+                                let shareBlock = new ShareBlock(taxYear,true,null, numberOfUnitsInBlock, purchaseTransaction.Date, blockPurchaseAmount, transaction.Date, blockDisposeAmount);
                                 arrayShareBlocks.push(shareBlock);
                             }
                         }
@@ -163,7 +171,7 @@ class Form8621Calculator {
             referenceIDDetail.ShareBlocks[0].ShareBlockYearDetails.forEach(shareBlockYearDetail => {
 
                 let year: number = shareBlockYearDetail.Year;
-                let line16cSum: number = referenceIDDetail.ShareBlocks.reduce((sum, shareBlock) => sum + shareBlock.ShareBlockYearDetails.find(x => x.Year == year).Line16c, 0);
+                let line16cSum: number = referenceIDDetail.ShareBlocks.reduce((sum, shareBlock) => sum + shareBlock.ShareBlockYearDetails.find(x => x.Year == year).GetLine16c(), 0);
                 let referenceIDYearDetail: ReferenceIDYearDetail = new ReferenceIDYearDetail(year, line16cSum, input.TaxYear);
                 totalInterest += referenceIDYearDetail.Interest;
                 referenceIDDetail.ExcessDistributionSummary.Line16c += line16cSum * taxRateCalculator.GetTaxRateByYear(year);
