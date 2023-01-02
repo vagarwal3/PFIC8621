@@ -1,5 +1,6 @@
 import { InterestCalculator } from "./InterestCalculator"
 import { TaxRate } from "./TaxRate"
+import { ShareBlock } from "./ShareBlock"
 enum TransactionType {
     Purchase,
     Dispose
@@ -26,7 +27,8 @@ class Transaction {
 }
 class Input8621 {
     TaxYear: number;
-    USPersonSince: number;
+    USPersonSinceBirth: boolean;
+    USPersonSinceYear: number;
     FundType: FundType;
     Transactions: Transaction[];
     constructor() {
@@ -45,6 +47,7 @@ class ReferenceIDYearDetail {
         this.Interest = interestCalculator.CalculateInterest(new Date(year, 3, 15), new Date(taxYear, 3, 15), line16cTotal)
     }
 }
+
 class ExcessDistributionSummary {
     Line15f: number;
     Line16b: number;
@@ -136,6 +139,7 @@ class Form8621Calculator {
             }
         }
         );
+        return lstReferenceIDNumbers;
     }
     Audit(input: Input8621) 
     {
@@ -144,13 +148,13 @@ class Form8621Calculator {
     Compute(input: Input8621) 
     {
         let result = new Output8621(input.TaxYear);
-        let lstReferenceIDNumbers: string[] = GetUniqueReferenceIDNumbers(input.Transactions);
+        let lstReferenceIDNumbers: string[] = this.GetUniqueReferenceIDNumbers(input.Transactions);
 
         lstReferenceIDNumbers.forEach(referenceIDNumber => 
             {
             let lstTransactions: Transaction[] = input.Transactions.filter((t) => t.ReferenceIDNumber == referenceIDNumber);
             let referenceIDDetail: ReferenceIDDetail = new ReferenceIDDetail(referenceIDNumber, lstTransactions[0].FundName);
-            referenceIDDetail.ShareBlocks = this.GetBlocks(lstTransactions, input.TaxYear);
+            referenceIDDetail.ShareBlocks = this.GetShareBlocks(lstTransactions, input.TaxYear);
             referenceIDDetail.PurchaseTotal = referenceIDDetail.ShareBlocks.reduce((sum, block) => sum + block.PurchaseAmount, 0);
             referenceIDDetail.DisposeTotal = referenceIDDetail.ShareBlocks.reduce((sum, block) => sum + block.DisposeAmount, 0);
             let totalInterest: number = 0;
