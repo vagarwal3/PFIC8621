@@ -14,12 +14,18 @@ export class ShareBlock {
     NumberOfUnits: number;
     PurchaseDate: Date;
     PurchaseAmount: number;
+    Profit: number;
     DisposeDate: Date;
     DisposeAmount: number;
     ShareBlockYearDetails: ShareBlockYearDetail[];
     Line16B: number;
     constructor(taxYear: number, usPersonSinceBirth:boolean, usPersonSinceYear:number, numberOfUnits, purchaseDate: Date, purchaseAmount: number, disposeDate: Date, disposeAmount: number) {
         this.NumberOfUnits = numberOfUnits;
+        this.PurchaseAmount=purchaseAmount;
+        this.PurchaseDate=purchaseDate;
+        this.DisposeAmount = disposeAmount;
+        this.DisposeDate=disposeDate;
+        this.Profit=disposeAmount-purchaseAmount;
         this.ShareBlockYearDetails = [];
         let purchaseYear = purchaseDate.getFullYear();
         let disposeYear = disposeDate.getFullYear();
@@ -53,9 +59,8 @@ export class ShareBlock {
             totalNumberOfDays += numberOfDays;
             this.ShareBlockYearDetails.push(shareBlockYearDetail);
         }
-        let profit: number = disposeAmount - purchaseAmount;
         this.ShareBlockYearDetails.forEach(shareBlockYearDetail => {
-            shareBlockYearDetail.ProfitAlocation = profit * shareBlockYearDetail.NumberOfDays / totalNumberOfDays;
+            shareBlockYearDetail.ProfitAlocation = this.Profit * shareBlockYearDetail.NumberOfDays / totalNumberOfDays;
             if (shareBlockYearDetail.IsCurrentTaxYear || !shareBlockYearDetail.IsUSPerson || shareBlockYearDetail.IsPrePFICYear) {
                 this.Line16B += shareBlockYearDetail.ProfitAlocation;
             }
