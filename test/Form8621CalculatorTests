@@ -1,0 +1,96 @@
+import { Form8621Calculator } from "../Form8621Calculator";
+
+describe('Form8621Calculator no tax liability', () => {
+    it('Compute is returning incorrect value', () => {
+        let cal:Form8621Calculator =  new Form8621Calculator();
+        let input8621:Input8621 = new Input8621(2022,true,null);
+        
+        input8621.Transactions.push(new Transaction('Ref1','Sample Fund1',TransactionType.Purchase,new Date(2021,0,1),100,100));
+        input8621.Transactions.push(new Transaction('Ref2','Sample Fund2',TransactionType.Purchase,new Date(2022,0,1),200,200));
+        input8621.Transactions.push(new Transaction('Ref3','Sample Fund3',TransactionType.Purchase,new Date(2020,0,1),300,300));
+        input8621.Transactions.push(new Transaction('Ref3','Sample Fund3',TransactionType.Dispose,new Date(2021,0,1),150,150));
+        
+        let output8621:Output8621=cal.Compute(input8621);
+
+        assert.equal(output8621.TaxYear,2022);
+        assert.equal(output8621.ReferenceIDDetails.length,0);
+    })
+});
+
+describe('Form8621Calculator no profit', () => {
+    it('Compute is returning incorrect value', () => {
+        let cal:Form8621Calculator =  new Form8621Calculator();
+        let input8621:Input8621 = new Input8621(2022,true,null);
+        
+        input8621.Transactions.push(new Transaction('Ref1','Sample Fund1',TransactionType.Purchase,new Date(2021,0,1),100,100));
+        input8621.Transactions.push(new Transaction('Ref1','Sample Fund1',TransactionType.Dispose,new Date(2022,3,1),100,100));
+        input8621.Transactions.push(new Transaction('Ref2','Sample Fund2',TransactionType.Purchase,new Date(2022,1,21),100,100));
+        input8621.Transactions.push(new Transaction('Ref2','Sample Fund2',TransactionType.Dispose,new Date(2022,7,10),100,100));
+        
+        let output8621:Output8621=cal.Compute(input8621);
+
+        assert.equal(output8621.TaxYear,2022);
+        assert.equal(output8621.ReferenceIDDetails.length,2);
+        assert.equal(output8621.ReferenceIDDetails[0].ShareBlocks.length,1);
+    })
+});
+
+
+describe('Form8621Calculator same year profit', () => {
+    it('Compute is returning incorrect value', () => {
+        let cal:Form8621Calculator =  new Form8621Calculator();
+        let input8621:Input8621 = new Input8621(2022,true,null);
+        
+        input8621.Transactions.push(new Transaction('Ref1','Sample Fund1',TransactionType.Purchase,new Date(2022,1,2),100,100));
+        input8621.Transactions.push(new Transaction('Ref1','Sample Fund1',TransactionType.Dispose,new Date(2022,6,10),100,200));
+
+        let output8621:Output8621=cal.Compute(input8621);
+
+        assert.equal(output8621.TaxYear,2022);
+        assert.equal(output8621.ReferenceIDDetails.length,0);
+    })
+});
+
+describe('Form8621Calculator two year profit', () => {
+    it('Compute is returning incorrect value', () => {
+        let cal:Form8621Calculator =  new Form8621Calculator();
+        let input8621:Input8621 = new Input8621(2022,true,null);
+        
+        input8621.Transactions.push(new Transaction('Ref1','Sample Fund1',TransactionType.Purchase,new Date(2021,1,2),100,100));
+        input8621.Transactions.push(new Transaction('Ref1','Sample Fund1',TransactionType.Dispose,new Date(2022,6,10),100,200));
+
+        let output8621:Output8621=cal.Compute(input8621);
+
+        assert.equal(output8621.TaxYear,2022);
+        assert.equal(output8621.ReferenceIDDetails.length,0);
+    })
+});
+
+
+describe('Form8621Calculator two year profit', () => {
+    it('Compute is returning incorrect value', () => {
+        let cal:Form8621Calculator =  new Form8621Calculator();
+        let input8621:Input8621 = new Input8621(2022,true,null);
+        
+        input8621.Transactions.push(new Transaction('Ref1','Sample Fund1',TransactionType.Purchase,new Date(2017,0,3),145.56,625.36));
+        input8621.Transactions.push(new Transaction('Ref1','Sample Fund1',TransactionType.Purchase,new Date(2018,2,5),288,566.25));
+        input8621.Transactions.push(new Transaction('Ref1','Sample Fund1',TransactionType.Dispose,new Date(2019,7,4),20,55.25));
+        input8621.Transactions.push(new Transaction('Ref2','Sample Fund2',TransactionType.Purchase,new Date(2019,8,4),78.3,899.25));
+        input8621.Transactions.push(new Transaction('Ref1','Sample Fund1',TransactionType.Dispose,new Date(2020,1,1),12.33,300));
+        input8621.Transactions.push(new Transaction('Ref2','Sample Fund2',TransactionType.Purchase,new Date(2020,7,5),88,88.3));
+        input8621.Transactions.push(new Transaction('Ref1','Sample Fund1',TransactionType.Purchase,new Date(2020,11,8),84.3,99));
+        input8621.Transactions.push(new Transaction('Ref2','Sample Fund2',TransactionType.Dispose,new Date(2020,0,9),200,78.23));
+        input8621.Transactions.push(new Transaction('Ref1','Sample Fund1',TransactionType.Dispose,new Date(2021,3,3),10,900));
+        input8621.Transactions.push(new Transaction('Ref1','Sample Fund1',TransactionType.Dispose,new Date(2021,3,3),5.33,788));
+        input8621.Transactions.push(new Transaction('Ref2','Sample Fund2',TransactionType.Dispose,new Date(2021,6,8),99,95));
+        input8621.Transactions.push(new Transaction('Ref1','Sample Fund1',TransactionType.Purchase,new Date(2021,8,9),512,45.25));
+        input8621.Transactions.push(new Transaction('Ref2','Sample Fund2',TransactionType.Purchase,new Date(2022,0,2),56,89.36));
+        input8621.Transactions.push(new Transaction('Ref2','Sample Fund2',TransactionType.Purchase,new Date(2022,6,8),2,78.22));
+        input8621.Transactions.push(new Transaction('Ref1','Sample Fund1',TransactionType.Dispose,new Date(2022,8,2),20.9,22.22));
+        
+        let output8621:Output8621=cal.Compute(input8621);
+
+        assert.equal(output8621.TaxYear,2022);
+        assert.equal(output8621.ReferenceIDDetails.length,2);
+    })
+});
