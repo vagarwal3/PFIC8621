@@ -7,11 +7,23 @@ export class ShareBlockYearDetail {
     IsCurrentTaxYear: boolean;
     IsUSPerson: boolean;
     IsPrePFICYear: boolean;
-    GetLine16c()
-    {
-        if (!this.IsCurrentTaxYear && this.IsUSPerson && !this.IsPrePFICYear)
+    IsCurrentOrPrePFICYear(): boolean {
+        if (this.IsCurrentTaxYear || !this.IsUSPerson || this.IsPrePFICYear)
+            return true;
+        else
+            false;
+    }
+    GetLine16b(): number {
+        if (this.IsCurrentOrPrePFICYear())
             return this.ProfitAlocation;
-            else 
+        else
+            return 0;
+
+    }
+    GetLine16c(): number {
+        if (!this.IsCurrentOrPrePFICYear())
+            return this.ProfitAlocation;
+        else
             return 0;
 
     }
@@ -29,14 +41,16 @@ export class ShareBlock {
     DisposeAmount: number;
     ShareBlockYearDetails: ShareBlockYearDetail[];
     Line16B: number;
-    constructor(taxYear: number, usPersonSinceBirth:boolean, usPersonSinceYear:number|null, numberOfUnits:number, purchaseDate: Date, purchaseAmount: number, disposeDate: Date, disposeAmount: number) {
-        this.Line16B=0;
+    PriorYearProfitSum: number;
+    constructor(taxYear: number, usPersonSinceBirth: boolean, usPersonSinceYear: number | null, numberOfUnits: number, purchaseDate: Date, purchaseAmount: number, disposeDate: Date, disposeAmount: number) {
+        this.Line16B = 0;
+        this.PriorYearProfitSum = 0;
         this.NumberOfUnits = numberOfUnits;
-        this.PurchaseAmount=purchaseAmount;
-        this.PurchaseDate=purchaseDate;
+        this.PurchaseAmount = purchaseAmount;
+        this.PurchaseDate = purchaseDate;
         this.DisposeAmount = disposeAmount;
-        this.DisposeDate=disposeDate;
-        this.Profit=Utility.ConvertNumberTo2DecimalPlace( disposeAmount-purchaseAmount);
+        this.DisposeDate = disposeDate;
+        this.Profit = Utility.ConvertNumberTo2DecimalPlace(disposeAmount - purchaseAmount);
         this.ShareBlockYearDetails = [];
         let purchaseYear = purchaseDate.getFullYear();
         let disposeYear = disposeDate.getFullYear();
@@ -44,8 +58,8 @@ export class ShareBlock {
         for (let year = purchaseYear; year <= disposeYear; year++) {
             let shareBlockYearDetail: ShareBlockYearDetail = new ShareBlockYearDetail(year);
             shareBlockYearDetail.IsPrePFICYear = false;
-            shareBlockYearDetail.IsCurrentTaxYear = (year==taxYear);
-            shareBlockYearDetail.IsUSPerson = (usPersonSinceBirth || year>=usPersonSinceYear);
+            shareBlockYearDetail.IsCurrentTaxYear = (year == taxYear);
+            shareBlockYearDetail.IsUSPerson = (usPersonSinceBirth || year >= usPersonSinceYear);
             let holdingStartDateInYear: Date;
             let holdingEndDateInYear: Date;
             if (year == purchaseYear) {
@@ -72,8 +86,12 @@ export class ShareBlock {
         }
         this.ShareBlockYearDetails.forEach(shareBlockYearDetail => {
             shareBlockYearDetail.ProfitAlocation = Utility.ConvertNumberTo2DecimalPlace(this.Profit * shareBlockYearDetail.NumberOfDays / totalNumberOfDays);
-            if (shareBlockYearDetail.IsCurrentTaxYear || !shareBlockYearDetail.IsUSPerson || shareBlockYearDetail.IsPrePFICYear) {
+            if (shareBlockYearDetail.IsCurrentOrPrePFICYear()) {
                 this.Line16B += shareBlockYearDetail.ProfitAlocation;
+            }
+            else
+            {
+                this.PriorYearProfitSum+= shareBlockYearDetail.ProfitAlocation;
             }
         });
     }

@@ -1,4 +1,5 @@
-import { Form8621Calculator } from "../Form8621Calculator";
+import { assert, expect } from "chai";
+import { Form8621Calculator, Input8621, Output8621, Transaction, TransactionType } from "../Form8621Calculator";
 
 describe('Form8621Calculator no tax liability', () => {
     it('Compute is returning incorrect value', () => {
@@ -12,8 +13,11 @@ describe('Form8621Calculator no tax liability', () => {
 
         let output8621: Output8621 = cal.Compute(input8621);
 
-        assert.equal(output8621.TaxYear, 2022);
-        assert.equal(output8621.ReferenceIDDetails.length, 0);
+        let expectedResult = {
+                                TaxYear:2022, 
+                                ReferenceIDDetails:[]
+                            };
+        expect(output8621).to.deep.equal(expectedResult);
     })
 });
 
@@ -29,9 +33,21 @@ describe('Form8621Calculator no profit', () => {
 
         let output8621: Output8621 = cal.Compute(input8621);
 
-        assert.equal(output8621.TaxYear, 2022);
-        assert.equal(output8621.ReferenceIDDetails.length, 2);
-        assert.equal(output8621.ReferenceIDDetails[0].ShareBlocks.length, 1);
+        let expectedResult = {
+                                TaxYear:2022, 
+                                ReferenceIDDetails:
+                                [
+                                    {
+                                        ReferenceIDNumber:"Ref1",
+                                        FundName: "Sample Fund1"
+                                    },
+                                    {
+                                        ReferenceIDNumber:"Ref2",
+                                        FundName: "Sample Fund2"
+                                    }
+                                ]
+                            };
+        expect(output8621).to.deep.equal(expectedResult);
     })
 });
 
@@ -46,8 +62,53 @@ describe('Form8621Calculator same year profit', () => {
 
         let output8621: Output8621 = cal.Compute(input8621);
 
-        assert.equal(output8621.TaxYear, 2022);
-        assert.equal(output8621.ReferenceIDDetails.length, 0);
+        let expectedResult = {
+                                TaxYear:2022, 
+                                ReferenceIDDetails:
+                                    [{   
+                                        ReferenceIDNumber:"Ref1",
+                                        FundName: "Sample Fund1",
+                                        PurchaseTotal: 100,
+                                        DisposeTotal: 200,
+                                        ShareBlocks: [
+                                            {
+                                                NumberOfUnits: 100,
+                                                PurchaseAmount: 100,
+                                                PurchaseDate: new Date(2022, 1, 2),
+                                                DisposeAmount: 200,
+                                                DisposeDate: new Date(2022, 6, 10),
+                                                Profit: 100,
+                                                Line16B: 0,
+                                                ShareBlockYearDetails:[{
+                                                Year: 2022,
+                                                ProfitAlocation: 100,
+                                                NumberOfDays:0,
+                                                IsCurrentTaxYear: true,
+                                                IsPrePFICYear: false,
+                                                IsUSPerson: true
+                                                }]
+                                            }
+                                        ],
+                                        ExcessDistributionSummary:{
+                                            Line15f: 100,
+                                            Line16b: 100,
+                                            Line16c: 0,
+                                            Line16d: 0,
+                                            Line16e: 0,
+                                            Line16f: 0
+                                        },
+                                        Line16bTotal:1,
+                                        ReferenceIDYearDetail: [
+                                            {
+                                                Year: 2022,
+                                                Interest: 0
+                                            }
+                                        ]
+                                    }],
+                                    
+                            };
+        
+        expect(output8621).to.deep.equal(expectedResult);
     })
 });
 
@@ -297,6 +358,6 @@ describe('Form8621Calculator two year profit', () => {
                                     }]
                             };
 
-        expect(output8621).to.deep.equal(expectedOutput8621);
+        expect(output8621).to.deep.equal(expectedResult);
     })
 });

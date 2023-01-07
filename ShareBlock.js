@@ -9,8 +9,20 @@ class ShareBlockYearDetail {
     IsCurrentTaxYear;
     IsUSPerson;
     IsPrePFICYear;
+    IsCurrentOrPrePFICYear() {
+        if (this.IsCurrentTaxYear || !this.IsUSPerson || this.IsPrePFICYear)
+            return true;
+        else
+            false;
+    }
+    GetLine16b() {
+        if (this.IsCurrentOrPrePFICYear())
+            return this.ProfitAlocation;
+        else
+            return 0;
+    }
     GetLine16c() {
-        if (!this.IsCurrentTaxYear && this.IsUSPerson && !this.IsPrePFICYear)
+        if (!this.IsCurrentOrPrePFICYear())
             return this.ProfitAlocation;
         else
             return 0;
@@ -29,8 +41,10 @@ class ShareBlock {
     DisposeAmount;
     ShareBlockYearDetails;
     Line16B;
+    PriorYearProfitSum;
     constructor(taxYear, usPersonSinceBirth, usPersonSinceYear, numberOfUnits, purchaseDate, purchaseAmount, disposeDate, disposeAmount) {
         this.Line16B = 0;
+        this.PriorYearProfitSum = 0;
         this.NumberOfUnits = numberOfUnits;
         this.PurchaseAmount = purchaseAmount;
         this.PurchaseDate = purchaseDate;
@@ -72,8 +86,11 @@ class ShareBlock {
         }
         this.ShareBlockYearDetails.forEach(shareBlockYearDetail => {
             shareBlockYearDetail.ProfitAlocation = Utility_1.Utility.ConvertNumberTo2DecimalPlace(this.Profit * shareBlockYearDetail.NumberOfDays / totalNumberOfDays);
-            if (shareBlockYearDetail.IsCurrentTaxYear || !shareBlockYearDetail.IsUSPerson || shareBlockYearDetail.IsPrePFICYear) {
+            if (shareBlockYearDetail.IsCurrentOrPrePFICYear()) {
                 this.Line16B += shareBlockYearDetail.ProfitAlocation;
+            }
+            else {
+                this.PriorYearProfitSum += shareBlockYearDetail.ProfitAlocation;
             }
         });
     }
