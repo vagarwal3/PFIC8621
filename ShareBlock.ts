@@ -1,98 +1,60 @@
 import { Utility } from "./Utility";
 
-export class ShareBlockYearDetail {
+export class YearlyGainAllocation {
     Year: number;
     NumberOfDays: number;
-    ProfitAlocation: number;
-    IsCurrentTaxYear: boolean;
-    IsUSPerson: boolean;
-    IsPrePFICYear: boolean;
-    IsCurrentOrPrePFICYear(): boolean {
-        if (this.IsCurrentTaxYear || !this.IsUSPerson || this.IsPrePFICYear)
-            return true;
-        else
-            false;
-    }
-    GetLine16b(): number {
-        if (this.IsCurrentOrPrePFICYear())
-            return this.ProfitAlocation;
-        else
-            return 0;
+    GainAllocation: number;
 
-    }
-    GetLine16c(): number {
-        if (!this.IsCurrentOrPrePFICYear())
-            return this.ProfitAlocation;
-        else
-            return 0;
-
-    }
-
-    constructor(year: number) {
+    constructor(year: number, numberofDays, gainAllocation) {
         this.Year = year;
+        this.NumberOfDays = numberofDays;
+        this.GainAllocation = gainAllocation;
     }
 }
 export class ShareBlock {
     NumberOfUnits: number;
     PurchaseDate: Date;
     PurchaseAmount: number;
-    Profit: number;
     DisposeDate: Date;
     DisposeAmount: number;
-    ShareBlockYearDetails: ShareBlockYearDetail[];
-    Line16B: number;
-    PriorYearProfitSum: number;
-    constructor(taxYear: number, usPersonSinceBirth: boolean, usPersonSinceYear: number | null, numberOfUnits: number, purchaseDate: Date, purchaseAmount: number, disposeDate: Date, disposeAmount: number) {
-        this.Line16B = 0;
-        this.PriorYearProfitSum = 0;
+    Gain: number;
+    YearlyGainAllocations: Map<number, YearlyGainAllocation>;
+
+    constructor(taxYear: number, numberOfUnits: number, purchaseDate: Date, purchaseAmount: number, disposeDate: Date, disposeAmount: number) {
+        // this.Line16B = 0;
+        //this.PriorYearProfitSum = 0;
+        let gain: number = Utility.ConvertNumberTo2DecimalPlace(disposeAmount - purchaseAmount);
+        let purchaseYear = purchaseDate.getFullYear();
+        let disposeYear = disposeDate.getFullYear();
+        let totalNumberOfShareHoldingDays: number = Utility.DateDifInDays(purchaseDate, disposeDate, true);
+
         this.NumberOfUnits = numberOfUnits;
         this.PurchaseAmount = purchaseAmount;
         this.PurchaseDate = purchaseDate;
         this.DisposeAmount = disposeAmount;
         this.DisposeDate = disposeDate;
-        this.Profit = Utility.ConvertNumberTo2DecimalPlace(disposeAmount - purchaseAmount);
-        this.ShareBlockYearDetails = [];
-        let purchaseYear = purchaseDate.getFullYear();
-        let disposeYear = disposeDate.getFullYear();
-        let totalNumberOfDays: number = 0;
+        this.Gain = gain;
+        this.YearlyGainAllocations = new Map<number, YearlyGainAllocation>();
         for (let year = purchaseYear; year <= disposeYear; year++) {
-            let shareBlockYearDetail: ShareBlockYearDetail = new ShareBlockYearDetail(year);
-            shareBlockYearDetail.IsPrePFICYear = false;
-            shareBlockYearDetail.IsCurrentTaxYear = (year == taxYear);
-            shareBlockYearDetail.IsUSPerson = (usPersonSinceBirth || year >= usPersonSinceYear);
+
             let holdingStartDateInYear: Date;
             let holdingEndDateInYear: Date;
             if (year == purchaseYear) {
                 holdingStartDateInYear = purchaseDate;
             }
             else {
-                holdingStartDateInYear = new Date(year, 0, 1);
+                holdingStartDateInYear = Utility.GetFirstDateOfYear(year);
             }
             if (year == disposeYear) {
                 holdingEndDateInYear = disposeDate;
             }
             else {
-                holdingEndDateInYear = new Date(year, 11, 31);
+                holdingEndDateInYear = Utility.GetLastDateOfYear(year);
             }
-            let numberOfDays: number = 0;
-            let day: Date = holdingStartDateInYear;
-            while (day <= holdingEndDateInYear) {
-                numberOfDays++;
-                day.setDate(day.getDate() + 1);
-            }
-            shareBlockYearDetail.NumberOfDays = numberOfDays;
-            totalNumberOfDays += numberOfDays;
-            this.ShareBlockYearDetails.push(shareBlockYearDetail);
+            let numberOfShareHoldingDaysInYear: number = Utility.DateDifInDays(holdingStartDateInYear, holdingEndDateInYear, true);
+            let gainAlocation: number = Utility.ConvertNumberTo2DecimalPlace(gain * numberOfShareHoldingDaysInYear / totalNumberOfShareHoldingDays);
+            let yearlyGainAllocation: YearlyGainAllocation = new YearlyGainAllocation(year, numberOfShareHoldingDaysInYear, gainAlocation);
+            this.YearlyGainAllocations.set(year, yearlyGainAllocation);
         }
-        this.ShareBlockYearDetails.forEach(shareBlockYearDetail => {
-            shareBlockYearDetail.ProfitAlocation = Utility.ConvertNumberTo2DecimalPlace(this.Profit * shareBlockYearDetail.NumberOfDays / totalNumberOfDays);
-            if (shareBlockYearDetail.IsCurrentOrPrePFICYear()) {
-                this.Line16B += shareBlockYearDetail.ProfitAlocation;
-            }
-            else
-            {
-                this.PriorYearProfitSum+= shareBlockYearDetail.ProfitAlocation;
-            }
-        });
     }
 }
