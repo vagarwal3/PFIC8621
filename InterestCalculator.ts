@@ -16,7 +16,7 @@ export class InterestCalculator {
     date.setDate(date.getDate() + 1);
 
     while (date <= endDate) {
-      let interest: number = (this.GetInterestRateOnADate(date) * interestfactor) / (this.daysInYear(date.getFullYear()) * 100);
+      let interest: number = (InterestCalculator.GetInterestRateOnADate(date) * interestfactor) / (Utility.daysInYear(date.getFullYear()) * 100);
       interestfactor = interestfactor + interest;
       date.setDate(date.getDate() + 1);
     }

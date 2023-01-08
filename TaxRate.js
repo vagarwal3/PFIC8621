@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TaxRate = void 0;
 const TaxRateByYear_json_1 = __importDefault(require("./TaxRateByYear.json"));
 class TaxRate {
-    GetTaxRateByYear(year) {
+    static GetTaxRateByYear(year) {
         return TaxRateByYear_json_1.default.find(a => a.Year == year)?.Rate;
     }
 }

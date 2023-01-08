@@ -1,8 +1,9 @@
 import { InterestCalculator } from "./InterestCalculator"
 import { TaxRate } from "./TaxRate"
-import { ShareBlock, ShareBlockYearDetail } from "./ShareBlock";
-import { Transaction } from "./Transaction";
+import { ShareBlock, YearlyGainAllocation } from "./ShareBlock";
+import { Transaction,TransactionType } from "./Transaction";
 import { USPersonStatus } from "./USPersonStatus";
+import { Form8621 } from "./Form8621";
 
 export enum FundType {
     Section1291
@@ -24,7 +25,7 @@ export class ShareHoldingYear {
         if (this.IsCurrentTaxYear || this.IsPrePFICYear)
             return true;
         else
-            false;
+            return false;
     }
 }
 
@@ -40,12 +41,12 @@ export class PFIC {
     TotalIncreaseInTax: number;
     TotalInterest: number;
     Form8621: Form8621;
-    constructor(referenceIDNumber: string, fundName: string, shareBlocks: ShareBlock[]) {
+    constructor(taxYear: number,referenceIDNumber: string, fundName: string, shareBlocks: ShareBlock[]) {
         this.ReferenceIDNumber = referenceIDNumber;
         this.FundName = fundName;
         this.ShareBlocks = shareBlocks;
-        this.HoldingYears = new Map<number, year>();
-        this.Form8621 = new Form8621(referenceIDNumber, fundName);
+        this.ShareHoldingYears = new Map<number, ShareHoldingYear>();
+        this.Form8621 = new Form8621(taxYear,referenceIDNumber, fundName);
     }
 }
 
@@ -53,28 +54,28 @@ export class Form8621Calculator {
     static GetShareBlocks(taxYear: number, transactions: Transaction[]) {
         let shareBlocks: ShareBlock[] = [];
         let purchaseTransactionsMap: Map<Transaction, number> = new Map<Transaction, number>();
-        let purchaseTransactions: Transaction[] = transactions.find(a => a.TransactionType == TransactionType.Purchase).sort(a => a.Date);
-        let disposeTransactions: Transaction[] = transactions.find(a => a.TransactionType == TransactionType.Dispose).sort(a => a.Date);
+        let purchaseTransactions: Transaction[] = transactions.filter(a => a.TransactionType == TransactionType.Purchase).sort((a:Transaction,b:Transaction) => {if(a.Date>b.Date) return 1; else return -1});
+        let disposeTransactions: Transaction[] = transactions.filter(a => a.TransactionType == TransactionType.Dispose).sort((a:Transaction,b:Transaction) => {if(a.Date>b.Date) return 1; else return -1});
 
         purchaseTransactions.forEach(transaction => {
             purchaseTransactionsMap.set(transaction, transaction.NumberOfUnits);
         });
 
         disposeTransactions.forEach(disposeTransaction => {
-            let unitToDispose: number = disposeTransaction.numberOfUnits;
+            let unitsToDispose: number = disposeTransaction.NumberOfUnits;
             purchaseTransactions.forEach(purchaseTransaction => {
                 if (purchaseTransactionsMap.has(purchaseTransaction) && purchaseTransaction.Date <= disposeTransaction.Date) {
-                    let remainingPurchaseUnits = purchaseTransactionsMap.get(purchaseTransaction);
+                    let remainingPurchaseUnits = purchaseTransactionsMap.get(purchaseTransaction) as number;
                     let numberOfUnitsInBlock: number;
                     if (remainingPurchaseUnits == unitsToDispose) {
                         numberOfUnitsInBlock = unitsToDispose;
                         purchaseTransactionsMap.delete(purchaseTransaction);
-                        unitToDispose = 0;
+                        unitsToDispose = 0;
                     }
                     else if (remainingPurchaseUnits > unitsToDispose) {
                         numberOfUnitsInBlock = unitsToDispose;
-                        PurchaseTransactions.set(purchaseTransaction, remainingPurchaseUnits - unitsToDispose);
-                        unitToDispose = 0;
+                        purchaseTransactionsMap.set(purchaseTransaction, remainingPurchaseUnits - unitsToDispose);
+                        unitsToDispose = 0;
                     }
                     else {
                         numberOfUnitsInBlock = remainingPurchaseUnits;
@@ -82,10 +83,10 @@ export class Form8621Calculator {
                         purchaseTransactionsMap.delete(purchaseTransaction);
                     }
 
-                    if (transaction.Date.getFullYear() == taxYear) {
+                    if (disposeTransaction.Date.getFullYear() == taxYear) {
                         let blockPurchaseAmount: number = numberOfUnitsInBlock * purchaseTransaction.Amount / purchaseTransaction.NumberOfUnits;
                         let blockDisposeAmount: number = numberOfUnitsInBlock * disposeTransaction.Amount / disposeTransaction.NumberOfUnits;
-                        let shareBlock = new ShareBlock(taxYear, numberOfUnitsInBlock, purchaseTransaction.Date, blockPurchaseAmount, transaction.Date, blockDisposeAmount);
+                        let shareBlock = new ShareBlock(taxYear, numberOfUnitsInBlock, purchaseTransaction.Date, blockPurchaseAmount, disposeTransaction.Date, blockDisposeAmount);
                         shareBlocks.push(shareBlock);
                     }
                     if (unitsToDispose == 0)
@@ -105,30 +106,30 @@ export class Form8621Calculator {
         );
         return lstUniquePFICs;
     }
-    static GetPFICDetails(taxYear: number, referenceIDNumber: string, fundName: string, transactions: Transaction[]) {
+    static GetPFICDetails(taxYear: number, referenceIDNumber: string, fundName: string, usPersonStatus:USPersonStatus, transactions: Transaction[]) {
         let lstShareBlocks: ShareBlock[] = this.GetShareBlocks(taxYear, transactions);
         let lstShareHoldingYears: Map<number, ShareHoldingYear> = new Map<number, ShareHoldingYear>();
-        let objPFIC: PFIC = new PFIC(referenceIDNumber, fundName, lstShareBlocks);
+        let objPFIC: PFIC = new PFIC(taxYear,referenceIDNumber, fundName, lstShareBlocks);
 
 
         lstShareBlocks.forEach(shareBlock => {
-            shareBlock.YearlyGainAllocation.forEach((year, yearlyGainAllocation) => {
+            shareBlock.YearlyGainAllocations.forEach((yearlyGainAllocation,year:number, ) => {
                 let objShareHoldingYear: ShareHoldingYear;
                 if (!lstShareHoldingYears.has(year)) {
-                    let blnIsCurrentYear: boolean = (year == inpput.TaxYear);
+                    let blnIsCurrentYear: boolean = (year == taxYear);
                     let blnIsPrePFICYear: boolean;
-                    if (!input.USPersonSinceBirth && input.USPersonSinceYear > year)
+                    if (!usPersonStatus.IsUSPersonSinceBirth && usPersonStatus.USPersonSinceTaxYear as number > year)
                         blnIsPrePFICYear = true;
                     else
                         blnIsPrePFICYear = false;
 
-                    let objShareHoldingYear: ShareHoldingYear = new ShareHoldingYear(taxYear, blnIsCurrentYear, blnIsPrePFICYear);
-                    objShareHoldingYear.TotalGain = gainYearAllocation.GainAllocation;
+                    let objShareHoldingYear: ShareHoldingYear = new ShareHoldingYear(year,taxYear, blnIsCurrentYear, blnIsPrePFICYear);
+                    objShareHoldingYear.TotalGain = yearlyGainAllocation.GainAllocation;
                     lstShareHoldingYears.set(year, objShareHoldingYear);
                 }
                 else {
-                    objShareHoldingYear = lstShareHoldingYears.get(year);
-                    objShareHoldingYear.TotalGain += gainYearAllocation.GainAllocation;
+                    objShareHoldingYear = lstShareHoldingYears.get(year) as ShareHoldingYear;
+                    objShareHoldingYear.TotalGain += yearlyGainAllocation.GainAllocation;
                 }
             })
         });
@@ -142,7 +143,7 @@ export class Form8621Calculator {
 
         let totalGainInCurrentOrPrePFICYears: number = 0;
         let totalTaxIncrease: number = 0;
-        lstShareHoldingYears.forEach((year, shareHoldingYear) => {
+        lstShareHoldingYears.forEach((shareHoldingYear,year) => {
             if (!shareHoldingYear.IsCurrentOrPrePFICYear)
                 totalInterest += InterestCalculator.CalculateInterest(shareHoldingYear.TotalGain, new Date(year, 3, 15), new Date(taxYear + 1, 3, 15));
             else {
@@ -151,30 +152,30 @@ export class Form8621Calculator {
             }
         });
 
-        objPFIC.Form8621.Field15f = objPFIC.TotalGain;
-        objPFIC.Form8621.Field16b = totalGainInCurrentOrPrePFICYears;
+        objPFIC.Form8621.Line15f = objPFIC.TotalGain;
+        objPFIC.Form8621.Line16b = totalGainInCurrentOrPrePFICYears;
 
-        objPFIC.Form8621.Field16c = totalTaxIncrease;
+        objPFIC.Form8621.Line16c = totalTaxIncrease;
 
-        objPFIC.Form8621.Field16d = 0;
+        objPFIC.Form8621.Line16d = 0;
 
-        objPFIC.Form8621.Field16e = totalTaxIncrease;
+        objPFIC.Form8621.Line16e = totalTaxIncrease;
 
-        objPFIC.Form8621.Field16f = totalInterest;
+        objPFIC.Form8621.Line16f = totalInterest;
         return objPFIC;
 
     }
-    static Audit(input: Input8621) {
+    static Audit(taxYear: number, fundType: FundType, usPersonStatus: USPersonStatus, transactions: Transaction[]) {
 
     }
     static Compute(taxYear: number, fundType: FundType, usPersonStatus: USPersonStatus, transactions: Transaction[]) {
         let result: PFIC[] = [];
-        let uniquePFICList: Map<string, string> = this.GetUniquePFICList(taxYear, input.Transactions);
+        let uniquePFICList: Map<string, string> = this.GetUniquePFICList(taxYear, transactions);
 
         uniquePFICList.forEach((fundName: string, referenceIDNumber: string) => {
-            let lstTransactions: Transaction[] = input.Transactions.filter((t) => t.ReferenceIDNumber == referenceIDNumber);
+            let lstTransactions: Transaction[] = transactions.filter((t) => t.ReferenceIDNumber == referenceIDNumber);
 
-            let objPFIC: PFIC = Form8621Calculator.GetPFICDetails(taxYear, referenceIDNumber, fundName, lstTransactions);
+            let objPFIC: PFIC = Form8621Calculator.GetPFICDetails(taxYear, referenceIDNumber, fundName,usPersonStatus, lstTransactions);
 
             result.push(objPFIC);
         });

@@ -4,17 +4,17 @@ export class Form8621
     ReferenceIDNumber: string;
     FundName: string;
     //Total Gain
-    Field15f: number;
+    Line15f: number;
     //Part of gain allotcated to current year or pre-PFIC
-    Field16b: number;
+    Line16b: number;
     //Increase in tax for prior years
-    Field16c: number;
+    Line16c: number;
     //Foreign Tax Credit
-    Field16d: number;
+    Line16d: number;
     //additional tax after subtracting foreign tax credit
-    Field16e: number;
+    Line16e: number;
     //interest
-    Field16f: number;
+    Line16f: number;
     constructor(taxYear:number,referenceIDNumber:string,fundName:string) 
     {
         this.TaxYear = taxYear;

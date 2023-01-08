@@ -5,7 +5,7 @@ export class YearlyGainAllocation {
     NumberOfDays: number;
     GainAllocation: number;
 
-    constructor(year: number, numberofDays, gainAllocation) {
+    constructor(year: number, numberofDays: number, gainAllocation:number) {
         this.Year = year;
         this.NumberOfDays = numberofDays;
         this.GainAllocation = gainAllocation;
@@ -21,8 +21,6 @@ export class ShareBlock {
     YearlyGainAllocations: Map<number, YearlyGainAllocation>;
 
     constructor(taxYear: number, numberOfUnits: number, purchaseDate: Date, purchaseAmount: number, disposeDate: Date, disposeAmount: number) {
-        // this.Line16B = 0;
-        //this.PriorYearProfitSum = 0;
         let gain: number = Utility.ConvertNumberTo2DecimalPlace(disposeAmount - purchaseAmount);
         let purchaseYear = purchaseDate.getFullYear();
         let disposeYear = disposeDate.getFullYear();
