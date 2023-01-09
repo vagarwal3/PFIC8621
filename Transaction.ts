@@ -1,3 +1,4 @@
+import { Date } from "./Date";
 export enum TransactionType {
     Purchase,
     Dispose

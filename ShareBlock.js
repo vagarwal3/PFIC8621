@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ShareBlock = exports.YearlyGainAllocation = void 0;
 const Utility_1 = require("./Utility");
+const Date_1 = require("./Date");
 class YearlyGainAllocation {
     Year;
     NumberOfDays;
@@ -23,9 +24,9 @@ class ShareBlock {
     YearlyGainAllocations;
     constructor(taxYear, numberOfUnits, purchaseDate, purchaseAmount, disposeDate, disposeAmount) {
         let gain = Utility_1.Utility.ConvertNumberTo2DecimalPlace(disposeAmount - purchaseAmount);
-        let purchaseYear = purchaseDate.getFullYear();
-        let disposeYear = disposeDate.getFullYear();
-        let totalNumberOfShareHoldingDays = Utility_1.Utility.DateDifInDays(purchaseDate, disposeDate, true);
+        let purchaseYear = purchaseDate.Year;
+        let disposeYear = disposeDate.Year;
+        let totalNumberOfShareHoldingDays = Date_1.Date.DateDifInDays(purchaseDate, disposeDate, true);
         this.NumberOfUnits = numberOfUnits;
         this.PurchaseAmount = purchaseAmount;
         this.PurchaseDate = purchaseDate;
@@ -40,15 +41,15 @@ class ShareBlock {
                 holdingStartDateInYear = purchaseDate;
             }
             else {
-                holdingStartDateInYear = Utility_1.Utility.GetFirstDateOfYear(year);
+                holdingStartDateInYear = new Date_1.Date(year, 1, 1);
             }
             if (year == disposeYear) {
                 holdingEndDateInYear = disposeDate;
             }
             else {
-                holdingEndDateInYear = Utility_1.Utility.GetLastDateOfYear(year);
+                holdingEndDateInYear = new Date_1.Date(year, 12, 31);
             }
-            let numberOfShareHoldingDaysInYear = Utility_1.Utility.DateDifInDays(holdingStartDateInYear, holdingEndDateInYear, true);
+            let numberOfShareHoldingDaysInYear = Date_1.Date.DateDifInDays(holdingStartDateInYear, holdingEndDateInYear, true);
             let gainAlocation = Utility_1.Utility.ConvertNumberTo2DecimalPlace(gain * numberOfShareHoldingDaysInYear / totalNumberOfShareHoldingDays);
             let yearlyGainAllocation = new YearlyGainAllocation(year, numberOfShareHoldingDaysInYear, gainAlocation);
             this.YearlyGainAllocations.set(year, yearlyGainAllocation);

@@ -7,9 +7,10 @@ class Utility {
     }
     static DateDifInDays(startDate, endDate, isInclusive) {
         let numberOfDays = 0;
-        for (let day = startDate; day <= endDate; day.setDate(day.getDate() + 1)) {
+        for (let day = startDate; day <= endDate;) {
             if (isInclusive || day != startDate)
                 numberOfDays++;
+            day.setDate(day.getDate() + 1);
         }
         return numberOfDays;
     }

@@ -4,6 +4,7 @@ import { ShareBlock, YearlyGainAllocation } from "./ShareBlock";
 import { Transaction,TransactionType } from "./Transaction";
 import { USPersonStatus } from "./USPersonStatus";
 import { Form8621 } from "./Form8621";
+import { Date } from "./Date";
 
 export enum FundType {
     Section1291
@@ -83,7 +84,7 @@ export class Form8621Calculator {
                         purchaseTransactionsMap.delete(purchaseTransaction);
                     }
 
-                    if (disposeTransaction.Date.getFullYear() == taxYear) {
+                    if (disposeTransaction.Date.Year == taxYear) {
                         let blockPurchaseAmount: number = numberOfUnitsInBlock * purchaseTransaction.Amount / purchaseTransaction.NumberOfUnits;
                         let blockDisposeAmount: number = numberOfUnitsInBlock * disposeTransaction.Amount / disposeTransaction.NumberOfUnits;
                         let shareBlock = new ShareBlock(taxYear, numberOfUnitsInBlock, purchaseTransaction.Date, blockPurchaseAmount, disposeTransaction.Date, blockDisposeAmount);
@@ -99,7 +100,7 @@ export class Form8621Calculator {
     static GetUniquePFICList(taxYear: number, transactions: Transaction[]) {
         let lstUniquePFICs: Map<string, string> = new Map<string, string>();
         transactions.forEach(transaction => {
-            if (transaction.TransactionType == TransactionType.Dispose && transaction.Date.getFullYear() == taxYear && !lstUniquePFICs.has(transaction.ReferenceIDNumber)) {
+            if (transaction.TransactionType == TransactionType.Dispose && transaction.Date.Year == taxYear && !lstUniquePFICs.has(transaction.ReferenceIDNumber)) {
                 lstUniquePFICs.set(transaction.ReferenceIDNumber, transaction.FundName);
             }
         }

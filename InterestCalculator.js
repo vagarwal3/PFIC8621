@@ -6,21 +6,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.InterestCalculator = void 0;
 const InterestRate_json_1 = __importDefault(require("./InterestRate.json"));
 const Utility_1 = require("./Utility");
+const Date_1 = require("./Date");
 class InterestCalculator {
     static GetInterestRateOnADate(date) {
-        let year = date.getFullYear();
-        let monthIndex = date.getMonth();
-        let quarter = Math.floor(monthIndex / 3);
-        return InterestRate_json_1.default.find(x => x.Year == year).QuaterlyInterestRate[quarter];
+        let quarter = date.GetQuarter();
+        return InterestRate_json_1.default.find(x => x.Year == date.Year).QuaterlyInterestRate[quarter - 1];
     }
     static CalculateInterest(amount, startDate, endDate) {
         let interestfactor = 1;
         let date = startDate;
-        date.setDate(date.getDate() + 1);
-        while (date <= endDate) {
-            let interest = (InterestCalculator.GetInterestRateOnADate(date) * interestfactor) / (Utility_1.Utility.daysInYear(date.getFullYear()) * 100);
+        date.AddOneDay();
+        while (date.IsLessThanOrEqualTo(endDate)) {
+            let interest = (InterestCalculator.GetInterestRateOnADate(date) * interestfactor) / (Date_1.Date.GetNumberOfDaysInYear(date.Year) * 100);
             interestfactor = interestfactor + interest;
-            date.setDate(date.getDate() + 1);
+            date.AddOneDay();
         }
         return Utility_1.Utility.ConvertNumberTo2DecimalPlace((interestfactor - 1) * amount);
     }

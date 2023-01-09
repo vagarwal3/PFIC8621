@@ -6,9 +6,10 @@ export class Utility {
   
   static DateDifInDays(startDate: Date, endDate: Date, isInclusive: boolean) {
     let numberOfDays: number = 0;
-    for (let day: Date = startDate; day <= endDate; day.setDate(day.getDate() + 1)) {
+    for (let day: Date = startDate; day <= endDate; ) {
       if (isInclusive || day != startDate)
         numberOfDays++;
+      day.setDate(day.getDate() + 1)
     }
     return numberOfDays;
   }

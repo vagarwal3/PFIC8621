@@ -1,4 +1,5 @@
 import { Utility } from "./Utility";
+import {Date} from "./Date"
 
 export class YearlyGainAllocation {
     Year: number;
@@ -22,9 +23,9 @@ export class ShareBlock {
 
     constructor(taxYear: number, numberOfUnits: number, purchaseDate: Date, purchaseAmount: number, disposeDate: Date, disposeAmount: number) {
         let gain: number = Utility.ConvertNumberTo2DecimalPlace(disposeAmount - purchaseAmount);
-        let purchaseYear = purchaseDate.getFullYear();
-        let disposeYear = disposeDate.getFullYear();
-        let totalNumberOfShareHoldingDays: number = Utility.DateDifInDays(purchaseDate, disposeDate, true);
+        let purchaseYear = purchaseDate.Year;
+        let disposeYear = disposeDate.Year;
+        let totalNumberOfShareHoldingDays: number = Date.DateDifInDays(purchaseDate, disposeDate, true);
 
         this.NumberOfUnits = numberOfUnits;
         this.PurchaseAmount = purchaseAmount;
@@ -41,15 +42,15 @@ export class ShareBlock {
                 holdingStartDateInYear = purchaseDate;
             }
             else {
-                holdingStartDateInYear = Utility.GetFirstDateOfYear(year);
+                holdingStartDateInYear = new Date(year,1,1);
             }
             if (year == disposeYear) {
                 holdingEndDateInYear = disposeDate;
             }
             else {
-                holdingEndDateInYear = Utility.GetLastDateOfYear(year);
+                holdingEndDateInYear = new Date(year,12,31)
             }
-            let numberOfShareHoldingDaysInYear: number = Utility.DateDifInDays(holdingStartDateInYear, holdingEndDateInYear, true);
+            let numberOfShareHoldingDaysInYear: number = Date.DateDifInDays(holdingStartDateInYear, holdingEndDateInYear, true);
             let gainAlocation: number = Utility.ConvertNumberTo2DecimalPlace(gain * numberOfShareHoldingDaysInYear / totalNumberOfShareHoldingDays);
             let yearlyGainAllocation: YearlyGainAllocation = new YearlyGainAllocation(year, numberOfShareHoldingDaysInYear, gainAlocation);
             this.YearlyGainAllocations.set(year, yearlyGainAllocation);

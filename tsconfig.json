@@ -1,5 +1,6 @@
 {
-    "files": ["Utility.ts","InterestRate.json","TaxRate.ts","TaxRateByYear.json","InterestCalculator.ts","ShareBlock.ts","USPersonStatus.ts"],
+    "files": ["Utility.ts","InterestRate.json","TaxRate.ts","TaxRateByYear.json","InterestCalculator.ts",
+    "ShareBlock.ts","USPersonStatus.ts","Utility.ts","Date.ts","Transaction.ts"],
     "compilerOptions": {
         "target": "ES2022",
         "module": "commonjs",
