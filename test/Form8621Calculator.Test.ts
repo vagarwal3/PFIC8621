@@ -1,8 +1,8 @@
 import { assert, expect } from "chai";
-import { Form8621Calculator, PFIC, FundType } from "../Form8621Calculator";
-import { Transaction, TransactionType } from "../Transaction";
-import { USPersonStatus } from "../USPersonStatus";
-import { Date } from "../Date";
+import { Form8621Calculator, PFIC, FundType } from "../src/Form8621Calculator";
+import { Transaction, TransactionType } from "../src/Transaction";
+import { USPersonStatus } from "../src/USPersonStatus";
+import { Date } from "../src/Date";
 
 describe('Form8621Calculator no tax liability', () => {
     it('Compute is returning incorrect value', () => {

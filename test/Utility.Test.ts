@@ -1,2 +1,2 @@
 import { assert } from "chai";
-import { Utility } from "../Utility";
+import { Utility } from "../src/Utility";

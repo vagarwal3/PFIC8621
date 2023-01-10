@@ -1,7 +1,7 @@
 import { assert } from "chai";
-import {InterestCalculator} from "../InterestCalculator"
-import { Utility } from "../Utility";
-import { Date } from "../Date";
+import {InterestCalculator} from "../src/InterestCalculator"
+import { Utility } from "../src/Utility";
+import { Date } from "../src/Date";
 
 describe('InterestCalculator', () => {
     it('GetInterestRateOnADate is returning incorrect value', () => {

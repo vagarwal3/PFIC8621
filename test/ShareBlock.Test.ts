@@ -1,6 +1,6 @@
 import { assert, expect } from "chai";
-import { ShareBlock, YearlyGainAllocation } from "../ShareBlock"
-import { Date } from "../Date";
+import { ShareBlock, YearlyGainAllocation } from "../src/ShareBlock"
+import { Date } from "../src/Date";
 
 describe('ShareBlock', () => {
     it('ShareBlock initialization is correct', () => {

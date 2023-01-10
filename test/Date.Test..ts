@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { Date } from "../Date";
+import { Date } from "../src/Date";
 
 describe('Date', () => {
     it('DateDifInDays is returning incorrect value', () => {
