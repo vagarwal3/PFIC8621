@@ -8,100 +8,17 @@
         integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-
+    <style>
     td { padding: 0;height:23px }
     td input { margin: 0; border:0 } td input:focus { outline: none; }
     td select { Border: none; }
     td select:focus { outline: none; }
-    <title></title>
+    </style>
+    <title>PFIC 8621</title>
     <script>
-
-        function OnCalculate() {
-            var input = [];
-            input.add({ ReferenceID: "abc", FundName: "aaa", Action: 1, Date: '12/12/2021', NumberOfUnits: 100.51, Amount: 50.33 });
-            input.add({ ReferenceID: "abc", FundName: "aaa", Action: 2, Date: '12/12/2022', NumberOfUnits: 100.51, Amount: 55.33 });
-            result = Calculate(input);
-        }
-        function Calculate(input) {
-            ListofReferenceID = input.ReferenceID;
-            var result = [];
-            for (var i = 0; i < ListofReferenceID.legth; i++) {
-                var strReferenceID = ListofReferenceID[i];
-                lstPurchases = input;
-                lstDispose = input;
-                var output = { ReferenceID: strReferenceID };
-                for (var j = 0; j < lstDispose.length; j++) {
-                    var disposeTransaction = lstDispose[j];
-                    var decDisposedUnits = lstDispose[j].NumberOfUnits;
-                    var decRemainingDisposeUnits = lstDispose[j].NumberOfUnits;
-                    var decTotalDisposeAmount = lstDispose[j].NumberOfUnits;
-                    var perUnitDisposeAmount = decTotalDisposeAmount / decDisposedUnits;
-                    for (var k = 0; k < lstPurchases.length; k++) {
-                        var purchaseTransaction = lstPurchases[k];
-                        var decRemainingPurchaseUnits = lstPurchases[k].NumberOfUnits == lstPurchases[k].AccountedFor;
-                        if (decRemainingPurchaseUnits == 0) {
-                            continue;
-                        }
-                        var objUnitBlock = {
-                            PurchaseAmount: 1,
-                            PurchaseDate: purchaseTransaction.Date,
-                            DisposeDate: disposeTransaction.Date
-                        };
-                        if (decRemainingPurchaseUnits >= decRemainingDisposeUnits) {
-                            objUnitBlock.Units = decRemainingDisposeUnits;
-                            decRemainingDisposeUnits = 0;
-                            lstPurchases[k].AccountedFor += decRemainingDisposeUnits;
-                            break;
-                        }
-                        else {
-                            objUnitBlock.Units = decRemainingDisposeUnits;
-                            decRemainingDisposeUnits = decRemainingDisposeUnits;
-                            decRemainingDisposeUnits -= decRemainingPurchaseUnits;
-                            lstPurchases[k].AccountedFor = lstPurchases[k].NumberOfUnits;
-                        }
-                        objUnitBlock.PurchaseAmount = perUnitPurchaseAmount * objUnitBlock.Units;
-                        objUnitBlock.DisposeAmount = perUnitDisposeAmount * objUnitBlock.Units;
-                        output.UnitBlocks.Add(objUnitBlock);
-
-                    }
-                }
-                result.add(output);
-            }
-
-
-            for (var i = 0; i < result.legth; i++) {
-                var intMinYear = 2000;
-                var intMaxYear = 2000;
-
-                for (var j = 0; j < result[i].Block.length; j++) {
-                    for (var k = result[i].Block[j].PurchaseDate.Year; k <= result[i].Block[j].DisposeDate.Year; k++) {
-                        var objYear = { Year: k };
-                        objYear.NumberOfDays = 1;
-                        objYear.Line16c = 90;
-                        result[i].Block[j].Years.Add(objYear);
-
-                    }
-                    result[i].Block[j].Line16B = 11;
-                }
-                result[i].TotalPurchase = 100;
-                result[i].TotalDispose = 100;
-                result[i].TotalLine16B = 100;
-                for (var j = intMinYear; j <= intMaxYear; j++) {
-                    var objYear = { Year: j };
-                    objYear.TotalLine16C = 100;
-                    objYear.NonResident = false;
-                    result[i].Years.Add(objYear)
-                }
-
-                result[i].ExcessDistributionSummary.Life15f = 100;
-                result[i].ExcessDistributionSummary.Life16b = 100;
-                result[i].ExcessDistributionSummary.Life16c = 100;
-                result[i].ExcessDistributionSummary.Life16d = 100;
-                result[i].ExcessDistributionSummary.Life16e = 100;
-                result[i].ExcessDistributionSummary.Life16f = 100;
-            }
-            return result;
-        }
+        var cboUSPersonSince = document.getElementById('cboUSPersonSince');
+        for(i=2022;i>1950;i--)
+        cboUSPersonSince.options.add(i.tostring(),i.tostring());
     </script>
 </head>
 
@@ -109,7 +26,7 @@
     <table>
         <tr>
             <td>Tax Year:</td>
-            <td>2022</td>
+            <td><select><option selected>2022</option></select></td>
         </tr>
         <tr>
             <td>Fund Type:</td>
@@ -122,11 +39,9 @@
         <tr>
             <td>US Person Since:</td>
             <td>
-                <input type="radio" value="Birth"> <input type="radio"> <select>
-                    <option>2000</option>
-                    <option>2001</option>
-                    <option>2002</option>
-                </select>
+                <input type="radio" title="Birth" value="Birth" name="USPersonSince" id="rdoUSPersonSinceBirth"><label for="rdoUSPersonSinceBirth">Birth</label> 
+                <input type="radio" name="USPersonSince" title="Year" id="rdoUSPersonSinceYear"> <label for="rdoUSPersonSinceYear">Year</label> 
+                <select id="cboUSPersonSince"></select>
             </td>
         </tr>
     </table>
