@@ -13,6 +13,37 @@
     td input { margin: 0; border:0 } td input:focus { outline: none; }
     td select { Border: none; }
     td select:focus { outline: none; }
+
+
+    table{
+            width:100%;
+            margin-bottom:1em;
+            border-collapse: collapse;
+        }
+        th{
+            font-weight:bold;
+            background-color:#ddd;
+        }
+        th,
+        td{
+            padding:0.5em;
+            border:1px solid #ccc;
+        }
+
+
+        input {
+  border:none;
+  width:100%;
+  height:100%;
+  font-family: Verdana, Helvetica, Arial, FreeSans, sans-serif;
+  font-size:12px;
+  padding: 0 4px 0 4px;
+}
+
+input:focus { 
+  border:2px solid #5292F7;
+  outline: none;
+}
     </style>
     <title>PFIC 8621</title>
     <script>
@@ -23,6 +54,7 @@
 </head>
 
 <body>
+    <h1>PFIC 8621</h1>
     <table>
         <tr>
             <td>Tax Year:</td>
@@ -48,13 +80,13 @@
     <br /><br /><br />
     <table border="1" style="border-spacing: 0px;">
         <tr>
-            <td>S.No.</td>
-            <td>Reference ID Number</td>
-            <td>Fund Name</td>
-            <td>Action</td>
-            <td>Date</td>
-            <td># of Units</td>
-            <td>Amount</td>
+            <th></th>
+            <th>Reference ID Number</th>
+            <th>Fund Name</th>
+            <th>Action</th>
+            <th>Date</th>
+            <th># of Units</th>
+            <th>Amount</th>
         </tr>
         <tr>
             <td>1</td>
@@ -304,7 +336,7 @@
         </tr>
     </table>
     <br /><br />
-    Excess Distribution Summary
+    <b>Form 8621</b>
     <table border="1" style="border-spacing: 0px">
         <tr>
             <td>Life 15f</td>
