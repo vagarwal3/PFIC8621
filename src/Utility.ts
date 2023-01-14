@@ -3,6 +3,14 @@ export class Utility {
   static ConvertNumberTo2DecimalPlace(amount: number) {
     return parseFloat(amount.toFixed(2));
   }
+  static ConvertNumberTo4DecimalPlace(amount: number) {
+    return parseFloat(amount.toFixed(4));
+  }
+  static FormatCurrency(amount: number, showCurrencySymbol:boolean) {
+    if (amount<0)
+      return "("+(-1*parseFloat(amount.toFixed(2))).toString()+")";  
+    return parseFloat(amount.toFixed(2)).toString();
+  }
   
   static DateDifInDays(startDate: Date, endDate: Date, isInclusive: boolean) {
     let numberOfDays: number = 0;

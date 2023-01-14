@@ -87,17 +87,17 @@ describe('Form8621Calculator no profit', () => {
                     TaxYear: 2022,
                     ReferenceIDNumber: "Ref1",
                     FundName: "Sample Fund1",
-                    Line15f: 0,
+                    Line15f: "0",
                     //Part of gain allotcated to current year or pre-PFIC
-                    Line16b: null,
+                    Line16b: "",
                     //Increase in tax for prior years
-                    Line16c: null,
+                    Line16c: "",
                     //Foreign Tax Credit
-                    Line16d: null,
+                    Line16d: "",
                     //additional tax after subtracting foreign tax credit
-                    Line16e: null,
+                    Line16e: "",
                     //interest
-                    Line16f: null
+                    Line16f: ""
                 },
             },
             {
@@ -137,17 +137,17 @@ describe('Form8621Calculator no profit', () => {
                     TaxYear: 2022,
                     ReferenceIDNumber: "Ref2",
                     FundName: "Sample Fund2",
-                    Line15f: 0,
+                    Line15f: "0",
                     //Part of gain allotcated to current year or pre-PFIC
-                    Line16b: null,
+                    Line16b: "",
                     //Increase in tax for prior years
-                    Line16c: null,
+                    Line16c: "",
                     //Foreign Tax Credit
-                    Line16d: null,
+                    Line16d: "",
                     //additional tax after subtracting foreign tax credit
-                    Line16e: null,
+                    Line16e: "",
                     //interest
-                    Line16f: null
+                    Line16f: ""
                 },
             }
         ];
@@ -216,17 +216,17 @@ describe('Form8621Calculator same year profit', () => {
                     TaxYear: 2022,
                     ReferenceIDNumber: "Ref1",
                     FundName: "Sample Fund1",
-                    Line15f: 120.66,
+                    Line15f: "120.66",
                     //Part of gain allotcated to current year or pre-PFIC
-                    Line16b: 120.66,
+                    Line16b: "120.66",
                     //Increase in tax for prior years
-                    Line16c: 0,
+                    Line16c: "0",
                     //Foreign Tax Credit
-                    Line16d: 0,
+                    Line16d: "0",
                     //additional tax after subtracting foreign tax credit
-                    Line16e: 0,
+                    Line16e: "0",
                     //interest
-                    Line16f: 0
+                    Line16f: "0"
                 },
             }
         ];
@@ -270,7 +270,7 @@ describe('Form8621Calculator same year loss', () => {
                 ShareBlocks: [{
                     NumberOfUnits: 55.5,
                     PurchaseDate: { Year: 2022, Month: 1, Day: 2 },
-                    PurchaseAmount: 100,
+                    PurchaseAmount: 300,
                     DisposeDate: { Year: 2022, Month: 6, Day: 10 },
                     DisposeAmount: 220.66,
                     Gain: -79.34,
@@ -283,10 +283,10 @@ describe('Form8621Calculator same year loss', () => {
                     }
 
                 }],
-                TotalPurchaseAmount: 100,
+                TotalPurchaseAmount: 300,
                 TotalDisposeAmount: 220.66,
-                TotalGain: 120.66,
-                TotalOtherIncome: 120.66,
+                TotalGain: -79.34,
+                TotalOtherIncome: 0,
                 TotalIncreaseInTax: 0,
                 TotalInterest: 0,
                 Form8621: {
@@ -379,22 +379,22 @@ describe('Form8621Calculator two year profit', () => {
                 TotalGain: 668.83,
                 TotalOtherIncome: 231.08,
                 TotalIncreaseInTax: 161.97,
-                TotalInterest: 9.34,
+                TotalInterest: 9.36,
                 Form8621: {
                     TaxYear: 2022,
                     ReferenceIDNumber: "Ref1",
                     FundName: "Sample Fund1",
-                    Line15f: 668.83,
+                    Line15f: "668.83",
                     //Part of gain allotcated to current year or pre-PFIC
-                    Line16b: 231.08,
+                    Line16b: "231.08",
                     //Increase in tax for prior years
-                    Line16c: 161.97,
+                    Line16c: "161.97",
                     //Foreign Tax Credit
-                    Line16d: 0,
+                    Line16d: "0",
                     //additional tax after subtracting foreign tax credit
-                    Line16e: 161.97,
+                    Line16e: "161.97",
                     //interest
-                    Line16f: 9.34
+                    Line16f: "9.36"
                 },
             }
         ];
@@ -433,49 +433,49 @@ describe('Form8621Calculator two year loss', () => {
                         TaxYear: 2022,
                         IsCurrentTaxYear: false,
                         IsPrePFICYear: false,
-                        TotalGain: 437.75
+                        TotalGain: -98.60
                     },
                     2022: {
                         Year: 2022,
                         TaxYear: 2022,
                         IsCurrentTaxYear: true,
                         IsPrePFICYear: false,
-                        TotalGain: 231.08
+                        TotalGain: -52.05
                     }
                 }
                 ,
                 ShareBlocks: [{
                     NumberOfUnits: 180.45,
                     PurchaseDate: { Year: 2021, Month: 3, Day: 2 },
-                    PurchaseAmount: 874.57,
+                    PurchaseAmount: 1694.05,
                     DisposeDate: { Year: 2022, Month: 6, Day: 10 },
                     DisposeAmount: 1543.40,
-                    Gain: 668.83,
+                    Gain: -150.65,
                     YearlyGainAllocations: {
                         2021: {
                             Year: 2021,
                             NumberOfDays: 305,
-                            GainAllocation: 437.75
+                            GainAllocation: -98.60
                         },
                         2022: {
                             Year: 2022,
                             NumberOfDays: 161,
-                            GainAllocation: 231.08
+                            GainAllocation: -52.05
                         }
                     }
 
                 }],
-                TotalPurchaseAmount: 874.57,
+                TotalPurchaseAmount: 1694.05,
                 TotalDisposeAmount: 1543.40,
-                TotalGain: 668.83,
-                TotalOtherIncome: 231.08,
-                TotalIncreaseInTax: 161.97,
-                TotalInterest: 9.34,
+                TotalGain: -150.65,
+                TotalOtherIncome: 0,
+                TotalIncreaseInTax: 0,
+                TotalInterest: 0,
                 Form8621: {
                     TaxYear: 2022,
                     ReferenceIDNumber: "Ref1",
                     FundName: "Sample Fund1",
-                    Line15f: "(668.83)",
+                    Line15f: "(150.65)",
                     //Part of gain allotcated to current year or pre-PFIC
                     Line16b: "",
                     //Increase in tax for prior years
@@ -548,7 +548,7 @@ describe('Form8621Calculator multi year profit', () => {
                         TaxYear: 2022,
                         IsCurrentTaxYear: false,
                         IsPrePFICYear: false,
-                        TotalGain: 281.78
+                        TotalGain: 281.77
                     },
                     2022: {
                         Year: 2022,
@@ -602,7 +602,7 @@ describe('Form8621Calculator multi year profit', () => {
                         PurchaseAmount: 293.65,
                         DisposeDate: { Year: 2022, Month: 10, Day: 11 },
                         DisposeAmount: 338.66,
-                        Gain: 45,
+                        Gain: 45.01,
                         YearlyGainAllocations: {
                             2018: {
                                 Year: 2018,
@@ -694,23 +694,23 @@ describe('Form8621Calculator multi year profit', () => {
                 TotalDisposeAmount: 5843.80,
                 TotalGain: 930.55,
                 TotalOtherIncome: 188.63,
-                TotalIncreaseInTax: 344.30,
-                TotalInterest: 25.62,
+                TotalIncreaseInTax: 274.5,
+                TotalInterest: 25.75,
                 Form8621: {
                     TaxYear: 2022,
                     ReferenceIDNumber: "Ref1",
                     FundName: "Sample Fund1",
-                    Line15f: 930.55,
+                    Line15f: "930.55",
                     //Part of gain allotcated to current year or pre-PFIC
-                    Line16b: 188.63,
+                    Line16b: "188.63",
                     //Increase in tax for prior years
-                    Line16c: 741.91,
+                    Line16c: "274.5",
                     //Foreign Tax Credit
-                    Line16d: 0,
+                    Line16d: "0",
                     //additional tax after subtracting foreign tax credit
-                    Line16e: 741.91,
+                    Line16e: "274.5",
                     //interest
-                    Line16f: 25.62
+                    Line16f: "25.75"
                 },
             }
         ];
@@ -718,6 +718,234 @@ describe('Form8621Calculator multi year profit', () => {
             expect(Object.fromEntries(PFICs[i].ShareHoldingYears)).to.deep.equal(expectedResult[i].ShareHoldingYears);
             PFICs[i].ShareHoldingYears.clear();
             expectedResult[i].ShareHoldingYears = new Map<number, ShareHoldingYear>();
+            
+            for (let j = 0; j < PFICs[i].ShareBlocks.length; j++) {
+                expect(Object.fromEntries(PFICs[i].ShareBlocks[j].YearlyGainAllocations)).to.deep.equal(expectedResult[i].ShareBlocks[j].YearlyGainAllocations);
+                PFICs[i].ShareBlocks[j].YearlyGainAllocations.clear();
+                expectedResult[i].ShareBlocks[j].YearlyGainAllocations = new Map<number, YearlyGainAllocation>();
+            }
+        }
+        expect(PFICs).to.deep.equal(expectedResult);
+    })
+});
+
+
+describe('Form8621Calculator multi year profit with Pre-PFIC', () => {
+    it('Compute is returning incorrect value', () => {
+        let usPersonStatus: USPersonStatus = new USPersonStatus(false, 2020);
+        let transactions: Transaction[] = []
+
+        transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Purchase, new Date(2018, 3, 6), 200.09, 6521.34));
+        transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Purchase, new Date(2019, 1, 7), 30.67, 865.9));
+        transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Dispose, new Date(2019, 8, 12), 70.2, 1645.65));
+        transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Purchase, new Date(2020, 4, 2), 50.11, 1100));
+        transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Dispose, new Date(2021, 2, 2), 20, 858.22));
+        transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Dispose, new Date(2022, 4, 21), 100.88, 3554.75));
+        transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Dispose, new Date(2022, 10, 11), 60.9, 2289.05));
+        let PFICs: PFIC[] = Form8621Calculator.Compute(2022, FundType.Section1291, usPersonStatus, transactions);
+
+        var expectedResult: any = [
+            {
+                ReferenceIDNumber: "Ref1",
+                FundName: "Sample Fund1",
+                ShareHoldingYears: {
+                    2018: {
+                        Year: 2018,
+                        TaxYear: 2022,
+                        IsCurrentTaxYear: false,
+                        IsPrePFICYear: true,
+                        TotalGain: 61.33
+                    },
+                    2019: {
+                        Year: 2019,
+                        TaxYear: 2022,
+                        IsCurrentTaxYear: false,
+                        IsPrePFICYear: true,
+                        TotalGain: 149.32
+                    },
+                    2020: {
+                        Year: 2020,
+                        TaxYear: 2022,
+                        IsCurrentTaxYear: false,
+                        IsPrePFICYear: false,
+                        TotalGain: 249.48
+                    },
+                    2021: {
+                        Year: 2021,
+                        TaxYear: 2022,
+                        IsCurrentTaxYear: false,
+                        IsPrePFICYear: false,
+                        TotalGain: 281.77
+                    },
+                    2022: {
+                        Year: 2022,
+                        TaxYear: 2022,
+                        IsCurrentTaxYear: true,
+                        IsPrePFICYear: false,
+                        TotalGain: 188.63
+                    }
+                }
+                ,
+                ShareBlocks: [
+                    {
+                        NumberOfUnits: 100.88,
+                        PurchaseDate: { Year: 2018, Month: 3, Day: 6 },
+                        PurchaseAmount: 3287.88,
+                        DisposeDate: { Year: 2022, Month: 4, Day: 21 },
+                        DisposeAmount: 3554.75,
+                        Gain: 266.87,
+                        YearlyGainAllocations: {
+                            2018: {
+                                Year: 2018,
+                                NumberOfDays: 301,
+                                GainAllocation: 53.27
+                            },
+                            2019: {
+                                Year: 2019,
+                                NumberOfDays: 365,
+                                GainAllocation: 64.59
+                            },
+                            2020: {
+                                Year: 2020,
+                                NumberOfDays: 366,
+                                GainAllocation: 64.77
+                            },
+                            2021: {
+                                Year: 2021,
+                                NumberOfDays: 365,
+                                GainAllocation: 64.59
+                            },
+                            2022: {
+                                Year: 2022,
+                                NumberOfDays: 111,
+                                GainAllocation: 19.64
+                            }
+                        }
+
+                    },
+                    {
+                        NumberOfUnits: 9.01,
+                        PurchaseDate: { Year: 2018, Month: 3, Day: 6 },
+                        PurchaseAmount: 293.65,
+                        DisposeDate: { Year: 2022, Month: 10, Day: 11 },
+                        DisposeAmount: 338.66,
+                        Gain: 45.01,
+                        YearlyGainAllocations: {
+                            2018: {
+                                Year: 2018,
+                                NumberOfDays: 301,
+                                GainAllocation: 8.06
+                            },
+                            2019: {
+                                Year: 2019,
+                                NumberOfDays: 365,
+                                GainAllocation: 9.77
+                            },
+                            2020: {
+                                Year: 2020,
+                                NumberOfDays: 366,
+                                GainAllocation: 9.8
+                            },
+                            2021: {
+                                Year: 2021,
+                                NumberOfDays: 365,
+                                GainAllocation: 9.77
+                            },
+                            2022: {
+                                Year: 2022,
+                                NumberOfDays: 284,
+                                GainAllocation: 7.6
+                            }
+                        }
+
+                    },
+                    {
+                        NumberOfUnits: 30.67,
+                        PurchaseDate: { Year: 2019, Month: 1, Day: 7 },
+                        PurchaseAmount: 865.90,
+                        DisposeDate: { Year: 2022, Month: 10, Day: 11 },
+                        DisposeAmount: 1152.79,
+                        Gain: 286.89,
+                        YearlyGainAllocations: {
+                            2019: {
+                                Year: 2019,
+                                NumberOfDays: 359,
+                                GainAllocation: 74.96
+                            },
+                            2020: {
+                                Year: 2020,
+                                NumberOfDays: 366,
+                                GainAllocation: 76.42
+                            },
+                            2021: {
+                                Year: 2021,
+                                NumberOfDays: 365,
+                                GainAllocation: 76.21
+                            },
+                            2022: {
+                                Year: 2022,
+                                NumberOfDays: 284,
+                                GainAllocation: 59.30
+                            }
+                        }
+
+                    },
+                    {
+                        NumberOfUnits: 21.22,
+                        PurchaseDate: { Year: 2020, Month: 4, Day: 2 },
+                        PurchaseAmount: 465.82,
+                        DisposeDate: { Year: 2022, Month: 10, Day: 11 },
+                        DisposeAmount: 797.60,
+                        Gain: 331.78,
+                        YearlyGainAllocations: {
+                            2020: {
+                                Year: 2020,
+                                NumberOfDays: 274,
+                                GainAllocation: 98.49
+                            },
+                            2021: {
+                                Year: 2021,
+                                NumberOfDays: 365,
+                                GainAllocation: 131.20
+                            },
+                            2022: {
+                                Year: 2022,
+                                NumberOfDays: 284,
+                                GainAllocation: 102.09
+                            }
+                        }
+
+                    },
+                ],
+                TotalPurchaseAmount: 4913.25,
+                TotalDisposeAmount: 5843.80,
+                TotalGain: 930.55,
+                TotalOtherIncome: 399.28,
+                TotalIncreaseInTax: 196.56,
+                TotalInterest: 14.38,
+                Form8621: {
+                    TaxYear: 2022,
+                    ReferenceIDNumber: "Ref1",
+                    FundName: "Sample Fund1",
+                    Line15f: "930.55",
+                    //Part of gain allotcated to current year or pre-PFIC
+                    Line16b: "399.28",
+                    //Increase in tax for prior years
+                    Line16c: "196.56",
+                    //Foreign Tax Credit
+                    Line16d: "0",
+                    //additional tax after subtracting foreign tax credit
+                    Line16e: "196.56",
+                    //interest
+                    Line16f: "14.38"
+                },
+            }
+        ];
+        for (let i = 0; i < PFICs.length; i++) {
+            expect(Object.fromEntries(PFICs[i].ShareHoldingYears)).to.deep.equal(expectedResult[i].ShareHoldingYears);
+            PFICs[i].ShareHoldingYears.clear();
+            expectedResult[i].ShareHoldingYears = new Map<number, ShareHoldingYear>();
+            
             for (let j = 0; j < PFICs[i].ShareBlocks.length; j++) {
                 expect(Object.fromEntries(PFICs[i].ShareBlocks[j].YearlyGainAllocations)).to.deep.equal(expectedResult[i].ShareBlocks[j].YearlyGainAllocations);
                 PFICs[i].ShareBlocks[j].YearlyGainAllocations.clear();

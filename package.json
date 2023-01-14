@@ -7,6 +7,6 @@
     "ts-node": "^10.9.1"
   },
   "scripts": {
-    "tests": "mocha --require ts-node/register test/**/*.ts"
+    "tests": "mocha --require ts-node/register test/**/*.Test.ts"
   }
 }

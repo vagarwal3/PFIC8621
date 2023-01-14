@@ -21,12 +21,12 @@ class Form8621 {
         this.TaxYear = taxYear;
         this.ReferenceIDNumber = referenceIDNumber;
         this.FundName = fundName;
-        this.Line15f = 0;
-        this.Line16b = 0;
-        this.Line16c = 0;
-        this.Line16d = 0;
-        this.Line16e = 0;
-        this.Line16f = 0;
+        this.Line15f = "";
+        this.Line16b = "";
+        this.Line16c = "";
+        this.Line16d = "";
+        this.Line16e = "";
+        this.Line16f = "";
     }
 }
 exports.Form8621 = Form8621;

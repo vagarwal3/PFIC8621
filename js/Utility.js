@@ -5,6 +5,14 @@ class Utility {
     static ConvertNumberTo2DecimalPlace(amount) {
         return parseFloat(amount.toFixed(2));
     }
+    static ConvertNumberTo4DecimalPlace(amount) {
+        return parseFloat(amount.toFixed(4));
+    }
+    static FormatCurrency(amount, showCurrencySymbol) {
+        if (amount < 0)
+            return "(" + (-1 * parseFloat(amount.toFixed(2))).toString() + ")";
+        return parseFloat(amount.toFixed(2)).toString();
+    }
     static DateDifInDays(startDate, endDate, isInclusive) {
         let numberOfDays = 0;
         for (let day = startDate; day <= endDate;) {

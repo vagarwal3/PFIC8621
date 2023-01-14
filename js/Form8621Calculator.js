@@ -54,11 +54,11 @@ class Form8621Calculator {
     static GetShareBlocks(taxYear, transactions) {
         let shareBlocks = [];
         let purchaseTransactionsMap = new Map();
-        let purchaseTransactions = transactions.filter(a => a.TransactionType == Transaction_1.TransactionType.Purchase).sort((a, b) => { if (a.Date > b.Date)
+        let purchaseTransactions = transactions.filter(a => a.TransactionType == Transaction_1.TransactionType.Purchase).sort((a, b) => { if (b.Date.IsLessThanOrEqualTo(a.Date))
             return 1;
         else
             return -1; });
-        let disposeTransactions = transactions.filter(a => a.TransactionType == Transaction_1.TransactionType.Dispose).sort((a, b) => { if (a.Date > b.Date)
+        let disposeTransactions = transactions.filter(a => a.TransactionType == Transaction_1.TransactionType.Dispose).sort((a, b) => { if (b.Date.IsLessThanOrEqualTo(a.Date))
             return 1;
         else
             return -1; });
@@ -68,6 +68,8 @@ class Form8621Calculator {
         disposeTransactions.forEach(disposeTransaction => {
             let unitsToDispose = disposeTransaction.NumberOfUnits;
             purchaseTransactions.forEach(purchaseTransaction => {
+                if (unitsToDispose == 0)
+                    return;
                 if (purchaseTransactionsMap.has(purchaseTransaction) && purchaseTransaction.Date <= disposeTransaction.Date) {
                     let remainingPurchaseUnits = purchaseTransactionsMap.get(purchaseTransaction);
                     let numberOfUnitsInBlock;
@@ -78,12 +80,12 @@ class Form8621Calculator {
                     }
                     else if (remainingPurchaseUnits > unitsToDispose) {
                         numberOfUnitsInBlock = unitsToDispose;
-                        purchaseTransactionsMap.set(purchaseTransaction, remainingPurchaseUnits - unitsToDispose);
+                        purchaseTransactionsMap.set(purchaseTransaction, Utility_1.Utility.ConvertNumberTo4DecimalPlace(remainingPurchaseUnits - unitsToDispose));
                         unitsToDispose = 0;
                     }
                     else {
                         numberOfUnitsInBlock = remainingPurchaseUnits;
-                        unitsToDispose -= remainingPurchaseUnits;
+                        unitsToDispose = Utility_1.Utility.ConvertNumberTo4DecimalPlace(unitsToDispose - remainingPurchaseUnits);
                         purchaseTransactionsMap.delete(purchaseTransaction);
                     }
                     if (disposeTransaction.Date.Year == taxYear) {
@@ -92,8 +94,6 @@ class Form8621Calculator {
                         let shareBlock = new ShareBlock_1.ShareBlock(taxYear, numberOfUnitsInBlock, purchaseTransaction.Date, blockPurchaseAmount, disposeTransaction.Date, blockDisposeAmount);
                         shareBlocks.push(shareBlock);
                     }
-                    if (unitsToDispose == 0)
-                        return;
                 }
             });
         });
@@ -128,7 +128,7 @@ class Form8621Calculator {
                 }
                 else {
                     objShareHoldingYear = lstShareHoldingYears.get(year);
-                    objShareHoldingYear.TotalGain += yearlyGainAllocation.GainAllocation;
+                    objShareHoldingYear.TotalGain = Utility_1.Utility.ConvertNumberTo2DecimalPlace(objShareHoldingYear.TotalGain + yearlyGainAllocation.GainAllocation);
                 }
             });
         });
@@ -146,27 +146,27 @@ class Form8621Calculator {
                 else {
                     let taxIncrease = Utility_1.Utility.ConvertNumberTo2DecimalPlace(shareHoldingYear.TotalGain * TaxRate_1.TaxRate.GetTaxRateByYear(year) / 100);
                     totalTaxIncrease += taxIncrease;
-                    totalInterest += InterestCalculator_1.InterestCalculator.CalculateInterest(taxIncrease, new Date_1.Date(year + 1, 4, 15), new Date_1.Date(taxYear + 1, 4, 15));
+                    totalInterest = Utility_1.Utility.ConvertNumberTo2DecimalPlace(totalInterest + InterestCalculator_1.InterestCalculator.CalculateInterest(taxIncrease, new Date_1.Date(year + 1, 4, 15), new Date_1.Date(taxYear + 1, 4, 15)));
                 }
             });
         }
         objPFIC.TotalInterest = totalInterest;
         objPFIC.TotalOtherIncome = totalGainInCurrentOrPrePFICYears;
         objPFIC.TotalIncreaseInTax = totalTaxIncrease;
-        objPFIC.Form8621.Line15f = objPFIC.TotalGain;
+        objPFIC.Form8621.Line15f = Utility_1.Utility.FormatCurrency(objPFIC.TotalGain, false);
         if (objPFIC.TotalGain <= 0) {
-            objPFIC.Form8621.Line16b = null;
-            objPFIC.Form8621.Line16c = null;
-            objPFIC.Form8621.Line16d = null;
-            objPFIC.Form8621.Line16e = null;
-            objPFIC.Form8621.Line16f = null;
+            objPFIC.Form8621.Line16b = "";
+            objPFIC.Form8621.Line16c = "";
+            objPFIC.Form8621.Line16d = "";
+            objPFIC.Form8621.Line16e = "";
+            objPFIC.Form8621.Line16f = "";
         }
         else {
-            objPFIC.Form8621.Line16b = totalGainInCurrentOrPrePFICYears;
-            objPFIC.Form8621.Line16c = totalTaxIncrease;
-            objPFIC.Form8621.Line16d = 0;
-            objPFIC.Form8621.Line16e = totalTaxIncrease;
-            objPFIC.Form8621.Line16f = totalInterest;
+            objPFIC.Form8621.Line16b = Utility_1.Utility.FormatCurrency(totalGainInCurrentOrPrePFICYears, false);
+            objPFIC.Form8621.Line16c = Utility_1.Utility.FormatCurrency(totalTaxIncrease, false);
+            objPFIC.Form8621.Line16d = Utility_1.Utility.FormatCurrency(0, false);
+            objPFIC.Form8621.Line16e = Utility_1.Utility.FormatCurrency(totalTaxIncrease, false);
+            objPFIC.Form8621.Line16f = Utility_1.Utility.FormatCurrency(totalInterest, false);
         }
         return objPFIC;
     }

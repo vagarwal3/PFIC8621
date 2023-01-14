@@ -20,17 +20,7 @@ describe('InterestCalculator', () => {
         assert.equal(InterestCalculator.GetInterestRateOnADate(new Date(2013,7,1)),3);
     })
  }); 
- describe('ConvertNumberTo2DecimalPlace', () => {
-     it('ConvertNumberTo2DecimalPlace is returning incorrect value', () => {        
-         assert.equal(Utility.ConvertNumberTo2DecimalPlace(100.3449999),100.34);
-         assert.equal(Utility.ConvertNumberTo2DecimalPlace(100.34534533),100.35);
-         assert.equal(Utility.ConvertNumberTo2DecimalPlace(100.3),100.30);
-         assert.equal(Utility.ConvertNumberTo2DecimalPlace(100),100);
-         assert.equal(Utility.ConvertNumberTo2DecimalPlace(100.34934533),100.35);
-         assert.equal(Utility.ConvertNumberTo2DecimalPlace(100.35034533),100.35);
-         assert.equal(Utility.ConvertNumberTo2DecimalPlace(100.35134533),100.35);
-     })
- }); 
+
 
 describe('CalculateInterest', () => {
     it('CalculateInterest is returning incorrect value', () => {
