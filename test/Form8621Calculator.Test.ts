@@ -1,8 +1,9 @@
 import { assert, expect } from "chai";
-import { Form8621Calculator, PFIC, FundType } from "../src/Form8621Calculator";
+import { Form8621Calculator, PFIC, FundType, ShareHoldingYear } from "../src/Form8621Calculator";
 import { Transaction, TransactionType } from "../src/Transaction";
 import { USPersonStatus } from "../src/USPersonStatus";
 import { Date } from "../src/Date";
+import { YearlyGainAllocation } from "../src/ShareBlock";
 
 describe('Form8621Calculator no tax liability', () => {
     it('Compute is returning incorrect value', () => {
@@ -16,9 +17,7 @@ describe('Form8621Calculator no tax liability', () => {
 
         let PFICs: PFIC[] = Form8621Calculator.Compute(2022, FundType.Section1291, usPersonStatus, transactions);
 
-        let expectedResult =
-            [
-            ];
+        let expectedResult = [];
 
         expect(PFICs).to.deep.equal(expectedResult);
     })
@@ -29,108 +28,321 @@ describe('Form8621Calculator no profit', () => {
         let usPersonStatus: USPersonStatus = new USPersonStatus(true, null);
         let transactions: Transaction[] = []
 
-        transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Purchase, new Date(2021, 1, 1), 100, 100));
-        transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Dispose, new Date(2022, 4, 1), 100, 100));
-        transactions.push(new Transaction('Ref2', 'Sample Fund2', TransactionType.Purchase, new Date(2022, 2, 21), 100, 100));
-        transactions.push(new Transaction('Ref2', 'Sample Fund2', TransactionType.Dispose, new Date(2022, 8, 10), 100, 100));
+        transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Purchase, new Date(2021, 2, 10), 100, 500));
+        transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Dispose, new Date(2022, 4, 9), 100, 500));
+        transactions.push(new Transaction('Ref2', 'Sample Fund2', TransactionType.Purchase, new Date(2022, 2, 21), 100, 700));
+        transactions.push(new Transaction('Ref2', 'Sample Fund2', TransactionType.Dispose, new Date(2022, 8, 10), 100, 700));
 
         let PFICs: PFIC[] = Form8621Calculator.Compute(2022, FundType.Section1291, usPersonStatus, transactions);
 
-        let expectedResult = [
+        var expectedResult: any = [
             {
                 ReferenceIDNumber: "Ref1",
                 FundName: "Sample Fund1",
+                ShareHoldingYears: {
+                    2021: {
+                        Year: 2021,
+                        TaxYear: 2022,
+                        IsCurrentTaxYear: false,
+                        IsPrePFICYear: false,
+                        TotalGain: 0
+
+                    }, 2022: {
+                        Year: 2022,
+                        TaxYear: 2022,
+                        IsCurrentTaxYear: true,
+                        IsPrePFICYear: false,
+                        TotalGain: 0
+                    }
+                }
+                ,
                 ShareBlocks: [{
-                    TotalGain:0
+                    NumberOfUnits: 100,
+                    PurchaseDate: { Year: 2021, Month: 2, Day: 10 },
+                    PurchaseAmount: 500,
+                    DisposeDate: { Year: 2022, Month: 4, Day: 9 },
+                    DisposeAmount: 500,
+                    Gain: 0,
+                    YearlyGainAllocations: {
+                        2021: {
+                            Year: 2021,
+                            NumberOfDays: 325,
+                            GainAllocation: 0
+                        },
+                        2022: {
+                            Year: 2022,
+                            NumberOfDays: 99,
+                            GainAllocation: 0
+                        }
+                    }
+
                 }],
-                Form8621:{TaxYear:2022,ReferenceIDNumber:"Ref1",FundName: "Sample Fund1"},
-                TotalGain:0
+                TotalPurchaseAmount: 500,
+                TotalDisposeAmount: 500,
+                TotalGain: 0,
+                TotalOtherIncome: 0,
+                TotalIncreaseInTax: 0,
+                TotalInterest: 0,
+                Form8621: {
+                    TaxYear: 2022,
+                    ReferenceIDNumber: "Ref1",
+                    FundName: "Sample Fund1",
+                    Line15f: 0,
+                    //Part of gain allotcated to current year or pre-PFIC
+                    Line16b: null,
+                    //Increase in tax for prior years
+                    Line16c: null,
+                    //Foreign Tax Credit
+                    Line16d: null,
+                    //additional tax after subtracting foreign tax credit
+                    Line16e: null,
+                    //interest
+                    Line16f: null
+                },
             },
             {
                 ReferenceIDNumber: "Ref2",
                 FundName: "Sample Fund2",
+                ShareHoldingYears: {
+                    2022: {
+                        Year: 2022,
+                        TaxYear: 2022,
+                        IsCurrentTaxYear: true,
+                        IsPrePFICYear: false,
+                        TotalGain: 0
+                    }
+                },
                 ShareBlocks: [{
-                    TotalGain:0
+                    NumberOfUnits: 100,
+                    PurchaseDate: { Year: 2022, Month: 2, Day: 21 },
+                    PurchaseAmount: 700,
+                    DisposeDate: { Year: 2022, Month: 8, Day: 10 },
+                    DisposeAmount: 700,
+                    Gain: 0,
+                    YearlyGainAllocations: {
+                        2022: {
+                            Year: 2022,
+                            NumberOfDays: 171,
+                            GainAllocation: 0
+                        }
+                    }
                 }],
-                Form8621:{TaxYear:2022,ReferenceIDNumber:"Ref2",FundName: "Sample Fund2"},
-                TotalGain:0
+                TotalPurchaseAmount: 700,
+                TotalDisposeAmount: 700,
+                TotalGain: 0,
+                TotalOtherIncome: 0,
+                TotalIncreaseInTax: 0,
+                TotalInterest: 0,
+                Form8621: {
+                    TaxYear: 2022,
+                    ReferenceIDNumber: "Ref2",
+                    FundName: "Sample Fund2",
+                    Line15f: 0,
+                    //Part of gain allotcated to current year or pre-PFIC
+                    Line16b: null,
+                    //Increase in tax for prior years
+                    Line16c: null,
+                    //Foreign Tax Credit
+                    Line16d: null,
+                    //additional tax after subtracting foreign tax credit
+                    Line16e: null,
+                    //interest
+                    Line16f: null
+                },
             }
         ];
-
+        for (let i = 0; i < PFICs.length; i++) {
+            expect(Object.fromEntries(PFICs[i].ShareHoldingYears)).to.deep.equal(expectedResult[i].ShareHoldingYears);
+            PFICs[i].ShareHoldingYears.clear();
+            expectedResult[i].ShareHoldingYears = new Map<number, ShareHoldingYear>();
+            for (let j = 0; j < PFICs[i].ShareBlocks.length; j++) {
+                expect(Object.fromEntries(PFICs[i].ShareBlocks[j].YearlyGainAllocations)).to.deep.equal(expectedResult[i].ShareBlocks[j].YearlyGainAllocations);
+                PFICs[i].ShareBlocks[j].YearlyGainAllocations.clear();
+                expectedResult[i].ShareBlocks[j].YearlyGainAllocations = new Map<number, YearlyGainAllocation>();
+            }
+        }
         expect(PFICs).to.deep.equal(expectedResult);
     })
 });
 
 
-// describe('Form8621Calculator same year profit', () => {
-//     it('Compute is returning incorrect value', () => {
-//         let usPersonStatus: USPersonStatus = new USPersonStatus(true, null);
-//         let transactions: Transaction[] = []
+describe('Form8621Calculator same year profit', () => {
+    it('Compute is returning incorrect value', () => {
+        let usPersonStatus: USPersonStatus = new USPersonStatus(true, null);
+        let transactions: Transaction[] = []
 
-//         transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Purchase, new Date(2022, 1, 2), 100, 100));
-//         transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Dispose, new Date(2022, 6, 10), 100, 200));
+        transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Purchase, new Date(2022, 1, 2), 55.5, 100));
+        transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Dispose, new Date(2022, 6, 10), 55.5, 220.66));
 
-//         let PFICs: PFIC[] = Form8621Calculator.Compute(2022, FundType.Section1291, usPersonStatus, transactions);
+        let PFICs: PFIC[] = Form8621Calculator.Compute(2022, FundType.Section1291, usPersonStatus, transactions);
+
+        var expectedResult: any = [
+            {
+                ReferenceIDNumber: "Ref1",
+                FundName: "Sample Fund1",
+                ShareHoldingYears: {
+                    2022: {
+                        Year: 2022,
+                        TaxYear: 2022,
+                        IsCurrentTaxYear: true,
+                        IsPrePFICYear: false,
+                        TotalGain: 120.66
+                    }
+                }
+                ,
+                ShareBlocks: [{
+                    NumberOfUnits: 55.5,
+                    PurchaseDate: { Year: 2022, Month: 1, Day: 2 },
+                    PurchaseAmount: 100,
+                    DisposeDate: { Year: 2022, Month: 6, Day: 10 },
+                    DisposeAmount: 220.66,
+                    Gain: 120.66,
+                    YearlyGainAllocations: {
+                        2022: {
+                            Year: 2022,
+                            NumberOfDays: 160,
+                            GainAllocation: 120.66
+                        }
+                    }
+
+                }],
+                TotalPurchaseAmount: 100,
+                TotalDisposeAmount: 220.66,
+                TotalGain: 120.66,
+                TotalOtherIncome: 120.66,
+                TotalIncreaseInTax: 0,
+                TotalInterest: 0,
+                Form8621: {
+                    TaxYear: 2022,
+                    ReferenceIDNumber: "Ref1",
+                    FundName: "Sample Fund1",
+                    Line15f: 120.66,
+                    //Part of gain allotcated to current year or pre-PFIC
+                    Line16b: 120.66,
+                    //Increase in tax for prior years
+                    Line16c: 0,
+                    //Foreign Tax Credit
+                    Line16d: 0,
+                    //additional tax after subtracting foreign tax credit
+                    Line16e: 0,
+                    //interest
+                    Line16f: 0
+                },
+            }
+        ];
+        for (let i = 0; i < PFICs.length; i++) {
+            expect(Object.fromEntries(PFICs[i].ShareHoldingYears)).to.deep.equal(expectedResult[i].ShareHoldingYears);
+            PFICs[i].ShareHoldingYears.clear();
+            expectedResult[i].ShareHoldingYears = new Map<number, ShareHoldingYear>();
+            for (let j = 0; j < PFICs[i].ShareBlocks.length; j++) {
+                expect(Object.fromEntries(PFICs[i].ShareBlocks[j].YearlyGainAllocations)).to.deep.equal(expectedResult[i].ShareBlocks[j].YearlyGainAllocations);
+                PFICs[i].ShareBlocks[j].YearlyGainAllocations.clear();
+                expectedResult[i].ShareBlocks[j].YearlyGainAllocations = new Map<number, YearlyGainAllocation>();
+            }
+        }
+        expect(PFICs).to.deep.equal(expectedResult);
 
 
-//         let expectedResult = [{
-//             ReferenceIDNumber: "Ref1",
-//             FundName: "Sample Fund1",
-//             PurchaseTotal: 100,
-//             DisposeTotal: 200,
-//             ShareBlocks: [
-//                 {
-//                     NumberOfUnits: 100,
-//                     PurchaseAmount: 100,
-//                     PurchaseDate: new Date(2022, 1, 2),
-//                     DisposeAmount: 200,
-//                     DisposeDate: new Date(2022, 6, 10),
-//                     Profit: 100,
-//                     Line16B: 0,
-//                     ShareBlockYearDetails: [{
-//                         Year: 2022,
-//                         ProfitAlocation: 100,
-//                         NumberOfDays: 0,
-//                         IsCurrentTaxYear: true,
-//                         IsPrePFICYear: false,
-//                         IsUSPerson: true
-//                     }]
-//                 }
-//             ],
-//             Form8621: {
-//                 Line15f: 100,
-//                 Line16b: 100,
-//                 Line16c: 0,
-//                 Line16d: 0,
-//                 Line16e: 0,
-//                 Line16f: 0
-//             },
-//             Line16bTotal: 1,
-//             ReferenceIDYearDetail: [
-//                 {
-//                     Year: 2022,
-//                     Interest: 0
-//                 }
-//             ]
-//         }];
-
-//         expect(PFICs).to.deep.equal(expectedResult);
-//     })
-// });
-
-// describe('Form8621Calculator two year profit', () => {
-//     it('Compute is returning incorrect value', () => {
-//         let usPersonStatus: USPersonStatus = new USPersonStatus(true, null);
-//         let transactions: Transaction[] = []
-
-//         transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Purchase, new Date(2021, 1, 2), 100, 100));
-//         transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Dispose, new Date(2022, 6, 10), 100, 200));
-
-//         let PFICs: PFIC[] = Form8621Calculator.Compute(2022, FundType.Section1291, usPersonStatus, transactions);
 
 
-//     })
-// });
+
+    })
+});
+
+describe('Form8621Calculator two year profit', () => {
+    it('Compute is returning incorrect value', () => {
+        let usPersonStatus: USPersonStatus = new USPersonStatus(true, null);
+        let transactions: Transaction[] = []
+
+        transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Purchase, new Date(2021, 3, 2), 220.20, 1067.22));
+        transactions.push(new Transaction('Ref1', 'Sample Fund1', TransactionType.Dispose, new Date(2022, 6, 10), 180.45, 1543.40));
+
+        let PFICs: PFIC[] = Form8621Calculator.Compute(2022, FundType.Section1291, usPersonStatus, transactions);
+
+        var expectedResult: any = [
+            {
+                ReferenceIDNumber: "Ref1",
+                FundName: "Sample Fund1",
+                ShareHoldingYears: {
+                    2021: {
+                        Year: 2021,
+                        TaxYear: 2022,
+                        IsCurrentTaxYear: false,
+                        IsPrePFICYear: false,
+                        TotalGain: 437.75
+                    },
+                    2022: {
+                        Year: 2022,
+                        TaxYear: 2022,
+                        IsCurrentTaxYear: true,
+                        IsPrePFICYear: false,
+                        TotalGain: 231.08
+                    }
+                }
+                ,
+                ShareBlocks: [{
+                    NumberOfUnits: 180.45,
+                    PurchaseDate: { Year: 2021, Month: 3, Day: 2 },
+                    PurchaseAmount: 874.57,
+                    DisposeDate: { Year: 2022, Month: 6, Day: 10 },
+                    DisposeAmount: 1543.40,
+                    Gain: 668.83,
+                    YearlyGainAllocations: {
+                        2021: {
+                            Year: 2021,
+                            NumberOfDays: 305,
+                            GainAllocation: 437.75
+                        },
+                        2022: {
+                            Year: 2022,
+                            NumberOfDays: 161,
+                            GainAllocation: 231.08
+                        }
+                    }
+
+                }],
+                TotalPurchaseAmount: 874.57,
+                TotalDisposeAmount: 1543.40,
+                TotalGain: 668.83,
+                TotalOtherIncome: 231.08,
+                TotalIncreaseInTax: 161.97,
+                TotalInterest: 9.34,
+                Form8621: {
+                    TaxYear: 2022,
+                    ReferenceIDNumber: "Ref1",
+                    FundName: "Sample Fund1",
+                    Line15f: 668.83,
+                    //Part of gain allotcated to current year or pre-PFIC
+                    Line16b: 231.08,
+                    //Increase in tax for prior years
+                    Line16c: 161.97,
+                    //Foreign Tax Credit
+                    Line16d: 0,
+                    //additional tax after subtracting foreign tax credit
+                    Line16e: 161.97,
+                    //interest
+                    Line16f: 9.34
+                },
+            }
+        ];
+        for (let i = 0; i < PFICs.length; i++) {
+            expect(Object.fromEntries(PFICs[i].ShareHoldingYears)).to.deep.equal(expectedResult[i].ShareHoldingYears);
+            PFICs[i].ShareHoldingYears.clear();
+            expectedResult[i].ShareHoldingYears = new Map<number, ShareHoldingYear>();
+            for (let j = 0; j < PFICs[i].ShareBlocks.length; j++) {
+                expect(Object.fromEntries(PFICs[i].ShareBlocks[j].YearlyGainAllocations)).to.deep.equal(expectedResult[i].ShareBlocks[j].YearlyGainAllocations);
+                PFICs[i].ShareBlocks[j].YearlyGainAllocations.clear();
+                expectedResult[i].ShareBlocks[j].YearlyGainAllocations = new Map<number, YearlyGainAllocation>();
+            }
+        }
+        expect(PFICs).to.deep.equal(expectedResult);
+
+
+
+
+
+    })
+});
 
 
 // describe('Form8621Calculator two year profit', () => {

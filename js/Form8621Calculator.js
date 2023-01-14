@@ -7,6 +7,7 @@ const ShareBlock_1 = require("./ShareBlock");
 const Transaction_1 = require("./Transaction");
 const Form8621_1 = require("./Form8621");
 const Date_1 = require("./Date");
+const Utility_1 = require("./Utility");
 var FundType;
 (function (FundType) {
     FundType[FundType["Section1291"] = 0] = "Section1291";
@@ -24,10 +25,7 @@ class ShareHoldingYear {
         this.IsPrePFICYear = isPrePFICYear;
     }
     IsCurrentOrPrePFICYear() {
-        if (this.IsCurrentTaxYear || this.IsPrePFICYear)
-            return true;
-        else
-            return false;
+        return this.IsCurrentTaxYear || this.IsPrePFICYear;
     }
 }
 exports.ShareHoldingYear = ShareHoldingYear;
@@ -89,8 +87,8 @@ class Form8621Calculator {
                         purchaseTransactionsMap.delete(purchaseTransaction);
                     }
                     if (disposeTransaction.Date.Year == taxYear) {
-                        let blockPurchaseAmount = numberOfUnitsInBlock * purchaseTransaction.Amount / purchaseTransaction.NumberOfUnits;
-                        let blockDisposeAmount = numberOfUnitsInBlock * disposeTransaction.Amount / disposeTransaction.NumberOfUnits;
+                        let blockPurchaseAmount = Utility_1.Utility.ConvertNumberTo2DecimalPlace(numberOfUnitsInBlock * purchaseTransaction.Amount / purchaseTransaction.NumberOfUnits);
+                        let blockDisposeAmount = Utility_1.Utility.ConvertNumberTo2DecimalPlace(numberOfUnitsInBlock * disposeTransaction.Amount / disposeTransaction.NumberOfUnits);
                         let shareBlock = new ShareBlock_1.ShareBlock(taxYear, numberOfUnitsInBlock, purchaseTransaction.Date, blockPurchaseAmount, disposeTransaction.Date, blockDisposeAmount);
                         shareBlocks.push(shareBlock);
                     }
@@ -136,25 +134,40 @@ class Form8621Calculator {
         });
         objPFIC.TotalPurchaseAmount = lstShareBlocks.reduce((sum, block) => sum + block.PurchaseAmount, 0);
         objPFIC.TotalDisposeAmount = lstShareBlocks.reduce((sum, block) => sum + block.DisposeAmount, 0);
-        objPFIC.TotalGain = objPFIC.TotalDisposeAmount - objPFIC.TotalPurchaseAmount;
+        objPFIC.TotalGain = Utility_1.Utility.ConvertNumberTo2DecimalPlace(objPFIC.TotalDisposeAmount - objPFIC.TotalPurchaseAmount);
         objPFIC.ShareHoldingYears = lstShareHoldingYears;
         let totalInterest = 0;
         let totalGainInCurrentOrPrePFICYears = 0;
         let totalTaxIncrease = 0;
-        lstShareHoldingYears.forEach((shareHoldingYear, year) => {
-            if (!shareHoldingYear.IsCurrentOrPrePFICYear)
-                totalInterest += InterestCalculator_1.InterestCalculator.CalculateInterest(shareHoldingYear.TotalGain, new Date_1.Date(year, 3, 15), new Date_1.Date(taxYear + 1, 3, 15));
-            else {
-                totalGainInCurrentOrPrePFICYears += shareHoldingYear.TotalGain;
-                totalTaxIncrease += shareHoldingYear.TotalGain * TaxRate_1.TaxRate.GetTaxRateByYear(year);
-            }
-        });
+        if (objPFIC.TotalGain > 0) {
+            lstShareHoldingYears.forEach((shareHoldingYear, year) => {
+                if (shareHoldingYear.IsCurrentOrPrePFICYear())
+                    totalGainInCurrentOrPrePFICYears += shareHoldingYear.TotalGain;
+                else {
+                    let taxIncrease = Utility_1.Utility.ConvertNumberTo2DecimalPlace(shareHoldingYear.TotalGain * TaxRate_1.TaxRate.GetTaxRateByYear(year) / 100);
+                    totalTaxIncrease += taxIncrease;
+                    totalInterest += InterestCalculator_1.InterestCalculator.CalculateInterest(taxIncrease, new Date_1.Date(year + 1, 4, 15), new Date_1.Date(taxYear + 1, 4, 15));
+                }
+            });
+        }
+        objPFIC.TotalInterest = totalInterest;
+        objPFIC.TotalOtherIncome = totalGainInCurrentOrPrePFICYears;
+        objPFIC.TotalIncreaseInTax = totalTaxIncrease;
         objPFIC.Form8621.Line15f = objPFIC.TotalGain;
-        objPFIC.Form8621.Line16b = totalGainInCurrentOrPrePFICYears;
-        objPFIC.Form8621.Line16c = totalTaxIncrease;
-        objPFIC.Form8621.Line16d = 0;
-        objPFIC.Form8621.Line16e = totalTaxIncrease;
-        objPFIC.Form8621.Line16f = totalInterest;
+        if (objPFIC.TotalGain <= 0) {
+            objPFIC.Form8621.Line16b = null;
+            objPFIC.Form8621.Line16c = null;
+            objPFIC.Form8621.Line16d = null;
+            objPFIC.Form8621.Line16e = null;
+            objPFIC.Form8621.Line16f = null;
+        }
+        else {
+            objPFIC.Form8621.Line16b = totalGainInCurrentOrPrePFICYears;
+            objPFIC.Form8621.Line16c = totalTaxIncrease;
+            objPFIC.Form8621.Line16d = 0;
+            objPFIC.Form8621.Line16e = totalTaxIncrease;
+            objPFIC.Form8621.Line16f = totalInterest;
+        }
         return objPFIC;
     }
     static Audit(taxYear, fundType, usPersonStatus, transactions) {
