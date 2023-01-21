@@ -1,7 +1,7 @@
 {
     "include": [
         "./src/*.*"
-    ],
+, "src/lib/App.tsx"    ],
     "compilerOptions": {
         "target": "ES2022",
         "module": "commonjs",
