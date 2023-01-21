@@ -1,20 +1,64 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="utf-8" />
     <script src="https://code.jquery.com/jquery-3.6.3.js"
-            integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
-            crossorigin="anonymous"></script>
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <title></title>
+    <style>
+    td { padding: 0;height:23px }
+    td input { margin: 0; border:0 } td input:focus { outline: none; }
+    td select { Border: none; }
+    td select:focus { outline: none; }
+
+
+    table{
+            width:100%;
+            margin-bottom:1em;
+            border-collapse: collapse;
+        }
+        th{
+            font-weight:bold;
+            background-color:#ddd;
+        }
+        th,
+        td{
+            padding:0.5em;
+            border:1px solid #ccc;
+        }
+
+
+        input {
+  border:none;
+  width:100%;
+  height:100%;
+  font-family: Verdana, Helvetica, Arial, FreeSans, sans-serif;
+  font-size:12px;
+  padding: 0 4px 0 4px;
+}
+
+input:focus { 
+  border:2px solid #5292F7;
+  outline: none;
+}
+    </style>
+    <title>PFIC 8621</title>
+    <script>
+        var cboUSPersonSince = document.getElementById('cboUSPersonSince');
+        for(i=2022;i>1950;i--)
+        cboUSPersonSince.options.add(i.tostring(),i.tostring());
+    </script>
 </head>
+
 <body>
+    <h1>PFIC 8621</h1>
     <table>
         <tr>
             <td>Tax Year:</td>
-            <td>2022</td>
+            <td><select><option selected>2022</option></select></td>
         </tr>
         <tr>
             <td>Fund Type:</td>
@@ -27,21 +71,131 @@
         <tr>
             <td>US Person Since:</td>
             <td>
-                <input type="radio" value="Birth"> <input type="radio"> <select><option>2000</option><option>2001</option><option>2002</option></select>
+                <input type="radio" title="Birth" value="Birth" name="USPersonSince" id="rdoUSPersonSinceBirth"><label for="rdoUSPersonSinceBirth">Birth</label> 
+                <input type="radio" name="USPersonSince" title="Year" id="rdoUSPersonSinceYear"> <label for="rdoUSPersonSinceYear">Year</label> 
+                <select id="cboUSPersonSince"></select>
             </td>
-        </tr>    </table>
+        </tr>
+    </table>
     <br /><br /><br />
     <table border="1" style="border-spacing: 0px;">
-        <tr><td>S.No.</td><td>Reference ID Number</td><td>Fund Name</td><td>Action</td><td>Date</td><td># of Units</td><td>Amount</td></tr>
-        <tr><td>1</td><td><input type="text"></td><td><input type="text"></td><td><select><option>Purchase</option><option>Disposition</option></select></td><td><input type="date"></td><td><input type="number" step=any></td><td><input type="number" step=any></td></tr>
-        <tr><td>2</td><td><input type="text"></td><td><input type="text"></td><td><select><option>Purchase</option><option>Disposition</option></select></td><td><input type="date"></td><td><input type="number" step=any></td><td><input type="number" step=any></td></tr>
-        <tr><td>3</td><td><input type="text"></td><td><input type="text"></td><td><select><option>Purchase</option><option>Disposition</option></select></td><td><input type="date"></td><td><input type="number" step=any></td><td><input type="number" step=any></td></tr>
-        <tr><td>4</td><td><input type="text"></td><td><input type="text"></td><td><select><option>Purchase</option><option>Disposition</option></select></td><td><input type="date"></td><td><input type="number" step=any></td><td><input type="number" step=any></td></tr>
-        <tr><td>5</td><td><input type="text"></td><td><input type="text"></td><td><select><option>Purchase</option><option>Disposition</option></select></td><td><input type="date"></td><td><input type="number" step=any></td><td><input type="number" step=any></td></tr>
-        <tr><td>6</td><td><input type="text"></td><td><input type="text"></td><td><select><option>Purchase</option><option>Disposition</option></select></td><td><input type="date"></td><td><input type="number" step=any></td><td><input type="number" step=any></td></tr>
-        <tr><td>7</td><td><input type="text"></td><td><input type="text"></td><td><select><option>Purchase</option><option>Disposition</option></select></td><td><input type="date"></td><td><input type="number" step=any></td><td><input type="number" step=any></td></tr>
-        <tr><td>8</td><td><input type="text"></td><td><input type="text"></td><td><select><option>Purchase</option><option>Disposition</option></select></td><td><input type="date"></td><td><input type="number" step=any></td><td><input type="number" step=any></td></tr>
-        <tr><td>9</td><td><input type="text"></td><td><input type="text"></td><td><select><option>Purchase</option><option>Disposition</option></select></td><td><input type="date"></td><td><input type="number" step=any></td><td><input type="number" step=any></td></tr>
+        <tr>
+            <th></th>
+            <th>Reference ID Number</th>
+            <th>Fund Name</th>
+            <th>Action</th>
+            <th>Date</th>
+            <th># of Units</th>
+            <th>Amount</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><select>
+                    <option>Purchase</option>
+                    <option>Disposition</option>
+                </select></td>
+            <td><input type="date"></td>
+            <td><input type="number" step=any></td>
+            <td><input type="number" step=any></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><select>
+                    <option>Purchase</option>
+                    <option>Disposition</option>
+                </select></td>
+            <td><input type="date"></td>
+            <td><input type="number" step=any></td>
+            <td><input type="number" step=any></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><select>
+                    <option>Purchase</option>
+                    <option>Disposition</option>
+                </select></td>
+            <td><input type="date"></td>
+            <td><input type="number" step=any></td>
+            <td><input type="number" step=any></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><select>
+                    <option>Purchase</option>
+                    <option>Disposition</option>
+                </select></td>
+            <td><input type="date"></td>
+            <td><input type="number" step=any></td>
+            <td><input type="number" step=any></td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><select>
+                    <option>Purchase</option>
+                    <option>Disposition</option>
+                </select></td>
+            <td><input type="date"></td>
+            <td><input type="number" step=any></td>
+            <td><input type="number" step=any></td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><select>
+                    <option>Purchase</option>
+                    <option>Disposition</option>
+                </select></td>
+            <td><input type="date"></td>
+            <td><input type="number" step=any></td>
+            <td><input type="number" step=any></td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><select>
+                    <option>Purchase</option>
+                    <option>Disposition</option>
+                </select></td>
+            <td><input type="date"></td>
+            <td><input type="number" step=any></td>
+            <td><input type="number" step=any></td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><select>
+                    <option>Purchase</option>
+                    <option>Disposition</option>
+                </select></td>
+            <td><input type="date"></td>
+            <td><input type="number" step=any></td>
+            <td><input type="number" step=any></td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><select>
+                    <option>Purchase</option>
+                    <option>Disposition</option>
+                </select></td>
+            <td><input type="date"></td>
+            <td><input type="number" step=any></td>
+            <td><input type="number" step=any></td>
+        </tr>
     </table>
     <br /><br />
     <input type="button" value="Calculate" onclick="OnCalculate()" />
@@ -50,39 +204,252 @@
     ABC<br />
     Reference ID Number: Fund1<br /><br />
     <table border="1" style="border-spacing: 0px;">
-        <tr><td rowspan="2">Block#</td><td rowspan="2">Units</td><td colspan="2" style="text-align:center">Purchase</td><td colspan="2" style="text-align:center">Disposition</td><td colspan="4" style="text-align:center">Days</td><td rowspan="2">Line 16b</td><td colspan="3" style="text-align:center">Line 16c</td></tr>
-        <tr><td>Date</td><td>Amount</td><td>Date</td><td>Amount</td><td>Year 2014 (Non-resident days)</td><td>Year 2015</td><td>Year 2016</td><td>2017</td><td>Year 2015</td><td>Year 2016</td><td>Year 2017</td></tr>
-        <tr><td>1</td><td>2.00987</td><td>1/5/2020</td><td>$78.90</td><td>5/8/2017</td><td>$78.90</td><td>89</td><td>365</td><td>78</td><td>78</td><td>$78</td><td>$78</td><td>$78</td><td>$78</td></tr>
-        <tr><td>2</td><td>2.00987</td><td>1/5/2020</td><td>$78.90</td><td>5/8/2017</td><td>$78.90</td><td>89</td><td>365</td><td>78</td><td>78</td><td>$78</td><td>$78</td><td>$78</td><td>$78</td></tr>
-        <tr><td>3</td><td>2.00987</td><td>1/5/2020</td><td>$78.90</td><td>5/8/2017</td><td>$78.90</td><td>89</td><td>365</td><td>78</td><td>78</td><td>$78</td><td>$78</td><td>$78</td><td>$78</td></tr>
-        <tr><td>4</td><td>2.00987</td><td>1/5/2020</td><td>$78.90</td><td>5/8/2017</td><td>$78.90</td><td>89</td><td>365</td><td>78</td><td>78</td><td>$78</td><td>$78</td><td>$78</td><td>$78</td></tr>
-        <tr><td>5</td><td>2.00987</td><td>1/5/2020</td><td>$78.90</td><td>5/8/2017</td><td>$78.90</td><td>89</td><td>365</td><td>78</td><td>78</td><td>$78</td><td>$78</td><td>$78</td><td>$78</td></tr>
-        <tr><td>6</td><td>2.00987</td><td>1/5/2020</td><td>$78.90</td><td>5/8/2017</td><td>$78.90</td><td>89</td><td>365</td><td>78</td><td>78</td><td>$78</td><td>$78</td><td>$78</td><td>$78</td></tr>
-        <tr><td colspan="2">Total</td><td></td><td>$78.90</td><td></td><td>$78.90</td><td colspan="4"><td>$78</td><td>$78</td><td>$78</td><td>$78</td></tr>
+        <tr>
+            <td rowspan="2">Block#</td>
+            <td rowspan="2">Units</td>
+            <td colspan="2" style="text-align:center">Purchase</td>
+            <td colspan="2" style="text-align:center">Disposition</td>
+            <td colspan="4" style="text-align:center">Days</td>
+            <td rowspan="2">Line 16b</td>
+            <td colspan="3" style="text-align:center">Line 16c</td>
+        </tr>
+        <tr>
+            <td>Date</td>
+            <td>Amount</td>
+            <td>Date</td>
+            <td>Amount</td>
+            <td>Year 2014 (Non-resident days)</td>
+            <td>Year 2015</td>
+            <td>Year 2016</td>
+            <td>2017</td>
+            <td>Year 2015</td>
+            <td>Year 2016</td>
+            <td>Year 2017</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2.00987</td>
+            <td>1/5/2020</td>
+            <td>$78.90</td>
+            <td>5/8/2017</td>
+            <td>$78.90</td>
+            <td>89</td>
+            <td>365</td>
+            <td>78</td>
+            <td>78</td>
+            <td>$78</td>
+            <td>$78</td>
+            <td>$78</td>
+            <td>$78</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>2.00987</td>
+            <td>1/5/2020</td>
+            <td>$78.90</td>
+            <td>5/8/2017</td>
+            <td>$78.90</td>
+            <td>89</td>
+            <td>365</td>
+            <td>78</td>
+            <td>78</td>
+            <td>$78</td>
+            <td>$78</td>
+            <td>$78</td>
+            <td>$78</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>2.00987</td>
+            <td>1/5/2020</td>
+            <td>$78.90</td>
+            <td>5/8/2017</td>
+            <td>$78.90</td>
+            <td>89</td>
+            <td>365</td>
+            <td>78</td>
+            <td>78</td>
+            <td>$78</td>
+            <td>$78</td>
+            <td>$78</td>
+            <td>$78</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>2.00987</td>
+            <td>1/5/2020</td>
+            <td>$78.90</td>
+            <td>5/8/2017</td>
+            <td>$78.90</td>
+            <td>89</td>
+            <td>365</td>
+            <td>78</td>
+            <td>78</td>
+            <td>$78</td>
+            <td>$78</td>
+            <td>$78</td>
+            <td>$78</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>2.00987</td>
+            <td>1/5/2020</td>
+            <td>$78.90</td>
+            <td>5/8/2017</td>
+            <td>$78.90</td>
+            <td>89</td>
+            <td>365</td>
+            <td>78</td>
+            <td>78</td>
+            <td>$78</td>
+            <td>$78</td>
+            <td>$78</td>
+            <td>$78</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>2.00987</td>
+            <td>1/5/2020</td>
+            <td>$78.90</td>
+            <td>5/8/2017</td>
+            <td>$78.90</td>
+            <td>89</td>
+            <td>365</td>
+            <td>78</td>
+            <td>78</td>
+            <td>$78</td>
+            <td>$78</td>
+            <td>$78</td>
+            <td>$78</td>
+        </tr>
+        <tr>
+            <td colspan="2">Total</td>
+            <td></td>
+            <td>$78.90</td>
+            <td></td>
+            <td>$78.90</td>
+            <td colspan="4">
+            <td>$78</td>
+            <td>$78</td>
+            <td>$78</td>
+            <td>$78</td>
+        </tr>
     </table>
     <br /><br />
-    Excess Distribution Summary
+    <b>Form 8621</b>
     <table border="1" style="border-spacing: 0px">
-        <tr><td>Life 15f</td><td>Line 16b</td><td>Line 16c</td><td>Line 16d</td><td>Line 16e</td><td>Line 16f</td></tr>
-        <tr><td>$40</td><td>$89</td><td>66</td><td>$0</td><td>$0</td><td>$0</td></tr>
+        <tr>
+            <td>Life 15f</td>
+            <td>Line 16b</td>
+            <td>Line 16c</td>
+            <td>Line 16d</td>
+            <td>Line 16e</td>
+            <td>Line 16f</td>
+        </tr>
+        <tr>
+            <td>$40</td>
+            <td>$89</td>
+            <td>66</td>
+            <td>$0</td>
+            <td>$0</td>
+            <td>$0</td>
+        </tr>
     </table><br /><br />
     <hr />
     DEF<br />
     Reference ID Number: Fund2<br /><br />
     <table border="1" style="border-spacing: 0px;">
-        <tr><td># of Shares</td><td>Purchase Date</td><td>Disposition Date</td><td>Profit</td><td>Total number of holding days</td><td>2020</td><td>2021</td><td>2022</td></tr>
-        <tr><td>2.00987</td><td>1/5/2020</td><td>4/3/2022</td><td>$200.78</td><td>789</td><td>89</td><td>365</td><td>78</td></tr>
-        <tr><td>2.00987</td><td>1/5/2020</td><td>4/3/2022</td><td>$200.78</td><td>789</td><td>89</td><td>365</td><td>78</td></tr>
-        <tr><td>2.00987</td><td>1/5/2020</td><td>4/3/2022</td><td>$200.78</td><td>789</td><td>89</td><td>365</td><td>78</td></tr>
-        <tr><td>2.00987</td><td>1/5/2020</td><td>4/3/2022</td><td>$200.78</td><td>789</td><td>89</td><td>365</td><td>78</td></tr>
-        <tr><td>2.00987</td><td>1/5/2020</td><td>4/3/2022</td><td>$200.78</td><td>789</td><td>89</td><td>365</td><td>78</td></tr>
-        <tr><td>2.00987</td><td>1/5/2020</td><td>4/3/2022</td><td>$200.78</td><td>789</td><td>89</td><td>365</td><td>78</td></tr>
+        <tr>
+            <td># of Shares</td>
+            <td>Purchase Date</td>
+            <td>Disposition Date</td>
+            <td>Profit</td>
+            <td>Total number of holding days</td>
+            <td>2020</td>
+            <td>2021</td>
+            <td>2022</td>
+        </tr>
+        <tr>
+            <td>2.00987</td>
+            <td>1/5/2020</td>
+            <td>4/3/2022</td>
+            <td>$200.78</td>
+            <td>789</td>
+            <td>89</td>
+            <td>365</td>
+            <td>78</td>
+        </tr>
+        <tr>
+            <td>2.00987</td>
+            <td>1/5/2020</td>
+            <td>4/3/2022</td>
+            <td>$200.78</td>
+            <td>789</td>
+            <td>89</td>
+            <td>365</td>
+            <td>78</td>
+        </tr>
+        <tr>
+            <td>2.00987</td>
+            <td>1/5/2020</td>
+            <td>4/3/2022</td>
+            <td>$200.78</td>
+            <td>789</td>
+            <td>89</td>
+            <td>365</td>
+            <td>78</td>
+        </tr>
+        <tr>
+            <td>2.00987</td>
+            <td>1/5/2020</td>
+            <td>4/3/2022</td>
+            <td>$200.78</td>
+            <td>789</td>
+            <td>89</td>
+            <td>365</td>
+            <td>78</td>
+        </tr>
+        <tr>
+            <td>2.00987</td>
+            <td>1/5/2020</td>
+            <td>4/3/2022</td>
+            <td>$200.78</td>
+            <td>789</td>
+            <td>89</td>
+            <td>365</td>
+            <td>78</td>
+        </tr>
+        <tr>
+            <td>2.00987</td>
+            <td>1/5/2020</td>
+            <td>4/3/2022</td>
+            <td>$200.78</td>
+            <td>789</td>
+            <td>89</td>
+            <td>365</td>
+            <td>78</td>
+        </tr>
     </table>
     <br /><br />
     Excess Distribution Summary
     <table border="1" style="border-spacing: 0px">
-        <tr><td>Life 15f</td><td>Line 16b</td><td>Line 16c</td><td>Line 16d</td><td>Line 16e</td><td>Line 16f</td></tr>
-        <tr><td>$40</td><td>$89</td><td>66</td><td>$0</td><td>$0</td><td>$0</td></tr>
+        <tr>
+            <td>Life 15f</td>
+            <td>Line 16b</td>
+            <td>Line 16c</td>
+            <td>Line 16d</td>
+            <td>Line 16e</td>
+            <td>Line 16f</td>
+        </tr>
+        <tr>
+            <td>$40</td>
+            <td>$89</td>
+            <td>66</td>
+            <td>$0</td>
+            <td>$0</td>
+            <td>$0</td>
+        </tr>
     </table>
 </body>
+
 </html>
