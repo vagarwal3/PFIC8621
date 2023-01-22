@@ -102,6 +102,14 @@ export class PFICCalculator extends React.Component<any, IPFICCalculateorState>{
             switch (fieldName) {
                 case 'ReferenceIDNumber':
                     newTransactions[rowID].ReferenceIDNumber = fieldValue as string | null;
+                    if(fieldValue!=null && newTransactions[rowID].FundName==null)
+                    {
+                        let transactionWithFundName = newTransactions.find(a=>a.ReferenceIDNumber==fieldValue && a.FundName!=null);
+                        if(transactionWithFundName!=null)
+                        {
+                            newTransactions[rowID].FundName=transactionWithFundName.FundName;
+                        }
+                    }
                     break;
                 case 'FundName':
                     newTransactions[rowID].FundName = fieldValue as string | null;
@@ -128,15 +136,15 @@ export class PFICCalculator extends React.Component<any, IPFICCalculateorState>{
             <div>
                 {!this.state.ShowOutput ?
                     <div>
-                        <PFICInput TaxYear={this.state.TaxYear} FundType={this.state.FundType} Transactions={this.state.Transactions}
+                        <PFICInput TaxYear={this.state.TaxYear} USPersonSince={this.state.USPersonSince} FundType={this.state.FundType} Transactions={this.state.Transactions}
                             onInputChange={this.handleInputChange} onTransactionChange={this.handleTransactionChange}></PFICInput>
                         <input className="calculate" type={"button"} value={"Calculate"} onClick={this.handleCalculate}></input>
                     </div>
                     : <div><PFICOutput PFICs={this.state.PFICs}></PFICOutput>
                         <input className="calculate" type={"button"} value={"Back"} onClick={this.goBack}></input>
-
                     </div>
                 }
+                <br></br><br></br>
             </div>
         );
     }

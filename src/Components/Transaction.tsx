@@ -44,7 +44,7 @@ export class Transactions extends React.Component<any,any> {
                     {
                         transactions.map((a:any,rowID:number)=>
                         <tr key={rowID}  className="DataRow">
-                            <td className="ColumnCell">{rowID}</td>
+                            <td className="ColumnCell">{rowID+1}</td>
                             <td><input className="referenceIDNumber" value={a.ReferenceIDNumber==null?"":a.ReferenceIDNumber as string} onChange={(e)=>this.onReferenceIDNumberChange(rowID,e.target.value)}/></td>
                             <td><input value={a.FundName==null?"":a.FundName as string} onChange={(e)=>this.onFundNameChange(rowID,e.target.value)}/></td>
                             <td><select value={a.Type==null?"":a.Type} onChange={(e)=>this.onTypeChange(rowID,e.target.value)}><option key="" value=""></option>
