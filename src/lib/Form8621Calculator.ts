@@ -65,7 +65,7 @@ export class Form8621Calculator {
             purchaseTransactions.forEach(purchaseTransaction => {
                 if (unitsToDispose==0)
                     return;
-                if (purchaseTransactionsMap.has(purchaseTransaction) && purchaseTransaction.Date <= disposeTransaction.Date) {
+                if (purchaseTransactionsMap.has(purchaseTransaction) && purchaseTransaction.Date.IsLessThanOrEqualTo(disposeTransaction.Date)) {
                     let remainingPurchaseUnits = purchaseTransactionsMap.get(purchaseTransaction) as number;
                     let numberOfUnitsInBlock: number;
                     if (remainingPurchaseUnits == unitsToDispose) {
