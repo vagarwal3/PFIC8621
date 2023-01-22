@@ -101,6 +101,12 @@ export class Date {
     GetLastDateOfYear() {
         return new Date(this.Year, 12, 31);
     }
-
-
+    toString():string
+    {
+        return this.Month.toString()+"/"+this.Day.toString()+"/"+this.Year.toString();
+    }
+    static parse(value:string):Date
+    {
+        return new Date(parseInt(value.split('-')[0]),parseInt(value.split('-')[1]),parseInt(value.split('-')[2]));
+    }
 }

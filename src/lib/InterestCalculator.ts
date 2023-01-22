@@ -1,13 +1,14 @@
-import AnnualInterestRates from './InterestRate.json'
+import AnnualInterestRates from '../data/InterestRate.json'
 import { Utility } from './Utility';
 import { Date } from './Date';
 
 export class InterestCalculator {
 
-  static GetInterestRateOnADate(date: Date) {
+  static GetInterestRateOnADate(date: Date):number
+   {
     let quarter: number = date.GetQuarter();
 
-    return AnnualInterestRates.find(x => x.Year == date.Year).QuaterlyInterestRate[quarter-1];
+    return AnnualInterestRates.find(x => x.Year == date.Year)?.QuaterlyInterestRate[quarter-1]??1;
   }
   static CalculateInterest(amount: number, startDate: Date, endDate: Date) {
     let interestfactor: number = 1;

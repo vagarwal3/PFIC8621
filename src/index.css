@@ -1,0 +1,158 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+table.Transaction {
+
+  border-collapse: collapse;
+}
+
+div.Transaction {
+  height: 510px;
+  width: 870px;
+  overflow-y: auto;
+}
+
+table.Transaction .HeaderRow td {
+  margin: 0;
+  padding: 2px;
+  background-image: linear-gradient(#F9FCFD, #D3DBE9);
+  font-size: 10pt;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+table.Transaction .DataRow td {
+  margin: 0;
+  padding: 1px 4px 1px 4px;
+  border: #D0D7E5 1px solid;
+}
+
+table.Transaction input {
+  margin: 0;
+  padding: 0;
+  border: none;
+  height: 22px;
+  outline: none;
+}
+
+table.Transaction select {
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+}
+
+table.Transaction .ColumnCell {
+  width: 28px;
+  background-color: #E4ECF7;
+}
+
+table.main {
+  text-align: center;
+  margin: auto;
+}
+
+table.main td {
+  text-align: left;
+}
+
+table.main select {
+  width: 130px;
+  height: 25px;
+}
+
+input.calculate {
+  height: 50px;
+  width: 150px;
+  font-weight: bold;
+}
+
+div.main {
+  text-align: center;
+  margin: auto;
+}
+
+table.ShareBlocks {
+  border-top: 2px solid cadetblue;
+  border-bottom: 2px solid cadetblue;
+  border-collapse: collapse;
+}
+
+table.ShareBlocks tr.firstHeaerRow td {
+  font-weight: 600;
+  text-align: center;
+  vertical-align: top;
+}
+table.ShareBlocks tr.firstHeaerRow td:first-child {
+  border-bottom: 1px solid gray;
+}
+table.ShareBlocks tr.firstHeaerRow td:nth-child(2) {
+  border-bottom: 1px solid gray;
+}
+table.ShareBlocks tr.firstHeaerRow td:nth-child(5) {
+  border-bottom: 1px solid gray;
+}
+table.ShareBlocks tr.firstHeaerRow td.bottomBorder {
+  border-bottom: 1px solid gray;
+}
+table.ShareBlocks tr.secondHeaerRow td {
+  border-bottom: 1px solid gray;
+  font-weight: 600;
+}
+
+table.ShareBlocks tr.totalRow td {
+  border-top: 1px solid gray;
+  font-weight: 700;
+}
+
+table.ShareBlocks td.columnLastCell {
+  border-right: 1px solid gray;
+}
+
+.outputShareBlock td {
+  text-align: left;
+}
+
+.leftAlignCell {
+  text-align: left;
+}
+
+.rightAlignCell {
+  text-align: right;
+}
+
+table.ShareBlocks td {
+  padding: 5px 10px 5px 10px;
+
+}
+
+table.summary {
+  border-top: 2px solid cadetblue;
+  border-bottom: 2px solid cadetblue;
+  border-collapse: collapse;
+}
+
+table.summary tr:first-child td {
+  border-bottom: 1px solid gray;
+  font-weight: 600;
+  padding: 2px 10px 2px 10px;
+}
+
+table.summary tr td:not(:last-child) {
+  border-right: 1px solid gray;
+}
+
+.summaryTitle {
+  padding-top: 40px;
+  font-weight: bolder;
+}

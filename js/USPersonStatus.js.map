@@ -1,1 +1,0 @@
-{"version":3,"file":"USPersonStatus.js","sourceRoot":"","sources":["../src/USPersonStatus.ts"],"names":[],"mappings":";;;AAAA,MAAa,cAAc;IAEvB,oBAAoB,CAAU;IAC9B,oBAAoB,CAAa;IACjC,YAAY,oBAA6B,EAAC,oBAAgC;QAEtE,IAAI,CAAC,oBAAoB,GAAC,oBAAoB,CAAC;QAC/C,IAAI,CAAC,oBAAoB,GAAG,oBAAoB,CAAC;IACrD,CAAC;CACJ;AATD,wCASC"}

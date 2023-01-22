@@ -16,7 +16,7 @@ export class ShareHoldingYear {
     TaxYear: number;
     IsCurrentTaxYear: boolean;
     IsPrePFICYear: boolean;
-    TotalGain: number;
+    TotalGain: number=0;
     constructor(year: number, taxYear: number, isCurrentTaxYear: boolean, isPrePFICYear: boolean) {
         this.Year = year;
         this.TaxYear = taxYear;
@@ -33,12 +33,12 @@ export class PFIC {
     FundName: string;
     ShareHoldingYears: Map<number, ShareHoldingYear>;
     ShareBlocks: ShareBlock[];
-    TotalPurchaseAmount: number;
-    TotalDisposeAmount: number;
-    TotalGain: number;
-    TotalOtherIncome: number;
-    TotalIncreaseInTax: number;
-    TotalInterest: number;
+    TotalPurchaseAmount: number=0;
+    TotalDisposeAmount: number=0;
+    TotalGain: number=0;
+    TotalOtherIncome: number=0;
+    TotalIncreaseInTax: number=0;
+    TotalInterest: number=0;
     Form8621: Form8621;
     constructor(taxYear: number, referenceIDNumber: string, fundName: string, shareBlocks: ShareBlock[]) {
         this.ReferenceIDNumber = referenceIDNumber;
