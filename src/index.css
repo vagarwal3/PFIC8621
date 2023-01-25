@@ -19,7 +19,6 @@ table.Transaction {
 
 div.Transaction {
   height: 510px;
-  width: 875px;
   overflow-y: auto;
   border: 1px solid #819EBC;
 }
@@ -70,10 +69,6 @@ table.Transaction .ColumnCell {
   background-color: #E4ECF7;
 }
 
-table.main {
-  text-align: center;
-  margin: auto;
-}
 
 table.main td {
   text-align: left;
@@ -88,12 +83,9 @@ input.calculate {
   height: 50px;
   width: 150px;
   font-weight: bold;
+  margin-top: 10px;
 }
 
-div.main {
-  text-align: center;
-  margin: auto;
-}
 
 table.ShareBlocks {
   border-top: 2px solid cadetblue;
