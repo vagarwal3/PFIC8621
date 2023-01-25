@@ -1,7 +1,7 @@
-# PFIC8621
+# PFIC-8621
 
-## What is PFIC8621?
-PFIC8621 is a free, open-source tax filing application that can be used to calculate Form 8621 for section 1291 funds. It is provided free of charge and requires no sharing of personal data.
+## What is PFIC-8621?
+PFIC-8621 is a free, open-source tax filing application that can be used to calculate Form 8621 for section 1291 funds. It is provided free of charge and requires no sharing of personal data.
 
 ## User Data and Privacy
 The project is available strictly via client side. Data is persisted to the site's localstorage so no personal information ever leaves the user's computer.
