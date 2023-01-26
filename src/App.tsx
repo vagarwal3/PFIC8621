@@ -10,6 +10,8 @@ function App() {
                 <div className="sidebar-heading border-bottom bg-light">PFIC8621</div>
                 <div className="list-group list-group-flush">
                     <a className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Section 1291</a>
+                    <a className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Mark to Market Election</a>
+                    <a className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Qualified Electing Fund</a>
                     <a className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">License</a>
                     <a className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Discussion</a>
                     <a className="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Issues</a>
