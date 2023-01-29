@@ -139,6 +139,8 @@ export class PFICCalculator extends React.Component<any, IPFICCalculateorState>{
             <div>
                 {!this.state.ShowOutput ?
                     <div>
+                     <h1 className="mt-4">Form 8621 - Section 1291</h1>
+                     <p>Use this tool to calculate values for Form 8621 for your 1291 funds.</p>
                         <PFICInput TaxYear={this.state.TaxYear} USPersonSince={this.state.USPersonSince} FundType={this.state.FundType} Transactions={this.state.Transactions}
                             onInputChange={this.handleInputChange} onTransactionChange={this.handleTransactionChange}></PFICInput>
                         <input className="calculate" type={"button"} value={"Calculate"} onClick={this.handleCalculate}></input>
