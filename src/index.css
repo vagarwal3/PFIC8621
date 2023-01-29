@@ -58,6 +58,7 @@ table.Transaction select {
   padding: 0;
   border: none;
   outline: none;
+  appearance: inherit;
    /* for Firefox */
   -moz-appearance: none;
   /* for Chrome */
