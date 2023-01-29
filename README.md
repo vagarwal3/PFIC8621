@@ -13,6 +13,7 @@ Your form entries never leave your browser. You are responsible for saving your 
 * Funds purchased before 1990 can not be entered in this tool
 * Sometimes reports may not be printer friendly
 * Maximum 100 transactions can be entered
+* This tool can not do currency conversions. All amounts has to be converted and entered in US dollars only.
 
 ## Bugs and Issues
 Have a bug or an issue with this template? Open a new issue here on <a href='https://github.com/vagarwal3/PFIC8621/issues'>GitHub</a> or leave a <a href='https://github.com/vagarwal3/PFIC8621/discussions'>comment</a>.
