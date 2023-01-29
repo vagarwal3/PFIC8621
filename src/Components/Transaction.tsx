@@ -51,7 +51,7 @@ export class Transactions extends React.Component<any,any> {
                             <option key="Purchase" value="Purchase">Purchase</option>
                             <option key="Sale" value="Sale">Sale</option>
                             </select></td>
-                            <td><input type={"date"} value={a.Date==null?"":a.Date.toString()} min={"1/1/1900"} max={"12/31/2022"} onChange={(e)=>this.onDateChange(rowID,e.target.value)}></input></td>
+                            <td><input type={"date"} value={a.Date==null?"":a.Date.toString()} min={"1990-01-01"} max={"2022-12-31"} onChange={(e)=>this.onDateChange(rowID,e.target.value)}></input></td>
                             <td><input type={"number"} value={a.Units==null?"":a.Units} min={0} max={9999999} onChange={(e)=>this.onUnitsChange(rowID,e.target.value)}></input></td>
                             <td><input type={"number"} value={a.Amount==null?"":a.Amount} min={0} max={9999999} onChange={(e)=>this.onAmountChange(rowID,e.target.value)}></input></td>
                             </tr>

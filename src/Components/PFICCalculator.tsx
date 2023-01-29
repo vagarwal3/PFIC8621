@@ -41,11 +41,13 @@ export class PFICCalculator extends React.Component<any, IPFICCalculateorState>{
         };
     }
     handleCalculate = () => {
+        if (this.state.TaxYear == null || this.state.FundType == null)
+            return;
         let taxYear: number = this.state.TaxYear ?? 1;
         let fundType: FundType = this.state.FundType == "Section1291" ? FundType.Section1291 : FundType.Section1291;
         let usPersonStatus: USPersonStatus;
         if (this.state.USPersonSince == null) {
-            usPersonStatus = new USPersonStatus(true, null);
+            return;
         }
         else if (this.state.USPersonSince as string == "Birth") {
             usPersonStatus = new USPersonStatus(true, null);
@@ -57,13 +59,20 @@ export class PFICCalculator extends React.Component<any, IPFICCalculateorState>{
         this.state.Transactions.forEach(t => {
             if (t.ReferenceIDNumber != null) {
                 let transactionType: TransactionType;
-                if (t.Type == "Purchase") {
+                if (t.Type == null) {
+                    return;
+                }
+                else if (t.Type == "Purchase") {
                     transactionType = TransactionType.Purchase;
                 }
                 else {
                     transactionType = TransactionType.Dispose;
                 }
+                if (t.Date == null)
+                    return;
                 let date: Date = Date.parse(t.Date as string);
+                if (t.Units == null || t.Amount == null || t.FundName == null)
+                    return;
                 let transaction = new Transaction(t.ReferenceIDNumber as string, t.FundName as string, transactionType, date, t.Units as number, t.Amount as number);
                 transactions.push(transaction);
             }
@@ -71,10 +80,6 @@ export class PFICCalculator extends React.Component<any, IPFICCalculateorState>{
 
 
         let arrPFICs: PFIC[] = Form8621Calculator.Compute(taxYear, fundType, usPersonStatus, transactions)
-        // console.log(taxYear);
-        // console.log(fundType);
-        // console.log(usPersonStatus);
-         console.log(arrPFICs);
         if (arrPFICs.length > 0)
             this.setState({ PFICs: arrPFICs, ShowOutput: true });
     }
@@ -102,12 +107,10 @@ export class PFICCalculator extends React.Component<any, IPFICCalculateorState>{
             switch (fieldName) {
                 case 'ReferenceIDNumber':
                     newTransactions[rowID].ReferenceIDNumber = fieldValue as string | null;
-                    if(fieldValue!=null && newTransactions[rowID].FundName==null)
-                    {
-                        let transactionWithFundName = newTransactions.find(a=>a.ReferenceIDNumber==fieldValue && a.FundName!=null);
-                        if(transactionWithFundName!=null)
-                        {
-                            newTransactions[rowID].FundName=transactionWithFundName.FundName;
+                    if (fieldValue != null && newTransactions[rowID].FundName == null) {
+                        let transactionWithFundName = newTransactions.find(a => a.ReferenceIDNumber == fieldValue && a.FundName != null);
+                        if (transactionWithFundName != null) {
+                            newTransactions[rowID].FundName = transactionWithFundName.FundName;
                         }
                     }
                     break;

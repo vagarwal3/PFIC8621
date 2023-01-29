@@ -47,8 +47,8 @@
     {
         "Year": 2018,
         "QuaterlyInterestRate": [
-            5,
             4,
+            5,
             5,
             5
         ]
@@ -213,6 +213,96 @@
             9,
             9,
             9
+        ]
+    },
+    {
+        "Year": 1999,
+        "QuaterlyInterestRate": [
+            7,
+            8,
+            8,
+            8
+        ]
+    },
+    {
+        "Year": 1998,
+        "QuaterlyInterestRate": [
+            9,
+            8,
+            8,
+            8
+        ]
+    },
+    {
+        "Year": 1997,
+        "QuaterlyInterestRate": [
+            9,
+            9,
+            9,
+            9
+        ]
+    },
+    {
+        "Year": 1996,
+        "QuaterlyInterestRate": [
+            9,
+            8,
+            9,
+            9
+        ]
+    },
+    {
+        "Year": 1995,
+        "QuaterlyInterestRate": [
+            9,
+            10,
+            9,
+            9
+        ]
+    },
+    {
+        "Year": 1994,
+        "QuaterlyInterestRate": [
+            7,
+            7,
+            8,
+            9
+        ]
+    },
+    {
+        "Year": 1993,
+        "QuaterlyInterestRate": [
+            7,
+            7,
+            7,
+            7
+        ]
+    },
+    {
+        "Year": 1992,
+        "QuaterlyInterestRate": [
+            9,
+            8,
+            8,
+            7
+        ]
+    },
+    {
+        "Year": 1991,
+        "QuaterlyInterestRate": [
+            11,
+            10,
+            10,
+            10
+        ]
+    },
+    {
+        "Year": 1990,
+        "QuaterlyInterestRate": [
+            11,
+            11,
+            11,
+            11
         ]
     }
 ]
