@@ -147,7 +147,7 @@ export class Form8621Calculator {
             lstShareHoldingYears.forEach((shareHoldingYear, year) => {
                 
                 if (shareHoldingYear.IsCurrentOrPrePFICYear())
-                    totalGainInCurrentOrPrePFICYears += shareHoldingYear.TotalGain;
+                    totalGainInCurrentOrPrePFICYears = Utility.ConvertNumberTo2DecimalPlace(totalGainInCurrentOrPrePFICYears+shareHoldingYear.TotalGain);
                 else {
                     let taxIncrease = Utility.ConvertNumberTo2DecimalPlace( shareHoldingYear.TotalGain * TaxRate.GetTaxRateByYear(year)/100);
                     totalTaxIncrease += taxIncrease;

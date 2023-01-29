@@ -2,6 +2,7 @@
 import React from "react";
 import { PFIC, ShareHoldingYear } from "../lib/Form8621Calculator";
 import { ShareBlock } from "../lib/ShareBlock";
+import { Utility } from "../lib/Utility";
 
 interface ICalOutput {
     PFICs: PFIC[];
@@ -11,7 +12,7 @@ export class PFICOutput extends React.Component<ICalOutput, any> {
     public render(): JSX.Element {
         return <div className="outputContainer">
             {
-                this.props.PFICs.map((pfic: PFIC, index: number) =>
+                this.props.PFICs.map((pfic: PFIC, index: number) =>                    
                     <div>
                     <table className="outputShareBlock">
                         <tr><td width={170}>Reference ID Number:</td>
@@ -43,7 +44,7 @@ export class PFICOutput extends React.Component<ICalOutput, any> {
                                         )
                                     }
                                     {
-                                        Array.from(pfic.ShareHoldingYears.values()).filter(a => a.Year != 2022).map((shareHoldingYear: ShareHoldingYear, index: number) =>
+                                        Array.from(pfic.ShareHoldingYears.values()).filter(a => !a.IsCurrentOrPrePFICYear()).map((shareHoldingYear: ShareHoldingYear, index: number) =>
                                             <td className="rightAlignCell">{shareHoldingYear.Year}</td>
                                         )
                                     }
@@ -67,7 +68,7 @@ export class PFICOutput extends React.Component<ICalOutput, any> {
                                             this.GetLine16BForShareBlock(pfic,shareBlock)}</td>
 
                                             {
-                                                Array.from(pfic.ShareHoldingYears.values()).filter(a => a.Year != 2022).map((shareHoldingYear: ShareHoldingYear, index: number) =>
+                                                Array.from(pfic.ShareHoldingYears.values()).filter(a => !a.IsCurrentOrPrePFICYear()).map((shareHoldingYear: ShareHoldingYear, index: number) =>
 
                                                     <td className="rightAlignCell">{shareBlock.YearlyGainAllocations.get(shareHoldingYear.Year)?.GainAllocation}</td>
 
@@ -97,7 +98,7 @@ export class PFICOutput extends React.Component<ICalOutput, any> {
                                             <td className="columnLastCell">&nbsp;</td>
 
                                             {
-                                                Array.from(pfic.ShareHoldingYears.values()).filter(a => a.Year != 2022).map((shareHoldingYear: ShareHoldingYear, index: number) =>
+                                                Array.from(pfic.ShareHoldingYears.values()).filter(a => !a.IsCurrentOrPrePFICYear()).map((shareHoldingYear: ShareHoldingYear, index: number) =>
 
                                                     <td className="rightAlignCell"></td>
 
@@ -117,7 +118,7 @@ export class PFICOutput extends React.Component<ICalOutput, any> {
                                     <td className="columnLastCell" colSpan={pfic.ShareHoldingYears.size}></td>
                                     <td className="rightAlignCell columnLastCell">{pfic.TotalOtherIncome}</td>
                                     {
-                                        Array.from(pfic.ShareHoldingYears.values()).filter(a => a.Year != 2022).map((shareHoldingYear: ShareHoldingYear, index: number) =>
+                                        Array.from(pfic.ShareHoldingYears.values()).filter(a => !a.IsCurrentOrPrePFICYear()).map((shareHoldingYear: ShareHoldingYear, index: number) =>
 
                                             <td className="rightAlignCell rightAlignCell">{shareHoldingYear.TotalGain}</td>
                                         )
@@ -149,7 +150,7 @@ export class PFICOutput extends React.Component<ICalOutput, any> {
             let year:number = yearlyGainAllocation.Year;
             if(pfic.ShareHoldingYears.get(year)?.IsCurrentOrPrePFICYear())
             {
-                Line16BForShareBlock+=yearlyGainAllocation.GainAllocation;
+                Line16BForShareBlock=Utility.ConvertNumberTo2DecimalPlace(Line16BForShareBlock+yearlyGainAllocation.GainAllocation);
             }
         }
         return Line16BForShareBlock;
