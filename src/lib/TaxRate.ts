@@ -4,6 +4,6 @@ export class TaxRate
 {
      static GetTaxRateByYear(year:number):number
      {
-        return TaxRates.find(a=>a.Year==year)?.Rate??1;
+        return TaxRates.find(a=>a.Year===year)?.Rate??1;
      }
 }

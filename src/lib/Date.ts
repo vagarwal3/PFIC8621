@@ -10,7 +10,7 @@ export class Date {
         this.Day = day;
     }
     static IsLeapYear(year: number): boolean {
-        return year % 4 == 0;
+        return year % 4 === 0;
     }
     static DateDifInDays(startDate: Date, endDate: Date, isInclusive: boolean) {
         let numberOfDays: number = 0;
@@ -24,7 +24,7 @@ export class Date {
             }
             else if (!day.IsFirstDayOfYear() && day.IsFirstDayOfMonth() && (day.Year < endDate.Year || day.Month < endDate.Month)) {
                 numberOfDays += Date.GetNumberOfDaysInMonth(day.Year, day.Month);
-                if (day.Month == 12) {
+                if (day.Month === 12) {
                     day.Year += 1;
                     day.Month = 1;
                 }
@@ -39,10 +39,10 @@ export class Date {
         return numberOfDays;
     }
     static GetNumberOfDaysInMonth(year: number, month: number): number {
-        if (month == 2) {
+        if (month === 2) {
             return Date.IsLeapYear(year) ? 29 : 28;
         }
-        if (month == 4 || month == 6 || month == 9 || month == 11) {
+        if (month === 4 || month === 6 || month === 9 || month === 11) {
             return 30;
         }
         return 31;
@@ -61,15 +61,15 @@ export class Date {
 
     }
     IsLessThanOrEqualTo(target: Date): boolean {
-        if (this.Year != target.Year) return this.Year < target.Year;
-        if (this.Month != target.Month) return this.Month < target.Month;
+        if (this.Year !== target.Year) return this.Year < target.Year;
+        if (this.Month !== target.Month) return this.Month < target.Month;
         return this.Day <= target.Day;
     }
     IsLastDayofYear(): boolean {
-        return this.Month == 12 && this.Day == 31;
+        return this.Month === 12 && this.Day === 31;
     }
     IsLastDayOfMonth(): boolean {
-        return Date.GetNumberOfDaysInMonth(this.Year, this.Month) == this.Day;
+        return Date.GetNumberOfDaysInMonth(this.Year, this.Month) === this.Day;
     }
     AddOneDay() {
         if (this.IsLastDayofYear()) {
@@ -88,10 +88,10 @@ export class Date {
 
     }
     IsFirstDayOfMonth(): boolean {
-        return this.Day == 1;
+        return this.Day === 1;
     }
     IsFirstDayOfYear(): boolean {
-        return this.Month == 1 && this.Day == 1;
+        return this.Month === 1 && this.Day === 1;
     }
 
     GetFirstDateOfYear() {

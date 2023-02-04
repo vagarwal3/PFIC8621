@@ -15,21 +15,21 @@ interface p {
 }
 export class PFICInput extends React.Component<p, any> {
     onTaxYearChange = (e: any) => {
-        if (e.target.value == "")
+        if (e.target.value === "")
             this.props.onInputChange('TaxYear', null);
 
         else
             this.props.onInputChange('TaxYear', parseInt(e.target.value));
     }
     onFundTypeChange = (e: any) => {
-        if (e.target.value == "")
+        if (e.target.value === "")
             this.props.onInputChange('FundType', null);
 
         else
             this.props.onInputChange('FundType', e.target.value);
     }
     onUSPersonSinceChange = (value:string) => {
-         if (value == "")
+         if (value === "")
             this.props.onInputChange('USPersonSince', null);
 
         else
@@ -39,7 +39,6 @@ export class PFICInput extends React.Component<p, any> {
         this.props.onTransactionChange(rowID, fieldName, fieldValue);
     }
     public render(): JSX.Element {
-        const taxYear = 2022;//this.state.TaxYear;
         return (
 
             <div className="main">

@@ -4,27 +4,27 @@ import React from "react";
 export class Transactions extends React.Component<any,any> {
     onReferenceIDNumberChange=(rowID:number,value:string)=>
     {
-        this.props.onChange(rowID,'ReferenceIDNumber', value==""?null:value);
+        this.props.onChange(rowID,'ReferenceIDNumber', value===""?null:value);
     }
    onFundNameChange=(rowID:number,value:string)=>
     {
-        this.props.onChange(rowID,'FundName',  value==""?null:value);
+        this.props.onChange(rowID,'FundName',  value===""?null:value);
     }
    onTypeChange=(rowID:number,value:string)=>
     {
-        this.props.onChange(rowID,'Type',  value==""?null:value);
+        this.props.onChange(rowID,'Type',  value===""?null:value);
     }
    onDateChange=(rowID:number,value:string)=>
     {
-        this.props.onChange(rowID,'Date',  value==""?null:value);
+        this.props.onChange(rowID,'Date',  value===""?null:value);
     }
    onUnitsChange=(rowID:number,value:string)=>
     {
-        this.props.onChange(rowID,'Units',  value==""?null:parseInt(value));
+        this.props.onChange(rowID,'Units',  value===""?null:parseInt(value));
     }
    onAmountChange=(rowID:number,value:string)=>
     {
-        this.props.onChange(rowID,'Amount', value==""?null:parseInt(value));
+        this.props.onChange(rowID,'Amount', value===""?null:parseInt(value));
     }
 
     public render(): JSX.Element {

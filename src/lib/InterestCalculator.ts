@@ -8,7 +8,7 @@ export class InterestCalculator {
    {
     let quarter: number = date.GetQuarter();
 
-    return AnnualInterestRates.find(x => x.Year == date.Year)?.QuaterlyInterestRate[quarter-1]??1;
+    return AnnualInterestRates.find(x => x.Year === date.Year)?.QuaterlyInterestRate[quarter-1]??1;
   }
   static CalculateInterest(amount: number, startDate: Date, endDate: Date) {
     let interestfactor: number = 1;

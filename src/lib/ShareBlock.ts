@@ -38,13 +38,13 @@ export class ShareBlock {
 
             let holdingStartDateInYear: Date;
             let holdingEndDateInYear: Date;
-            if (year == purchaseYear) {
+            if (year === purchaseYear) {
                 holdingStartDateInYear = purchaseDate;
             }
             else {
                 holdingStartDateInYear = new Date(year,1,1);
             }
-            if (year == disposeYear) {
+            if (year === disposeYear) {
                 holdingEndDateInYear = disposeDate;
             }
             else {

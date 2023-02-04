@@ -1,7 +1,5 @@
-
-import ReactDOM from "react-dom/client";
 import React from 'react';
-import { BrowserRouter, Routes, Route, Outlet, Link } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 
 export class Layout extends React.Component {
    public render(): JSX.Element {
@@ -18,7 +16,7 @@ export class Layout extends React.Component {
                      <Link className="list-group-item list-group-item-action list-group-item-light p-3" to="/License">License</Link>
                      <Link className="list-group-item list-group-item-action list-group-item-light p-3" to="/">Discussion</Link>
                      <Link className="list-group-item list-group-item-action list-group-item-light p-3" to="/">Issues</Link>
-                     <a href="https://github.com/vagarwal3/PFIC8621"><img width={50} title="Source code on github" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"></img></a>
+                     <a href="https://github.com/vagarwal3/PFIC8621"><img width={50} alt="Source code on github" title="Source code on github" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"></img></a>
                  </div>
              </div>
             
@@ -32,7 +30,7 @@ export class Layout extends React.Component {
                                  <li className="nav-item active"><a className="nav-link" href="#!">Home</a></li>
                                  <li className="nav-item"><a className="nav-link" href="#!">Link</a></li>
                                  <li className="nav-item dropdown">
-                                     <a className="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                                     <a className="nav-link dropdown-toggle" id="navbarDropdown" href="" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
                                      <div className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                          <a className="dropdown-item" href="#!">Action</a>
                                          <a className="dropdown-item" href="#!">Another action</a>

@@ -44,12 +44,12 @@ export class PFICCalculator extends React.Component<any, IPFICCalculateorState>{
         if (this.state.TaxYear == null || this.state.FundType == null)
             return;
         let taxYear: number = this.state.TaxYear ?? 1;
-        let fundType: FundType = this.state.FundType == "Section1291" ? FundType.Section1291 : FundType.Section1291;
+        let fundType: FundType = this.state.FundType === "Section1291" ? FundType.Section1291 : FundType.Section1291;
         let usPersonStatus: USPersonStatus;
         if (this.state.USPersonSince == null) {
             return;
         }
-        else if (this.state.USPersonSince as string == "Birth") {
+        else if (this.state.USPersonSince as string === "Birth") {
             usPersonStatus = new USPersonStatus(true, null);
         }
         else {
@@ -62,7 +62,7 @@ export class PFICCalculator extends React.Component<any, IPFICCalculateorState>{
                 if (t.Type == null) {
                     return;
                 }
-                else if (t.Type == "Purchase") {
+                else if (t.Type === "Purchase") {
                     transactionType = TransactionType.Purchase;
                 }
                 else {
@@ -108,7 +108,7 @@ export class PFICCalculator extends React.Component<any, IPFICCalculateorState>{
                 case 'ReferenceIDNumber':
                     newTransactions[rowID].ReferenceIDNumber = fieldValue as string | null;
                     if (fieldValue != null && newTransactions[rowID].FundName == null) {
-                        let transactionWithFundName = newTransactions.find(a => a.ReferenceIDNumber == fieldValue && a.FundName != null);
+                        let transactionWithFundName = newTransactions.find(a => a.ReferenceIDNumber === fieldValue && a.FundName != null);
                         if (transactionWithFundName != null) {
                             newTransactions[rowID].FundName = transactionWithFundName.FundName;
                         }

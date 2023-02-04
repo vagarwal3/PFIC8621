@@ -40,7 +40,7 @@ export class PFICOutput extends React.Component<ICalOutput, any> {
                                     <td className="columnLastCell rightAlignCell">Amount</td>
                                     {
                                         Array.from(pfic.ShareHoldingYears.keys()).map((year: number, index: number) =>
-                                            <td className={pfic.ShareHoldingYears.size - 1 == index ? "columnLastCell rightAlignCell" : "rightAlignCell"}>{year}</td>
+                                            <td className={pfic.ShareHoldingYears.size - 1 === index ? "columnLastCell rightAlignCell" : "rightAlignCell"}>{year}</td>
                                         )
                                     }
                                     {
@@ -61,7 +61,7 @@ export class PFICOutput extends React.Component<ICalOutput, any> {
                                             <td className="columnLastCell">{shareBlock.Gain}</td>
                                             {
                                                 Array.from(pfic.ShareHoldingYears.keys()).map((year: number, index: number) =>
-                                                    <td className={pfic.ShareHoldingYears.size - 1 == index ? "columnLastCell rightAlignCell" : "rightAlignCell"}>{shareBlock.YearlyGainAllocations.get(year)?.NumberOfDays}</td>
+                                                    <td className={pfic.ShareHoldingYears.size - 1 === index ? "columnLastCell rightAlignCell" : "rightAlignCell"}>{shareBlock.YearlyGainAllocations.get(year)?.NumberOfDays}</td>
                                                 )
                                             }
                                             <td className="columnLastCell">{
@@ -92,7 +92,7 @@ export class PFICOutput extends React.Component<ICalOutput, any> {
                                             <td className="columnLastCell"></td>
                                             {
                                                 Array.from(pfic.ShareHoldingYears.keys()).map((year: number, index: number) =>
-                                                    <td className={pfic.ShareHoldingYears.size - 1 == index ? "columnLastCell rightAlignCell" : "rightAlignCell"}></td>
+                                                    <td className={pfic.ShareHoldingYears.size - 1 === index ? "columnLastCell rightAlignCell" : "rightAlignCell"}></td>
                                                 )
                                             }
                                             <td className="columnLastCell">&nbsp;</td>

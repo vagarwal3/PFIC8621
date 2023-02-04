@@ -1,6 +1,6 @@
 import { InterestCalculator } from "./InterestCalculator"
 import { TaxRate } from "./TaxRate"
-import { ShareBlock, YearlyGainAllocation } from "./ShareBlock";
+import { ShareBlock } from "./ShareBlock";
 import { Transaction, TransactionType } from "./Transaction";
 import { USPersonStatus } from "./USPersonStatus";
 import { Form8621 } from "./Form8621";
@@ -53,8 +53,8 @@ export class Form8621Calculator {
     static GetShareBlocks(taxYear: number, transactions: Transaction[]) {
         let shareBlocks: ShareBlock[] = [];
         let purchaseTransactionsMap: Map<Transaction, number> = new Map<Transaction, number>();
-        let purchaseTransactions: Transaction[] = transactions.filter(a => a.TransactionType == TransactionType.Purchase).sort((a: Transaction, b: Transaction) => { if (b.Date.IsLessThanOrEqualTo(a.Date)) return 1; else return -1 });
-        let disposeTransactions: Transaction[] = transactions.filter(a => a.TransactionType == TransactionType.Dispose).sort((a: Transaction, b: Transaction) => { if (b.Date.IsLessThanOrEqualTo(a.Date)) return 1; else return -1 });
+        let purchaseTransactions: Transaction[] = transactions.filter(a => a.TransactionType === TransactionType.Purchase).sort((a: Transaction, b: Transaction) => { if (b.Date.IsLessThanOrEqualTo(a.Date)) return 1; else return -1 });
+        let disposeTransactions: Transaction[] = transactions.filter(a => a.TransactionType === TransactionType.Dispose).sort((a: Transaction, b: Transaction) => { if (b.Date.IsLessThanOrEqualTo(a.Date)) return 1; else return -1 });
 
         purchaseTransactions.forEach(transaction => {
             purchaseTransactionsMap.set(transaction, transaction.NumberOfUnits);
@@ -63,12 +63,12 @@ export class Form8621Calculator {
         disposeTransactions.forEach(disposeTransaction => {
             let unitsToDispose: number = disposeTransaction.NumberOfUnits;
             purchaseTransactions.forEach(purchaseTransaction => {
-                if (unitsToDispose==0)
+                if (unitsToDispose===0)
                     return;
                 if (purchaseTransactionsMap.has(purchaseTransaction) && purchaseTransaction.Date.IsLessThanOrEqualTo(disposeTransaction.Date)) {
                     let remainingPurchaseUnits = purchaseTransactionsMap.get(purchaseTransaction) as number;
                     let numberOfUnitsInBlock: number;
-                    if (remainingPurchaseUnits == unitsToDispose) {
+                    if (remainingPurchaseUnits === unitsToDispose) {
                         numberOfUnitsInBlock = unitsToDispose;
                         purchaseTransactionsMap.delete(purchaseTransaction);
                         unitsToDispose = 0;
@@ -84,7 +84,7 @@ export class Form8621Calculator {
                         purchaseTransactionsMap.delete(purchaseTransaction);
                     }
 
-                    if (disposeTransaction.Date.Year == taxYear) {
+                    if (disposeTransaction.Date.Year === taxYear) {
                         let blockPurchaseAmount: number = Utility.ConvertNumberTo2DecimalPlace(numberOfUnitsInBlock * purchaseTransaction.Amount / purchaseTransaction.NumberOfUnits);
                         let blockDisposeAmount: number = Utility.ConvertNumberTo2DecimalPlace(numberOfUnitsInBlock * disposeTransaction.Amount / disposeTransaction.NumberOfUnits);
                         let shareBlock = new ShareBlock(taxYear, numberOfUnitsInBlock, purchaseTransaction.Date, blockPurchaseAmount, disposeTransaction.Date, blockDisposeAmount);
@@ -98,7 +98,7 @@ export class Form8621Calculator {
     static GetUniquePFICList(taxYear: number, transactions: Transaction[]) {
         let lstUniquePFICs: Map<string, string> = new Map<string, string>();
         transactions.forEach(transaction => {
-            if (transaction.TransactionType == TransactionType.Dispose && transaction.Date.Year == taxYear && !lstUniquePFICs.has(transaction.ReferenceIDNumber)) {
+            if (transaction.TransactionType === TransactionType.Dispose && transaction.Date.Year === taxYear && !lstUniquePFICs.has(transaction.ReferenceIDNumber)) {
                 lstUniquePFICs.set(transaction.ReferenceIDNumber, transaction.FundName);
             }
         }
@@ -115,7 +115,7 @@ export class Form8621Calculator {
             shareBlock.YearlyGainAllocations.forEach((yearlyGainAllocation, year: number,) => {
                 let objShareHoldingYear: ShareHoldingYear;
                 if (!lstShareHoldingYears.has(year)) {
-                    let blnIsCurrentYear: boolean = (year == taxYear);
+                    let blnIsCurrentYear: boolean = (year === taxYear);
                     let blnIsPrePFICYear: boolean;
                     if (!usPersonStatus.IsUSPersonSinceBirth && usPersonStatus.USPersonSinceTaxYear as number > year)
                         blnIsPrePFICYear = true;
@@ -191,7 +191,7 @@ export class Form8621Calculator {
         let uniquePFICList: Map<string, string> = this.GetUniquePFICList(taxYear, transactions);
 
         uniquePFICList.forEach((fundName: string, referenceIDNumber: string) => {
-            let lstTransactions: Transaction[] = transactions.filter((t) => t.ReferenceIDNumber == referenceIDNumber);
+            let lstTransactions: Transaction[] = transactions.filter((t) => t.ReferenceIDNumber === referenceIDNumber);
 
             let objPFIC: PFIC = Form8621Calculator.GetPFICDetails(taxYear, referenceIDNumber, fundName, usPersonStatus, lstTransactions);
 
