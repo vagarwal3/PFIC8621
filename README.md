@@ -4,7 +4,7 @@
 PFIC-8621 is a free, open-source tax filing application that can be used to calculate values for Form 8621. It is provided free of charge and requires no sharing of personal data. This is purely a fun side project which can be used to double check the values produced by other tax software or manually calculated values, to model expected tax liability throughout the year, or to learn about the US tax system.
 
 ## Get Started
-This application can be run as a web application in any morden web browser.
+This application can be run as a web application in any morden web browser. You can launch this application from github [here](https://vagarwal3.github.io/PFIC8621/).
 
 ## User Data and Privacy
 The project is available strictly via client side. Data is persisted to the browser's localstorage so no personal information ever leaves the user's computer.
